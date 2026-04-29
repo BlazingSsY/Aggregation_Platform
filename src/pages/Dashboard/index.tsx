@@ -80,7 +80,7 @@ export default function DashboardPage() {
           <Card className="stat-card" bordered={false}>
             <Statistic
               title={<span><BarChartOutlined /> 累计AI调用次数</span>}
-              value={128640}
+              value={12864}
               valueStyle={{ color: '#1677FF', fontWeight: 700 }}
             />
             <div style={{ marginTop: 8, fontSize: 12, color: '#8c8c8c' }}>今日新增 1,286 次</div>

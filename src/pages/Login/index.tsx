@@ -42,7 +42,7 @@ export default function LoginPage() {
         <div className="login-left-content">
           <div className="login-brand">
             <div className="login-brand-logo">AI</div>
-            <span>智研AI生产力平台</span>
+            <span>机载AI应用聚合平台</span>
           </div>
         </div>
 
