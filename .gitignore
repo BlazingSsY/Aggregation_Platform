@@ -1,0 +1,118 @@
+# ========== 依赖与构建产物（核心！禁止上传） ==========
+node_modules/
+target/
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.turbo/
+.vite/
+
+# ========== 日志文件 ==========
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+logs/
+
+# ========== 操作系统生成文件（跨平台必须屏蔽） ==========
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+__MACOSX
+.AppleDouble
+.LSOverride
+Icon?
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ========== IDE / 编辑器 ==========
+.idea/
+.vscode/
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.settings/
+*.iml
+
+# ========== Docker 数据卷与本地容器数据 ==========
+docker/volumes/
+docker-data/
+*.pid
+*.seed
+*.pid.lock
+
+# ========== 环境变量与本地配置 ==========
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# ========== 测试与覆盖率 ==========
+coverage/
+*.lcov
+.nyc_output/
+.jest-cache/
+
+# ========== 包管理器锁文件冲突的临时文件 ==========
+.pnp.*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# ========== TypeScript ==========
+*.tsbuildinfo
+# 由 tsc -b 从 vite.config.ts 编译产生（不应入库）
+vite.config.js
+vite.config.d.ts
+vite.config.js.map
+
+# ========== 临时文件 ==========
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ========== 大文件 / 二进制（按需保留） ==========
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.exe
