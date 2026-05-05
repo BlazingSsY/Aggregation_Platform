@@ -2,7 +2,7 @@
   "name": "zhiyan-ai-platform",
   "private": true,
   "version": "1.0.0",
-  "description": "智研AI生产力聚合平台 - 一站式研发办公AI聚合平台",
+  "description": "智研企业AI能力平台 - 企业级AI全场景应用矩阵展示平台",
   "type": "module",
   "scripts": {
     "dev": "vite",
