@@ -1,0 +1,23 @@
+# 一键启动 / 离线机器部署用
+# 用法：
+#   docker compose up -d --build      # 构建并后台启动
+#   docker compose down               # 停止并清理容器
+#   docker compose logs -f            # 跟随日志
+
+services:
+  aap-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aap-frontend:latest
+    container_name: aap-frontend
+    restart: unless-stopped
+    ports:
+      # 宿主机 5177 → 容器 80
+      - "5177:80"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s

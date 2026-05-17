@@ -1,7 +1,9 @@
+import { Box, Button, Typography } from '@mui/material';
+
 export default function HeroBanner() {
   return (
-    <section className="hero-banner" id="top" aria-label="平台品牌宣传">
-      <div className="hero-decor" aria-hidden>
+    <Box component="section" className="hero-banner" id="top" aria-label="平台品牌宣传">
+      <Box className="hero-decor" aria-hidden>
         <svg className="decor-cloud-1" viewBox="0 0 200 80" fill="none">
           <path
             d="M30 60 Q10 60 10 45 Q10 30 28 30 Q32 14 50 14 Q70 14 76 30 Q92 26 100 40 Q120 36 124 56 Q120 66 104 64 L40 64 Q30 66 30 60 Z"
@@ -20,37 +22,107 @@ export default function HeroBanner() {
             fill="rgba(255,255,255,0.5)"
           />
         </svg>
-        <svg className="decor-plane" viewBox="0 0 512 512" fill="none">
-          <defs>
-            <linearGradient id="planeBody" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#bae0ff" />
-            </linearGradient>
-          </defs>
+        <svg className="decor-cloud-4" viewBox="0 0 200 80" fill="none">
           <path
-            d="M482 232 L300 222 L210 80 Q204 70 192 72 L160 78 Q146 80 152 96 L208 218 L116 212 L82 168 Q76 158 64 162 L40 170 Q28 174 32 188 L62 244 Q56 252 62 260 L32 316 Q28 330 40 334 L64 342 Q76 346 82 336 L116 292 L208 286 L152 408 Q146 424 160 426 L192 432 Q204 434 210 424 L300 282 L482 272 Q500 270 500 252 Q500 234 482 232 Z"
-            fill="url(#planeBody)"
-            stroke="rgba(0,21,41,0.18)"
-            strokeWidth="2"
+            d="M30 60 Q10 60 10 45 Q10 30 28 30 Q32 14 50 14 Q70 14 76 30 Q92 26 100 40 Q120 36 124 56 Q120 66 104 64 L40 64 Q30 66 30 60 Z"
+            fill="rgba(255,255,255,0.7)"
           />
         </svg>
-      </div>
-      <div className="hero-inner">
-        <h1 className="hero-title">
-          航空企业级 <span className="accent">AI 全场景应用矩阵</span>
-        </h1>
-        <p className="hero-subtitle">
+      </Box>
+      <Box className="hero-inner" sx={{ textAlign: 'center' }}>
+        <Typography
+          component="h1"
+          className="hero-title"
+          sx={{
+            textAlign: 'center',
+            width: '100%',
+            fontSize: { xs: '40px', sm: '52px', md: '72px' },
+            fontWeight: 700,
+            lineHeight: 1.4,
+            letterSpacing: '1.5px',
+            mb: '36px',
+            background:
+              'linear-gradient(135deg, #ffffff 0%, #ffffff 35%, #D6EFFD 70%, #46AEF7 100%)',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            color: 'transparent',
+            textShadow: '0 2px 18px rgba(70,174,247,0.28)',
+          }}
+        >
+          航空企业级 AI 全场景应用矩阵
+        </Typography>
+        <Typography
+          className="hero-subtitle"
+          sx={{
+            textAlign: 'center',
+            mx: 'auto',
+            fontSize: { xs: '16px', md: '18px' },
+            fontWeight: 400,
+            lineHeight: 2.1,
+            color: 'rgba(255,255,255,0.88)',
+            maxWidth: 820,
+            mb: '64px',
+          }}
+        >
           面向航空产业研发、制造、运维全链路场景，覆盖知识管理、研发提效、硬件设计、文档处理，一站式赋能航空智造与数字化升级
-        </p>
-        <div className="hero-actions">
-          <a href="#app-matrix" className="hero-anchor" aria-label="浏览应用矩阵">
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2,
+            flexWrap: 'wrap',
+            width: '100%',
+          }}
+        >
+          <Button
+            variant="contained"
+            color="inherit"
+            href="#app-matrix"
+            sx={{
+              background:
+                'linear-gradient(135deg, #ffffff 0%, #EBF7FE 60%, #D6EFFD 100%)',
+              color: 'var(--av-deep)',
+              px: 4,
+              py: 1.3,
+              fontWeight: 700,
+              boxShadow: '0 8px 24px rgba(48,199,236,0.45)',
+              '&:hover': {
+                background:
+                  'linear-gradient(135deg, #ffffff 0%, #ffffff 60%, #46AEF7 100%)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 12px 32px rgba(48,199,236,0.55)',
+              },
+            }}
+          >
             浏览全部应用
-          </a>
-          <a href="#value-section" className="hero-anchor ghost" aria-label="了解平台价值">
+          </Button>
+          <Button
+            variant="outlined"
+            href="#value-section"
+            sx={{
+              color: '#fff',
+              borderColor: 'rgba(255,255,255,0.6)',
+              borderWidth: 1.5,
+              px: 4,
+              py: 1.3,
+              fontWeight: 600,
+              backdropFilter: 'blur(4px)',
+              '&:hover': {
+                borderColor: '#fff',
+                borderWidth: 1.5,
+                background:
+                  'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(70,174,247,0.18) 100%)',
+                transform: 'translateY(-2px)',
+              },
+            }}
+          >
             了解平台价值
-          </a>
-        </div>
-      </div>
-    </section>
+          </Button>
+        </Box>
+      </Box>
+    </Box>
   );
 }

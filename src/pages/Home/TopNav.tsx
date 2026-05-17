@@ -1,40 +1,58 @@
 import { useEffect, useState } from 'react';
-import { App, Input } from 'antd';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+import { Box, Button, IconButton, InputAdornment, Snackbar, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { APPS } from '@/data/apps';
+import { useAuth } from '@/auth/AuthContext';
+import UserMenu from '@/components/UserMenu';
 
 interface NavLink {
   key: string;
   label: string;
-  href: string;
+  to: string;
+  /** 'top' = 滚到顶部；其他字符串 = 滚到对应 id 元素 */
+  scroll?: string;
 }
 
 const NAV_LINKS: NavLink[] = [
-  { key: 'home', label: '首页', href: '#top' },
-  { key: 'solution', label: '解决方案', href: '#app-matrix' },
-  { key: 'help', label: '帮助中心', href: '#' },
-  { key: 'changelog', label: '更新日志', href: '#' },
+  { key: 'home', label: '首页', to: '/', scroll: 'top' },
+  { key: 'apps', label: '应用中心', to: '/apps' },
+  { key: 'value', label: '平台优势', to: '/', scroll: 'value-section' },
 ];
 
 export default function TopNav() {
-  const { message } = App.useApp();
+  const { isLoggedIn } = useAuth();
   const [activeKey, setActiveKey] = useState<string>('home');
+  const [keyword, setKeyword] = useState('');
+  const [toast, setToast] = useState<string | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (location.pathname === '/apps') {
+      setActiveKey('apps');
+      return;
+    }
     const onScroll = () => {
       const matrix = document.getElementById('app-matrix');
       if (!matrix) return;
       const rect = matrix.getBoundingClientRect();
-      setActiveKey(rect.top <= 80 ? 'solution' : 'home');
+      setActiveKey(rect.top <= 80 ? 'apps' : 'home');
     };
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [location.pathname]);
 
-  const onSearch = (value: string) => {
-    const v = value.trim();
+  const onSearch = () => {
+    const v = keyword.trim();
     if (!v) return;
     const hit = APPS.find((a) => a.name.includes(v) || a.description.includes(v));
     if (hit) {
+      if (location.pathname !== '/') {
+        navigate(`/?focus=${hit.id}`);
+        return;
+      }
       const el = document.getElementById(`app-card-${hit.id}`);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -43,48 +61,95 @@ export default function TopNav() {
         return;
       }
     }
-    message.info('未匹配到对应应用');
+    setToast('未匹配到对应应用');
   };
 
   return (
-    <header className="top-nav">
-      <div className="top-nav-inner">
-        <a href="#top" className="nav-brand" aria-label="返回首页">
+    <Box component="header" className="top-nav">
+      <Box className="top-nav-inner">
+        <RouterLink to="/" className="nav-brand" aria-label="返回首页">
           <span className="nav-brand-logo" aria-hidden>
-            <svg viewBox="0 0 512 512" fill="none">
-              <path
-                d="M482 232 L300 222 L210 80 Q204 70 192 72 L160 78 Q146 80 152 96 L208 218 L116 212 L82 168 Q76 158 64 162 L40 170 Q28 174 32 188 L62 244 Q56 252 62 260 L32 316 Q28 330 40 334 L64 342 Q76 346 82 336 L116 292 L208 286 L152 408 Q146 424 160 426 L192 432 Q204 434 210 424 L300 282 L482 272 Q500 270 500 252 Q500 234 482 232 Z"
-                fill="#ffffff"
-              />
-            </svg>
+            <span className="nav-brand-logo-text">机载</span>
           </span>
           <span className="nav-brand-text">
             <span className="nav-brand-name">AI应用聚合平台</span>
           </span>
-        </a>
+        </RouterLink>
 
-        <nav className="nav-menu" aria-label="主导航">
+        <Box component="nav" className="nav-menu" aria-label="主导航">
           {NAV_LINKS.map((item) => (
-            <a
+            <RouterLink
               key={item.key}
-              href={item.href}
+              to={item.to}
               className={`nav-menu-item${activeKey === item.key ? ' active' : ''}`}
+              onClick={(e) => {
+                if (!item.scroll) return;
+                if (item.scroll === 'top') {
+                  if (location.pathname === '/') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                  return;
+                }
+                if (location.pathname === '/') {
+                  e.preventDefault();
+                  document.getElementById(item.scroll)?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                  });
+                } else {
+                  e.preventDefault();
+                  navigate('/', { state: { scrollTo: item.scroll } });
+                }
+              }}
             >
               {item.label}
-            </a>
+            </RouterLink>
           ))}
-        </nav>
+        </Box>
 
-        <div className="nav-actions">
-          <Input.Search
+        <Box className="nav-actions">
+          <TextField
             placeholder="搜索AI应用"
-            allowClear
-            onSearch={onSearch}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') onSearch();
+            }}
             className="nav-search"
-            aria-label="搜索AI应用"
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton size="small" onClick={onSearch} aria-label="搜索">
+                      <SearchIcon fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
-        </div>
-      </div>
-    </header>
+          {isLoggedIn ? (
+            <UserMenu />
+          ) : (
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => navigate('/login')}
+              sx={{ px: 2 }}
+            >
+              登录
+            </Button>
+          )}
+        </Box>
+      </Box>
+      <Snackbar
+        open={!!toast}
+        autoHideDuration={2200}
+        onClose={() => setToast(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        message={toast ?? ''}
+      />
+    </Box>
   );
 }
