@@ -42,12 +42,12 @@ export default function HeroBanner() {
             letterSpacing: '1.5px',
             mb: '36px',
             background:
-              'linear-gradient(135deg, #ffffff 0%, #ffffff 35%, #D6EFFD 70%, #46AEF7 100%)',
+              'linear-gradient(135deg, #ffffff 0%, #ffffff 35%, #d9f2ff 68%, #7dc0ff 100%)',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             color: 'transparent',
-            textShadow: '0 2px 18px rgba(70,174,247,0.28)',
+            textShadow: '0 2px 18px rgba(0,114,255,0.26)',
           }}
         >
           航空企业级 AI 全场景应用矩阵
@@ -83,17 +83,19 @@ export default function HeroBanner() {
             href="#app-matrix"
             sx={{
               background:
-                'linear-gradient(135deg, #ffffff 0%, #EBF7FE 60%, #D6EFFD 100%)',
-              color: 'var(--av-deep)',
+                'linear-gradient(to right, #fafafa 0%, #f1f2f4 51%, #f8fafa 100%)',
+              backgroundSize: '200% auto',
+              color: '#ffffff',
               px: 4,
               py: 1.3,
               fontWeight: 700,
-              boxShadow: '0 8px 24px rgba(48,199,236,0.45)',
+              boxShadow: '0 10px 24px rgba(0,114,255,0.34)',
               '&:hover': {
                 background:
-                  'linear-gradient(135deg, #ffffff 0%, #ffffff 60%, #46AEF7 100%)',
+                  'linear-gradient(to right, #00d2ff 0%, #3a7bd5 51%, #00d2ff 100%)',
+                backgroundPosition: 'right center',
                 transform: 'translateY(-2px)',
-                boxShadow: '0 12px 32px rgba(48,199,236,0.55)',
+                boxShadow: '0 14px 30px rgba(58,123,213,0.42)',
               },
             }}
           >
@@ -114,7 +116,7 @@ export default function HeroBanner() {
                 borderColor: '#fff',
                 borderWidth: 1.5,
                 background:
-                  'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(70,174,247,0.18) 100%)',
+                  'linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(0,210,255,0.18) 100%)',
                 transform: 'translateY(-2px)',
               },
             }}

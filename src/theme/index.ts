@@ -1,9 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 
-const PRIMARY = '#46AEF7';
-const PRIMARY_DARK = '#104A78';
-const PRIMARY_LIGHT = '#7BCFFA';
-const ACCENT = '#16D9E3';
+const PRIMARY = '#4BB8FA';
+const PRIMARY_DARK = '#1788D4';
+const PRIMARY_LIGHT = '#DDF2FF';
+const ACCENT = '#256B9F';
 
 export const muiTheme = createTheme({
   palette: {
@@ -17,21 +17,21 @@ export const muiTheme = createTheme({
     secondary: {
       main: ACCENT,
     },
-    success: { main: '#30C7EC' },
-    warning: { main: '#F59E0B' },
-    error: { main: '#EF4444' },
-    info: { main: '#30C7EC' },
+    success: { main: '#2E7D59' },
+    warning: { main: '#D68A00' },
+    error: { main: '#C2413B' },
+    info: { main: PRIMARY },
     background: {
-      default: '#F5FAFD',
+      default: '#F5F8FB',
       paper: '#FFFFFF',
     },
     text: {
-      primary: '#0F2742',
-      secondary: '#4A6582',
+      primary: '#172B3A',
+      secondary: '#607282',
     },
-    divider: '#DCE9F3',
+    divider: '#E2EAF1',
   },
-  shape: { borderRadius: 10 },
+  shape: { borderRadius: 8 },
   typography: {
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", "Source Han Sans CN", sans-serif',
@@ -50,28 +50,31 @@ export const muiTheme = createTheme({
         root: {
           borderRadius: 8,
           fontWeight: 600,
-          transition: 'all 0.25s ease',
+          transition: 'background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease',
         },
         containedPrimary: {
-          background: 'linear-gradient(135deg, #46AEF7 0%, #30C7EC 55%, #16D9E3 100%)',
+          backgroundColor: PRIMARY,
           color: '#fff',
-          boxShadow: '0 2px 8px rgba(48,199,236,0.32)',
+          boxShadow: 'none',
           '&:hover': {
-            background: 'linear-gradient(135deg, #1E7FC7 0%, #30C7EC 55%, #16D9E3 100%)',
-            boxShadow: '0 6px 18px rgba(22,217,227,0.40)',
-            transform: 'translateY(-1px)',
+            backgroundColor: PRIMARY_DARK,
+            boxShadow: 'none',
           },
         },
         outlinedPrimary: {
-          borderWidth: 1.5,
-          '&:hover': { borderWidth: 1.5 },
+          borderColor: '#B8DFF7',
+          color: '#256B9F',
+          '&:hover': {
+            borderColor: PRIMARY,
+            backgroundColor: '#EFF9FF',
+          },
         },
       },
     },
     MuiAvatar: {
       styleOverrides: {
         colorDefault: {
-          background: 'linear-gradient(135deg, #46AEF7 0%, #30C7EC 55%, #16D9E3 100%)',
+          backgroundColor: PRIMARY,
           color: '#fff',
         },
       },
@@ -80,16 +83,18 @@ export const muiTheme = createTheme({
       styleOverrides: {
         root: { borderRadius: 6 },
         colorPrimary: {
-          background: 'linear-gradient(135deg, rgba(70,174,247,0.12) 0%, rgba(123,207,250,0.18) 100%)',
+          background: '#EEF8FE',
+          color: '#256B9F',
+          borderColor: '#B8DFF7',
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          border: '1px solid #DCE9F3',
-          boxShadow: '0 1px 2px rgba(15, 39, 66, 0.04)',
+          borderRadius: 8,
+          border: '1px solid #E2EAF1',
+          boxShadow: '0 8px 24px rgba(23, 43, 58, 0.05)',
         },
       },
     },
@@ -102,8 +107,8 @@ export const muiTheme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         head: {
-          background: 'linear-gradient(135deg, #EBF7FE 0%, #D6EFFD 100%)',
-          color: '#0F2742',
+          backgroundColor: '#F6FAFD',
+          color: '#34495A',
           fontWeight: 600,
         },
       },

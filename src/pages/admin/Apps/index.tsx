@@ -347,9 +347,9 @@ function GrantDialog({
               <Box
                 key={g.enterprise}
                 sx={{
-                  border: '1px solid #DCE9F3',
+                  border: '1px solid #e5ebf2',
                   borderRadius: 1.5,
-                  bgcolor: '#F4FAFE',
+                  bgcolor: '#ffffff',
                   p: 1.5,
                 }}
               >
@@ -387,7 +387,7 @@ function GrantDialog({
                           p: 1,
                           borderRadius: 1,
                           bgcolor: '#fff',
-                          border: '1px solid #E0EEF8',
+                          border: '1px solid #e5ebf2',
                         }}
                       >
                         <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 0.5 }}>
@@ -644,8 +644,8 @@ export default function AppsAdminPage() {
                             width: 32,
                             height: 32,
                             borderRadius: 1,
-                            bgcolor: 'rgba(30,127,199,0.1)',
-                            color: 'primary.main',
+                            bgcolor: '#ffffff',
+                            color: 'text.secondary',
                             display: 'inline-flex',
                             alignItems: 'center',
                             justifyContent: 'center',

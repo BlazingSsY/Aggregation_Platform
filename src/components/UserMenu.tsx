@@ -78,7 +78,7 @@ export default function UserMenu() {
             px: 1,
             py: 0.5,
             borderRadius: 1,
-            '&:hover': { background: 'rgba(30,127,199,0.06)' },
+            '&:hover': { background: 'rgba(0,114,255,0.08)' },
           }}
         >
           <Avatar
@@ -87,9 +87,9 @@ export default function UserMenu() {
               height: 32,
               fontSize: 14,
               fontWeight: 700,
-              background: 'linear-gradient(135deg, #104A78 0%, #1E7FC7 55%, #30C7EC 100%)',
+              background: '#0072ff',
               color: '#fff',
-              boxShadow: '0 2px 8px rgba(30,127,199,0.35)',
+              boxShadow: '0 6px 16px rgba(0,114,255,0.32)',
             }}
           >
             {initial}
@@ -122,10 +122,10 @@ export default function UserMenu() {
           <Stack direction="row" spacing={1.5} alignItems="center">
             <Avatar
               sx={{
-                background: 'linear-gradient(135deg, #104A78 0%, #1E7FC7 55%, #30C7EC 100%)',
+                background: '#0072ff',
                 color: '#fff',
                 fontWeight: 700,
-                boxShadow: '0 2px 8px rgba(30,127,199,0.35)',
+                boxShadow: '0 6px 16px rgba(58,123,213,0.32)',
               }}
             >
               {initial}

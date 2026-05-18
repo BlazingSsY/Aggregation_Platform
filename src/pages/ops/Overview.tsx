@@ -24,10 +24,10 @@ import { MOCK_APP_USAGE, MOCK_USER_ACTIVITY } from '@/data/mock';
 type Range = '1d' | '7d' | '30d';
 
 const SUMMARY = [
-  { key: 'apps', label: '应用总数', icon: AppsIcon, color: '#1E7FC7' },
-  { key: 'users', label: '注册用户数', icon: PeopleAltIcon, color: '#30C7EC' },
-  { key: 'calls', label: '总调用次数', icon: QueryStatsIcon, color: '#D97706' },
-  { key: 'active', label: '活跃用户数', icon: HowToRegIcon, color: '#30C7EC' },
+  { key: 'apps', label: '应用总数', icon: AppsIcon, color: '#4BB8FA' },
+  { key: 'users', label: '注册用户数', icon: PeopleAltIcon, color: '#4BB8FA' },
+  { key: 'calls', label: '总调用次数', icon: QueryStatsIcon, color: '#4BB8FA' },
+  { key: 'active', label: '活跃用户数', icon: HowToRegIcon, color: '#4BB8FA' },
 ];
 
 export default function OpsOverviewPage() {

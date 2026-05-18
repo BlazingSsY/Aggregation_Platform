@@ -63,7 +63,7 @@ export default function PermNodeView({
       </Stack>
       {!isLeaf && (
         <Collapse in={open} unmountOnExit>
-          <Box sx={{ pl: 2, borderLeft: '1px dashed #E6EFFF', ml: 2 }}>
+          <Box sx={{ pl: 2, borderLeft: '1px dashed #e5ebf2', ml: 2 }}>
             {node.children!.map((c) => (
               <PermNodeView
                 key={c.code}

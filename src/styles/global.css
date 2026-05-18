@@ -182,7 +182,7 @@ a {
   font-weight: 700;
   white-space: nowrap;
   letter-spacing: 0.4px;
-  background: linear-gradient(180deg, #2AF598 0%, #009EFD 100%);
+  background: linear-gradient(180deg, #3049a1 0%, #1b16b9 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -672,4 +672,819 @@ a {
   .app-card-desc {
     min-height: 0;
   }
+}
+
+/* ===== Final unified blue gradients for portal + admin ===== */
+:root {
+  --final-grad-a: linear-gradient(to right, #00d2ff 0%, #3a7bd5 51%, #00d2ff 100%);
+  --final-grad-b: linear-gradient(to right, #00c6ff 0%, #0072ff 51%, #00c6ff 100%);
+  --final-bg: #f3f9ff;
+  --final-bg-soft: #e9f4ff;
+  --final-text: #0d2b4f;
+  --final-text-muted: #4d6784;
+  --final-border: #d4e6fa;
+}
+
+body,
+#root {
+  background: var(--final-bg) !important;
+  color: var(--final-text) !important;
+}
+
+.home-page {
+  background:
+    radial-gradient(940px 500px at 12% 0%, rgba(0, 210, 255, 0.18), transparent 62%),
+    radial-gradient(820px 430px at 88% 8%, rgba(58, 123, 213, 0.16), transparent 60%),
+    var(--final-bg) !important;
+  color: var(--final-text) !important;
+}
+
+.home-page .top-nav {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-bottom: 1px solid var(--final-border) !important;
+  box-shadow: 0 10px 26px rgba(0, 114, 255, 0.1) !important;
+}
+
+.home-page .nav-brand-logo {
+  background-image: var(--final-grad-b) !important;
+  background-size: 200% auto !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 22px rgba(0, 114, 255, 0.28) !important;
+}
+
+.home-page .nav-brand-logo-text {
+  background: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(8, 45, 97, 0.3) !important;
+}
+
+.home-page .nav-brand-name {
+  background-image: var(--final-grad-a) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+.home-page .nav-menu-item {
+  color: var(--final-text-muted) !important;
+}
+
+.home-page .nav-menu-item:hover,
+.home-page .nav-menu-item.active {
+  color: #005fcf !important;
+}
+
+.home-page .nav-menu-item.active::after,
+.home-page .section-title::after,
+.home-page .app-card::before {
+  background-image: var(--final-grad-b) !important;
+}
+
+.home-page .hero-banner {
+  background:
+    radial-gradient(980px 520px at 82% -8%, rgba(0, 210, 255, 0.34), transparent 64%),
+    radial-gradient(840px 440px at 8% 105%, rgba(0, 114, 255, 0.28), transparent 62%),
+    linear-gradient(135deg, #0b4fc6 0%, #0072ff 56%, #00c6ff 100%) !important;
+  color: #ffffff !important;
+}
+
+.home-page .hero-title,
+.home-page .hero-title .accent,
+.home-page .hero-subtitle {
+  color: #ffffff !important;
+}
+
+.home-page .hero-anchor,
+.home-page .app-card .MuiButton-contained,
+.home-page .app-card .MuiButton-outlinedPrimary {
+  background-image: var(--final-grad-b) !important;
+  background-size: 200% auto !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 10px 24px rgba(0, 114, 255, 0.24) !important;
+}
+
+.home-page .hero-anchor:hover,
+.home-page .app-card .MuiButton-contained:hover,
+.home-page .app-card .MuiButton-outlinedPrimary:hover {
+  background-image: var(--final-grad-a) !important;
+  background-position: right center !important;
+  color: #ffffff !important;
+}
+
+.home-page .hero-anchor.ghost {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.72) !important;
+  box-shadow: none !important;
+}
+
+.home-page .app-matrix,
+.home-page .value-section {
+  background: linear-gradient(180deg, #ffffff 0%, var(--final-bg-soft) 100%) !important;
+}
+
+.home-page .app-card,
+.home-page .value-card {
+  background: #ffffff !important;
+  border-color: var(--final-border) !important;
+  box-shadow: 0 12px 28px rgba(0, 114, 255, 0.08) !important;
+}
+
+.home-page .app-card:hover,
+.home-page .value-card:hover {
+  border-color: rgba(0, 114, 255, 0.36) !important;
+  box-shadow: 0 18px 38px rgba(0, 114, 255, 0.16) !important;
+}
+
+.home-page .app-card-icon,
+.home-page .value-icon {
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.15), rgba(0, 114, 255, 0.1)) !important;
+  border-color: rgba(0, 114, 255, 0.22) !important;
+  color: #0072ff !important;
+}
+
+.home-page .section-title,
+.home-page .app-card-title,
+.home-page .value-title {
+  color: var(--final-text) !important;
+}
+
+.home-page .section-sub,
+.home-page .app-card-desc,
+.home-page .value-desc {
+  color: var(--final-text-muted) !important;
+}
+
+.admin-layout-root {
+  background:
+    radial-gradient(860px 460px at 10% 0%, rgba(0, 210, 255, 0.16), transparent 60%),
+    radial-gradient(760px 420px at 92% 10%, rgba(58, 123, 213, 0.12), transparent 60%),
+    var(--final-bg) !important;
+  color: var(--final-text) !important;
+}
+
+.admin-layout-root .admin-layout-drawer .MuiDrawer-paper {
+  background: linear-gradient(180deg, #0072ff 0%, #3a7bd5 48%, #00d2ff 100%) !important;
+  color: #ffffff !important;
+}
+
+.admin-layout-root .admin-drawer-toolbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemButton-root {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemButton-root:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemButton-root.Mui-selected {
+  background: rgba(255, 255, 255, 0.24) !important;
+  color: #ffffff !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemIcon-root,
+.admin-layout-root .admin-nav-list .MuiSvgIcon-root,
+.admin-layout-root .admin-nav-list .MuiListItemText-primary {
+  color: inherit !important;
+}
+
+.admin-layout-root .admin-top-toolbar {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-bottom: 1px solid var(--final-border) !important;
+}
+
+.admin-layout-root .admin-top-toolbar .MuiLink-root,
+.admin-layout-root .admin-top-toolbar .MuiTypography-root {
+  color: var(--final-text) !important;
+}
+
+.admin-layout-root .admin-main-area {
+  color: var(--final-text) !important;
+}
+
+.admin-layout-root .MuiTableCell-head {
+  background-image: var(--final-grad-b) !important;
+  background-size: 200% auto !important;
+  color: #ffffff !important;
+}
+
+.admin-layout-root .MuiTableRow-hover:hover .MuiTableCell-body {
+  background: rgba(0, 114, 255, 0.05) !important;
+}
+
+/* ===== Final polish: white admin sidebar + cleaner portal accents ===== */
+.home-page .nav-brand-logo {
+  background-image: linear-gradient(to right, #00c6ff 0%, #0072ff 51%, #00c6ff 100%) !important;
+}
+
+.home-page .nav-actions .MuiAvatar-root,
+.home-page .nav-actions .MuiSvgIcon-root {
+  color: #0d2b4f !important;
+}
+
+.home-page .hero-inner .MuiButton-contained {
+  background-image: linear-gradient(to right, #00c6ff 0%, #0072ff 51%, #00c6ff 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.home-page .hero-inner .MuiButton-outlined {
+  border-color: rgba(255, 255, 255, 0.76) !important;
+  color: #ffffff !important;
+}
+
+.home-page .hero-inner .MuiButton-outlined:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: #ffffff !important;
+}
+
+.admin-layout-root .admin-layout-drawer .MuiDrawer-paper {
+  background: #ffffff !important;
+  color: #1b365d !important;
+  border-right: 1px solid #d4e6fa !important;
+  box-shadow: 4px 0 18px rgba(15, 43, 79, 0.06) !important;
+}
+
+.admin-layout-root .admin-drawer-toolbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e6eef8 !important;
+}
+
+.admin-layout-root .admin-drawer-toolbar .MuiTypography-root {
+  color: #0d2b4f !important;
+}
+
+.admin-layout-root .admin-drawer-toolbar .MuiTypography-root:last-child {
+  color: #5a7290 !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemButton-root {
+  color: #20436b !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemButton-root:hover {
+  background: #f8fbff !important;
+  color: #20436b !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemButton-root.Mui-selected {
+  background: #f3f7fc !important;
+  color: #20436b !important;
+  font-weight: 600 !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemButton-root.Mui-selected:hover {
+  background: #eef4fb !important;
+}
+
+.admin-layout-root .admin-nav-list .MuiListItemIcon-root,
+.admin-layout-root .admin-nav-list .MuiSvgIcon-root,
+.admin-layout-root .admin-nav-list .MuiListItemText-primary {
+  color: inherit !important;
+}
+
+.admin-layout-root .admin-top-toolbar .MuiLink-root {
+  color: #5a7290 !important;
+}
+
+.admin-layout-root .admin-top-toolbar .MuiTypography-root {
+  color: #1f3f63 !important;
+}
+
+.admin-layout-root .admin-top-toolbar .MuiBreadcrumbs-separator,
+.admin-layout-root .admin-top-toolbar .MuiIconButton-root {
+  color: #8aa0b8 !important;
+}
+
+.admin-layout-root .admin-main-area {
+  background:
+    radial-gradient(860px 460px at 10% 0%, rgba(0, 210, 255, 0.08), transparent 60%),
+    radial-gradient(760px 420px at 92% 10%, rgba(58, 123, 213, 0.06), transparent 60%),
+    #f4f8ff !important;
+}
+
+/* ===== Final request: pure blue logo/avatar + white admin pages + larger Song/Times typography ===== */
+.home-page .nav-brand-logo {
+  background: #0072ff !important;
+  background-image: none !important;
+  box-shadow: 0 8px 20px rgba(0, 114, 255, 0.24) !important;
+}
+
+.home-page .nav-brand-name {
+  background: none !important;
+  color: #0d2b4f !important;
+  -webkit-text-fill-color: #0d2b4f !important;
+}
+
+.home-page .nav-actions .MuiAvatar-root {
+  background: #0072ff !important;
+  color: #ffffff !important;
+}
+
+.home-page .nav-actions .MuiSvgIcon-root {
+  color: #0d2b4f !important;
+}
+
+.admin-layout-root,
+.admin-layout-root .admin-main-area {
+  background: #ffffff !important;
+}
+
+.admin-layout-root .MuiCard-root,
+.admin-layout-root .MuiPaper-root,
+.admin-layout-root .MuiDialog-paper,
+.admin-layout-root .MuiAccordion-root,
+.admin-layout-root .MuiTableContainer-root,
+.admin-layout-root .MuiTable-root,
+.admin-layout-root .MuiTableHead-root,
+.admin-layout-root .MuiTableBody-root,
+.admin-layout-root .MuiTableRow-root,
+.admin-layout-root .MuiTableCell-root,
+.admin-layout-root .MuiList-root,
+.admin-layout-root .MuiListItem-root {
+  background: #ffffff !important;
+}
+
+.admin-layout-root .MuiTableCell-head,
+.admin-layout-root .MuiTableCell-body {
+  color: #1f3f63 !important;
+  border-bottom: 1px solid #e7eff8 !important;
+}
+
+.admin-layout-root .MuiTableRow-hover:hover .MuiTableCell-body {
+  background: #f8fbff !important;
+}
+
+.admin-layout-root .admin-main-area,
+.admin-layout-root .admin-main-area .MuiTypography-root,
+.admin-layout-root .admin-main-area .MuiTableCell-root,
+.admin-layout-root .admin-main-area .MuiButton-root,
+.admin-layout-root .admin-main-area .MuiInputBase-input,
+.admin-layout-root .admin-main-area .MuiMenuItem-root,
+.admin-layout-root .admin-main-area .MuiChip-label,
+.admin-layout-root .admin-main-area .MuiFormLabel-root {
+  font-family: "Times New Roman", "SimSun", "宋体", serif !important;
+}
+
+.admin-layout-root .admin-main-area {
+  font-size: 16px !important;
+}
+
+.admin-layout-root .admin-main-area .MuiTypography-root,
+.admin-layout-root .admin-main-area .MuiTableCell-root,
+.admin-layout-root .admin-main-area .MuiButton-root,
+.admin-layout-root .admin-main-area .MuiInputBase-input,
+.admin-layout-root .admin-main-area .MuiMenuItem-root {
+  font-size: 15px !important;
+}
+
+/* ===== Admin modules white theme (apps / permissions / ops) ===== */
+.admin-layout-root .admin-main-area,
+.admin-layout-root .admin-main-area .MuiCard-root,
+.admin-layout-root .admin-main-area .MuiPaper-root,
+.admin-layout-root .admin-main-area .MuiDialog-paper,
+.admin-layout-root .admin-main-area .MuiAccordion-root,
+.admin-layout-root .admin-main-area .MuiTableContainer-root,
+.admin-layout-root .admin-main-area .MuiTable-root,
+.admin-layout-root .admin-main-area .MuiTableHead-root,
+.admin-layout-root .admin-main-area .MuiTableBody-root,
+.admin-layout-root .admin-main-area .MuiTableRow-root,
+.admin-layout-root .admin-main-area .MuiTableCell-root,
+.admin-layout-root .admin-main-area .MuiList-root,
+.admin-layout-root .admin-main-area .MuiListItem-root,
+.admin-layout-root .admin-main-area .MuiToolbar-root {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+.admin-layout-root .admin-main-area .MuiTableCell-head {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #1f3f63 !important;
+  border-bottom: 1px solid #e7eff8 !important;
+}
+
+.admin-layout-root .admin-main-area .MuiTableCell-body {
+  color: #1f3f63 !important;
+  border-bottom: 1px solid #e7eff8 !important;
+}
+
+.admin-layout-root .admin-main-area .MuiTableRow-hover:hover .MuiTableCell-body {
+  background: #fafcff !important;
+}
+
+.admin-layout-root .admin-main-area .MuiButton-contained,
+.admin-layout-root .admin-main-area .MuiButton-outlined,
+.admin-layout-root .admin-main-area .MuiButton-text,
+.admin-layout-root .admin-main-area .MuiToggleButton-root {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #1f3f63 !important;
+  border: 1px solid #d8e2ee !important;
+  box-shadow: none !important;
+}
+
+.admin-layout-root .admin-main-area .MuiButton-contained:hover,
+.admin-layout-root .admin-main-area .MuiButton-outlined:hover,
+.admin-layout-root .admin-main-area .MuiButton-text:hover,
+.admin-layout-root .admin-main-area .MuiToggleButton-root:hover,
+.admin-layout-root .admin-main-area .MuiToggleButton-root.Mui-selected,
+.admin-layout-root .admin-main-area .MuiToggleButton-root.Mui-selected:hover {
+  background: #f6f9fd !important;
+  background-image: none !important;
+  color: #1f3f63 !important;
+  border-color: #cdd9e8 !important;
+}
+
+.admin-layout-root .admin-main-area .MuiChip-root,
+.admin-layout-root .admin-main-area .MuiAlert-root {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #1f3f63 !important;
+  border: 1px solid #d8e2ee !important;
+}
+
+.admin-layout-root .admin-main-area .MuiIconButton-root,
+.admin-layout-root .admin-main-area .MuiSvgIcon-root {
+  color: #5e7288 !important;
+}
+
+/* restore original project font stack, keep current size rules */
+.admin-layout-root .admin-main-area,
+.admin-layout-root .admin-main-area .MuiTypography-root,
+.admin-layout-root .admin-main-area .MuiTableCell-root,
+.admin-layout-root .admin-main-area .MuiButton-root,
+.admin-layout-root .admin-main-area .MuiInputBase-input,
+.admin-layout-root .admin-main-area .MuiMenuItem-root,
+.admin-layout-root .admin-main-area .MuiChip-label,
+.admin-layout-root .admin-main-area .MuiFormLabel-root {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
+    "Segoe UI", "Source Han Sans CN", sans-serif !important;
+}
+
+/* ===== Final admin chrome fixes ===== */
+html body .admin-layout-root .admin-top-toolbar,
+html body .admin-layout-root .admin-top-toolbar.MuiToolbar-root {
+  background: #ffffff !important;
+  background-image: none !important;
+  border-bottom: 1px solid #f0f2f4 !important;
+  box-shadow: none !important;
+}
+
+html body .admin-layout-root .admin-top-toolbar .MuiBreadcrumbs-root,
+html body .admin-layout-root .admin-top-toolbar .MuiBreadcrumbs-ol,
+html body .admin-layout-root .admin-top-toolbar .MuiBreadcrumbs-li,
+html body .admin-layout-root .admin-top-toolbar .MuiLink-root,
+html body .admin-layout-root .admin-top-toolbar .MuiTypography-root,
+html body .admin-layout-root .admin-top-toolbar .MuiStack-root,
+html body .admin-layout-root .admin-top-toolbar .MuiBox-root {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+html body .admin-layout-root .admin-top-toolbar .MuiLink-root {
+  color: #5a7290 !important;
+}
+
+html body .admin-layout-root .admin-top-toolbar .MuiTypography-root {
+  color: #1f3f63 !important;
+}
+
+html body .admin-layout-root .admin-top-toolbar .MuiBreadcrumbs-separator,
+html body .admin-layout-root .admin-top-toolbar .MuiIconButton-root,
+html body .admin-layout-root .admin-top-toolbar .MuiSvgIcon-root {
+  color: #8a97a6 !important;
+}
+
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-contained,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-containedPrimary {
+  background: #1f3f63 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #1f3f63 !important;
+  box-shadow: none !important;
+}
+
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-contained:hover,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-containedPrimary:hover {
+  background: #16314f !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-color: #16314f !important;
+}
+
+/* ===== Admin enterprise visual refresh ===== */
+:root {
+  --admin-primary: #4BB8FA;
+  --admin-primary-dark: #1788D4;
+  --admin-primary-soft: #EAF7FE;
+  --admin-bg: #F5F8FB;
+  --admin-surface: #FFFFFF;
+  --admin-surface-soft: #F8FBFD;
+  --admin-border: #E2EAF1;
+  --admin-border-strong: #D3DFE8;
+  --admin-text: #172B3A;
+  --admin-text-muted: #607282;
+}
+
+html body .admin-layout-root {
+  background: var(--admin-bg) !important;
+  color: var(--admin-text) !important;
+}
+
+html body .admin-layout-root .admin-layout-drawer .MuiDrawer-paper {
+  background: var(--admin-surface) !important;
+  background-image: none !important;
+  border-right: 1px solid var(--admin-border) !important;
+  box-shadow: none !important;
+}
+
+html body .admin-layout-root .admin-drawer-toolbar {
+  background: var(--admin-surface) !important;
+  border-bottom: 1px solid var(--admin-border) !important;
+}
+
+html body .admin-layout-root .admin-drawer-toolbar .MuiBox-root:first-of-type {
+  background: var(--admin-primary) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body .admin-layout-root .admin-drawer-toolbar .MuiTypography-root {
+  color: var(--admin-text) !important;
+}
+
+html body .admin-layout-root .admin-drawer-toolbar .MuiTypography-root:last-child {
+  color: var(--admin-text-muted) !important;
+}
+
+html body .admin-layout-root .admin-nav-list {
+  padding: 12px 10px !important;
+}
+
+html body .admin-layout-root .admin-nav-list .MuiListItemButton-root {
+  min-height: 40px !important;
+  color: #40576A !important;
+  border-radius: 8px !important;
+}
+
+html body .admin-layout-root .admin-nav-list .MuiListItemButton-root:hover {
+  background: #F2F8FC !important;
+  color: var(--admin-text) !important;
+}
+
+html body .admin-layout-root .admin-nav-list .MuiListItemButton-root.Mui-selected {
+  background: var(--admin-primary-soft) !important;
+  color: var(--admin-text) !important;
+  border-left: 3px solid var(--admin-primary) !important;
+  font-weight: 600 !important;
+}
+
+html body .admin-layout-root .admin-nav-list .MuiListItemIcon-root,
+html body .admin-layout-root .admin-nav-list .MuiSvgIcon-root,
+html body .admin-layout-root .admin-nav-list .MuiListItemText-primary {
+  color: inherit !important;
+}
+
+html body .admin-layout-root .admin-top-toolbar,
+html body .admin-layout-root .admin-top-toolbar.MuiToolbar-root {
+  background: var(--admin-surface) !important;
+  border-bottom: 1px solid var(--admin-border) !important;
+  box-shadow: none !important;
+}
+
+html body .admin-layout-root .admin-top-toolbar .MuiLink-root {
+  color: var(--admin-text-muted) !important;
+}
+
+html body .admin-layout-root .admin-top-toolbar .MuiTypography-root {
+  color: var(--admin-text) !important;
+}
+
+html body .admin-layout-root .admin-main-area {
+  background: var(--admin-bg) !important;
+  color: var(--admin-text) !important;
+  padding: 32px !important;
+}
+
+html body .admin-layout-root .admin-main-area > .MuiBox-root > .MuiStack-root:first-child {
+  margin-bottom: 24px !important;
+  padding-bottom: 20px !important;
+  border-bottom: 1px solid var(--admin-border) !important;
+}
+
+html body .admin-layout-root .admin-main-area h5.MuiTypography-root,
+html body .admin-layout-root .admin-main-area .MuiTypography-h5 {
+  font-size: 22px !important;
+  line-height: 1.35 !important;
+  color: var(--admin-text) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiCard-root,
+html body .admin-layout-root .admin-main-area .MuiPaper-root,
+html body .admin-layout-root .admin-main-area .MuiAccordion-root,
+html body .admin-layout-root .admin-main-area .MuiTableContainer-root {
+  background: var(--admin-surface) !important;
+  background-image: none !important;
+  border: 1px solid var(--admin-border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(23, 43, 58, 0.05) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiCardContent-root {
+  padding: 24px !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiToolbar-root {
+  min-height: 72px !important;
+  padding: 16px 20px !important;
+  gap: 12px !important;
+  background: var(--admin-surface) !important;
+  border-bottom: 1px solid var(--admin-border) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiTextField-root {
+  background: var(--admin-surface) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiInputBase-root {
+  background: var(--admin-surface) !important;
+  border-radius: 8px !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiOutlinedInput-notchedOutline {
+  border-color: var(--admin-border-strong) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline,
+html body .admin-layout-root .admin-main-area .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--admin-primary) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiTable-root {
+  background: var(--admin-surface) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiTableCell-head {
+  background: var(--admin-surface-soft) !important;
+  background-image: none !important;
+  color: #34495A !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid var(--admin-border) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiTableCell-body {
+  background: var(--admin-surface) !important;
+  color: var(--admin-text) !important;
+  border-bottom: 1px solid #EDF2F6 !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiTableRow-hover:hover .MuiTableCell-body,
+html body .admin-layout-root .admin-main-area .MuiTableRow-root.Mui-selected .MuiTableCell-body {
+  background: #F6FBFE !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-root {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-contained,
+html body .admin-layout-root .admin-main-area .MuiButton-containedPrimary,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-contained,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-containedPrimary {
+  background: var(--admin-primary) !important;
+  background-image: none !important;
+  border: 1px solid var(--admin-primary) !important;
+  color: #FFFFFF !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-contained:hover,
+html body .admin-layout-root .admin-main-area .MuiButton-containedPrimary:hover,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-contained:hover,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-containedPrimary:hover {
+  background: var(--admin-primary-dark) !important;
+  border-color: var(--admin-primary-dark) !important;
+  color: #FFFFFF !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-outlined,
+html body .admin-layout-root .admin-main-area .MuiButton-text,
+html body .admin-layout-root .admin-main-area .MuiToggleButton-root {
+  background: var(--admin-surface) !important;
+  background-image: none !important;
+  border-color: var(--admin-border-strong) !important;
+  color: #40576A !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-outlined:hover,
+html body .admin-layout-root .admin-main-area .MuiButton-text:hover,
+html body .admin-layout-root .admin-main-area .MuiToggleButton-root:hover,
+html body .admin-layout-root .admin-main-area .MuiToggleButton-root.Mui-selected {
+  background: var(--admin-primary-soft) !important;
+  border-color: #B8DFF7 !important;
+  color: #256B9F !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiIconButton-root {
+  color: #607282 !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiIconButton-root:hover {
+  background: var(--admin-primary-soft) !important;
+  color: #256B9F !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiChip-root {
+  background: #F6FAFD !important;
+  border: 1px solid var(--admin-border) !important;
+  color: #40576A !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiChip-colorSuccess {
+  background: #EDF8F2 !important;
+  border-color: #B7E4C7 !important;
+  color: #2E7D59 !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiChip-colorWarning {
+  background: #FFF7E8 !important;
+  border-color: #F5D69B !important;
+  color: #A86700 !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiChip-colorError {
+  background: #FFF0EF !important;
+  border-color: #F1B8B4 !important;
+  color: #C2413B !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiAlert-standardInfo {
+  background: #F0F9FF !important;
+  border-color: #B8DFF7 !important;
+  color: #256B9F !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiAlert-standardWarning {
+  background: #FFF7E8 !important;
+  border-color: #F5D69B !important;
+  color: #805200 !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiAlert-standardError {
+  background: #FFF0EF !important;
+  border-color: #F1B8B4 !important;
+  color: #8F2F2A !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiSwitch-switchBase.Mui-checked {
+  color: var(--admin-primary) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background-color: var(--admin-primary) !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-containedError,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-containedError {
+  background: #C2413B !important;
+  border-color: #C2413B !important;
+  color: #FFFFFF !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-containedError:hover,
+html body .MuiDialog-root .MuiDialogActions-root .MuiButton-containedError:hover {
+  background: #9F332F !important;
+  border-color: #9F332F !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-outlinedWarning,
+html body .admin-layout-root .admin-main-area .MuiButton-textWarning {
+  background: #FFFFFF !important;
+  border-color: #F5D69B !important;
+  color: #A86700 !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiButton-outlinedWarning:hover,
+html body .admin-layout-root .admin-main-area .MuiButton-textWarning:hover {
+  background: #FFF7E8 !important;
+  border-color: #D68A00 !important;
+  color: #805200 !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiIconButton-colorError {
+  color: #C2413B !important;
+}
+
+html body .admin-layout-root .admin-main-area .MuiIconButton-colorError:hover {
+  background: #FFF0EF !important;
+  color: #9F332F !important;
 }

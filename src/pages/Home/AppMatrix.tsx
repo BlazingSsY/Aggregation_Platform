@@ -57,7 +57,7 @@ function AppCard({ app }: { app: AppItem }) {
         }}
       >
         <Box className="app-card-icon" aria-hidden>
-          <Icon sx={{ fontSize: 36, color: '#1E7FC7' }} />
+          <Icon sx={{ fontSize: 36, color: '#0072FF' }} />
         </Box>
         <Typography className="app-card-title">{app.name}</Typography>
         <Typography className="app-card-desc">{app.description}</Typography>
@@ -121,7 +121,7 @@ export default function AppMatrix() {
               fontSize: { xs: 26, md: 34 },
               fontWeight: 700,
               background:
-                'linear-gradient(135deg, #0C3458 0%, #1E7FC7 55%, #30C7EC 100%)',
+                'linear-gradient(to right, #00d2ff 0%, #3a7bd5 51%, #00d2ff 100%)',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               WebkitTextFillColor: 'transparent',

@@ -626,9 +626,9 @@ export default function UsersPage() {
                           height: 28,
                           fontSize: 12,
                           fontWeight: 700,
-                          background:
-                            'linear-gradient(135deg, #104A78 0%, #1E7FC7 55%, #30C7EC 100%)',
-                          color: '#fff',
+                          background: '#ffffff',
+                          color: '#5e7288',
+                          border: '1px solid #e5ebf2',
                         }}
                       >
                         {r.displayName.slice(0, 1).toUpperCase()}
@@ -850,7 +850,8 @@ export default function UsersPage() {
           <Box
             sx={{
               p: 1.5,
-              bgcolor: '#E5F6FE',
+              bgcolor: '#ffffff',
+              border: '1px solid #e5ebf2',
               borderRadius: 1,
               fontFamily: 'monospace',
               fontSize: 14,

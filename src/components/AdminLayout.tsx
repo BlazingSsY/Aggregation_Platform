@@ -95,7 +95,7 @@ const NAV: NavItem[] = [
   },
 ];
 
-const DRAWER_W = 232;
+const DRAWER_W = 248;
 
 const ROUTE_LABEL: Record<string, string> = {
   admin: '后台管理',
@@ -137,28 +137,34 @@ export default function AdminLayout() {
   const crumbs = buildCrumbs(location.pathname);
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+    <Box
+      className="admin-layout-root"
+      sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}
+    >
       <Drawer
         variant="permanent"
+        className="admin-layout-drawer"
         sx={{
           width: DRAWER_W,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: DRAWER_W,
             boxSizing: 'border-box',
-            background: 'linear-gradient(180deg, #2AF598 0%, #009EFD 100%)',
-            color: '#ffffff',
-            border: 0,
+            background: '#ffffff',
+            color: '#172B3A',
+            borderRight: '1px solid #E2EAF1',
+            boxShadow: 'none',
           },
         }}
       >
         <Toolbar
+          className="admin-drawer-toolbar"
           sx={{
             px: 2,
             minHeight: '64px !important',
             display: 'flex',
             gap: 1.5,
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            borderBottom: '1px solid #E2EAF1',
           }}
         >
           <Box
@@ -169,8 +175,8 @@ export default function AdminLayout() {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(255,255,255,0.95)',
-              boxShadow: '0 4px 12px rgba(0,82,148,0.25)',
+              background: '#4BB8FA',
+              boxShadow: 'none',
             }}
           >
             <Box
@@ -181,11 +187,7 @@ export default function AdminLayout() {
                 letterSpacing: '-1px',
                 fontFamily:
                   '"PingFang SC", "Microsoft YaHei", "Source Han Sans CN", sans-serif',
-                background: 'linear-gradient(180deg, #2AF598 0%, #009EFD 100%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: 'transparent',
+                color: '#ffffff',
               }}
             >
               机载
@@ -196,25 +198,30 @@ export default function AdminLayout() {
               sx={{
                 fontSize: 14,
                 fontWeight: 700,
-                color: '#ffffff',
+                color: '#172B3A',
                 letterSpacing: 0.3,
-                textShadow: '0 1px 2px rgba(0,82,148,0.30)',
+                textShadow: 'none',
               }}
               noWrap
             >
               AI 应用聚合平台
             </Typography>
-            <Typography sx={{ fontSize: 11, color: 'rgba(255,255,255,0.82)' }} noWrap>
+            <Typography sx={{ fontSize: 11, color: '#607282' }} noWrap>
               管理后台
             </Typography>
           </Box>
         </Toolbar>
 
-        <List dense sx={{ px: 1, py: 1 }}>
+        <List className="admin-nav-list" dense sx={{ px: 1, py: 1 }}>
           <ListItemButton
             component={RouterLink}
             to="/"
-            sx={{ borderRadius: 1, mb: 0.5, color: '#ffffff' }}
+            sx={{
+              borderRadius: 1,
+              mb: 0.75,
+              color: '#40576A',
+              '&:hover': { bgcolor: '#F2F8FC', color: '#172B3A' },
+            }}
           >
             <ListItemIcon sx={{ minWidth: 32, color: 'inherit' }}>
               <HomeIcon fontSize="small" />
@@ -229,7 +236,11 @@ export default function AdminLayout() {
               <Box key={g.key}>
                 <ListItemButton
                   onClick={() => setExpanded((s) => ({ ...s, [g.key]: !open }))}
-                  sx={{ borderRadius: 1, color: '#ffffff' }}
+                  sx={{
+                    borderRadius: 1,
+                    color: '#40576A',
+                    '&:hover': { bgcolor: '#F2F8FC', color: '#172B3A' },
+                  }}
                 >
                   <ListItemIcon sx={{ minWidth: 32, color: 'inherit' }}>
                     <Icon fontSize="small" />
@@ -253,11 +264,14 @@ export default function AdminLayout() {
                           sx={{
                             borderRadius: 1,
                             mb: 0.5,
-                            color: selected ? '#fff' : '#D6EFFD',
+                            color: selected ? '#172B3A' : '#607282',
                             '&.Mui-selected': {
-                              bgcolor: 'rgba(255,255,255,0.22)',
-                              '&:hover': { bgcolor: 'rgba(255,255,255,0.30)' },
+                              bgcolor: '#EAF7FE',
+                              borderLeft: '3px solid #4BB8FA',
+                              pl: 1.625,
+                              '&:hover': { bgcolor: '#EAF7FE' },
                             },
+                            '&:hover': { bgcolor: '#F2F8FC', color: '#172B3A' },
                           }}
                         >
                           <ListItemIcon sx={{ minWidth: 28, color: 'inherit' }}>
@@ -280,10 +294,11 @@ export default function AdminLayout() {
 
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <Toolbar
+          className="admin-top-toolbar"
           sx={{
-            bgcolor: '#fff',
-            borderBottom: '1px solid #DCE9F3',
-            px: 3,
+            bgcolor: '#ffffff',
+            borderBottom: '1px solid #E2EAF1',
+            px: 4,
             justifyContent: 'space-between',
             minHeight: '64px !important',
           }}
@@ -314,7 +329,7 @@ export default function AdminLayout() {
           <Stack direction="row" spacing={1.5} alignItems="center">
             {user && (
               <Stack direction="row" spacing={1} alignItems="center">
-                <Avatar sx={{ width: 30, height: 30, bgcolor: 'primary.main', fontSize: 13 }}>
+                <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', fontSize: 13 }}>
                   {user.displayName.slice(0, 1)}
                 </Avatar>
                 <Box>
@@ -342,7 +357,7 @@ export default function AdminLayout() {
           </Stack>
         </Toolbar>
 
-        <Box component="main" sx={{ flex: 1, p: 3, minWidth: 0 }}>
+        <Box component="main" className="admin-main-area" sx={{ flex: 1, p: 4, minWidth: 0 }}>
           <Outlet />
         </Box>
       </Box>

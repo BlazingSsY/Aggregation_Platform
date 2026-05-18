@@ -51,7 +51,7 @@ export default function ValueSection() {
               fontSize: { xs: 26, md: 34 },
               fontWeight: 700,
               background:
-                'linear-gradient(135deg, #0C3458 0%, #1E7FC7 55%, #30C7EC 100%)',
+                'linear-gradient(to right, #00c6ff 0%, #0072ff 51%, #00c6ff 100%)',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -69,7 +69,7 @@ export default function ValueSection() {
               <Grid key={v.key} size={{ xs: 12, sm: 6, md: 6, lg: 3 }}>
                 <Box component="a" href="#" className="value-card" aria-label={v.title}>
                   <Box className="value-icon">
-                    <Icon sx={{ fontSize: 32, color: '#1E7FC7' }} />
+                    <Icon sx={{ fontSize: 32, color: '#0072FF' }} />
                   </Box>
                   <Typography component="h4" className="value-title">
                     {v.title}

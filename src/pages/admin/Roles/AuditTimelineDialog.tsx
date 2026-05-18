@@ -57,7 +57,7 @@ export default function AuditTimelineDialog({ open, log, onClose }: Props) {
                 bottom: 0,
                 left: 8,
                 width: 2,
-                bgcolor: '#E6EFFF',
+                bgcolor: '#e5ebf2',
               }}
             />
             {log.map((e, i) => {

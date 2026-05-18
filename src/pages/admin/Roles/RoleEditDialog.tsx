@@ -275,7 +275,7 @@ export default function RoleEditDialog({
 
           <Paper
             variant="outlined"
-            sx={{ p: 1, maxHeight: 360, overflow: 'auto', borderColor: '#E6EFFF' }}
+            sx={{ p: 1, maxHeight: 360, overflow: 'auto', borderColor: '#e5ebf2' }}
           >
             {PERMISSION_TREE.map((n) => (
               <PermNodeView
@@ -305,7 +305,7 @@ export default function RoleEditDialog({
           )}
 
           {permsChanged && (
-            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#F0F5FF', borderRadius: 1 }}>
+            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#f7f9fc', borderRadius: 1 }}>
               <Typography sx={{ fontSize: 12, fontWeight: 600, mb: 0.5 }}>变更摘要</Typography>
               <Stack direction="row" spacing={2} sx={{ fontSize: 12 }}>
                 <Typography sx={{ color: 'success.main' }}>新增 {added.length} 项</Typography>
