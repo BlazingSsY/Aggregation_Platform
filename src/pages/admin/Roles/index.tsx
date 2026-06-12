@@ -114,15 +114,6 @@ export default function RolesPage() {
     setRoles((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
   };
 
-  const copyRole = (row: RoleRow) => {
-    const id = `r-copy-${Date.now()}`;
-    setRoles((prev) => [
-      ...prev,
-      { ...row, id, name: `${row.name} 副本`, code: `${row.code}_copy`, builtin: false, userCount: 0 },
-    ]);
-    setToast(`已复制角色：${row.name}`);
-  };
-
   const deleteRole = (row: RoleRow) => {
     if (row.builtin) {
       setToast('系统内置角色不可删除');
@@ -141,11 +132,8 @@ export default function RolesPage() {
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
             角色管理
           </Typography>
-          <Typography sx={{ color: 'text.secondary', fontSize: 13, mt: 0.5 }}>
-            集中管理企业内角色、权限分配和权限变更审计
-          </Typography>
         </Box>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{ ml: 'auto' }}>
           <Button variant="outlined" startIcon={<HistoryIcon />} onClick={() => setAuditOpen(true)}>
             权限审计
           </Button>
@@ -175,7 +163,6 @@ export default function RolesPage() {
           setActiveId(row.id);
           setEditingRole(row);
         }}
-        onCopy={copyRole}
         onDelete={deleteRole}
         onToggleStatus={toggleStatus}
       />

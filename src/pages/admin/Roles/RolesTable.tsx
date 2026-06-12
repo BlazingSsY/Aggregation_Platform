@@ -18,7 +18,6 @@ import {
   Typography,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -37,7 +36,6 @@ interface Props {
   onEnterpriseFilterChange: (v: string) => void;
   onSelect: (id: string) => void;
   onEdit: (row: RoleRow) => void;
-  onCopy: (row: RoleRow) => void;
   onDelete: (row: RoleRow) => void;
   onToggleStatus: (id: string, status: 'enabled' | 'disabled') => void;
 }
@@ -55,7 +53,6 @@ export default function RolesTable({
   onEnterpriseFilterChange,
   onSelect,
   onEdit,
-  onCopy,
   onDelete,
   onToggleStatus,
 }: Props) {
@@ -137,7 +134,7 @@ export default function RolesTable({
                     )}
                   </Stack>
                 </TableCell>
-                <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>{r.code}</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>{r.code}</TableCell>
                 <TableCell>{r.enterprise}</TableCell>
                 <TableCell align="right">{r.userCount}</TableCell>
                 <TableCell>
@@ -161,11 +158,6 @@ export default function RolesTable({
                   <Tooltip title="编辑">
                     <IconButton size="small" onClick={() => onEdit(r)}>
                       <EditOutlinedIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="复制">
-                    <IconButton size="small" onClick={() => onCopy(r)}>
-                      <ContentCopyIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={r.builtin ? '内置角色不可删除' : '删除'}>

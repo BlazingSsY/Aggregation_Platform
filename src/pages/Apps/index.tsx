@@ -166,23 +166,11 @@ export default function AppsPage() {
       <TopNav />
       <Box component="main" className="home-main">
         <Box sx={{ maxWidth: 1200, mx: 'auto', px: 3, py: 5 }}>
-          <Typography
-            component="h2"
-            className="section-title"
-            sx={{
-              fontSize: { xs: 26, md: 34 },
-              fontWeight: 700,
-              background:
-                'linear-gradient(135deg, #0C3458 0%, #1E7FC7 55%, #30C7EC 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              color: 'transparent',
-            }}
-          >
+          <div className="section-eyebrow">App Center</div>
+          <Typography component="h2" className="section-title">
             应用中心
           </Typography>
-          <Typography className="section-sub">
+          <Typography className="section-sub" sx={{ mb: 3 }}>
             发现并访问所有已为您开放的 AI 应用
           </Typography>
 

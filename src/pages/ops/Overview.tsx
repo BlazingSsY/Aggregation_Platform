@@ -24,10 +24,10 @@ import { MOCK_APP_USAGE, MOCK_USER_ACTIVITY } from '@/data/mock';
 type Range = '1d' | '7d' | '30d';
 
 const SUMMARY = [
-  { key: 'apps', label: '应用总数', icon: AppsIcon, color: '#4BB8FA' },
-  { key: 'users', label: '注册用户数', icon: PeopleAltIcon, color: '#4BB8FA' },
-  { key: 'calls', label: '总调用次数', icon: QueryStatsIcon, color: '#4BB8FA' },
-  { key: 'active', label: '活跃用户数', icon: HowToRegIcon, color: '#4BB8FA' },
+  { key: 'apps', label: '应用总数', icon: AppsIcon, color: '#1677ff' },
+  { key: 'users', label: '注册用户数', icon: PeopleAltIcon, color: '#1677ff' },
+  { key: 'calls', label: '总调用次数', icon: QueryStatsIcon, color: '#1677ff' },
+  { key: 'active', label: '活跃用户数', icon: HowToRegIcon, color: '#1677ff' },
 ];
 
 export default function OpsOverviewPage() {
@@ -40,15 +40,13 @@ export default function OpsOverviewPage() {
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
             监控总览
           </Typography>
-          <Typography sx={{ color: 'text.secondary', fontSize: 13, mt: 0.5 }}>
-            观察应用调用情况与用户活跃度，定位高频应用与活跃用户群体
-          </Typography>
         </Box>
         <ToggleButtonGroup
           value={range}
           exclusive
           color="primary"
           size="small"
+          sx={{ ml: 'auto' }}
           onChange={(_, v) => v && setRange(v)}
         >
           <ToggleButton value="1d">今日</ToggleButton>
@@ -130,7 +128,7 @@ export default function OpsOverviewPage() {
                         <TableCell sx={{ fontWeight: 600 }}>{r.appName}</TableCell>
                         <TableCell align="right">{r.callCount.toLocaleString()}</TableCell>
                         <TableCell align="right">{r.uniqueUsers}</TableCell>
-                        <TableCell sx={{ fontSize: 12, color: 'text.secondary' }}>
+                        <TableCell sx={{ fontSize: 13, color: 'text.secondary' }}>
                           {r.lastUsedAt}
                         </TableCell>
                       </TableRow>
@@ -174,13 +172,13 @@ export default function OpsOverviewPage() {
                           <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
                             {r.displayName}
                           </Typography>
-                          <Typography sx={{ fontSize: 11, color: 'text.secondary' }}>
+                          <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>
                             {r.enterprise}
                           </Typography>
                         </TableCell>
                         <TableCell align="right">{r.loginCount}</TableCell>
                         <TableCell align="right">{r.appUsedCount}</TableCell>
-                        <TableCell sx={{ fontSize: 12, color: 'text.secondary' }}>
+                        <TableCell sx={{ fontSize: 13, color: 'text.secondary' }}>
                           {r.lastActiveAt}
                         </TableCell>
                       </TableRow>

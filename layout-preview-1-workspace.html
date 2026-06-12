@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>布局1 · 工作台式 — AI应用聚合平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ════════ TOKENS ════════ */
+:root {
+  --bg:      #F3F5F9;
+  --card:    #FFFFFF;
+  --rail:    #0D1220;
+  --line:    #E5E9F0;
+  --ink:     #111827;
+  --muted:   #5B6678;
+  --faint:   #9AA4B5;
+  --blue:    #2563EB;
+  --blue-bg: #EFF4FF;
+  --violet:  #7C3AED;
+  --teal:    #0D9488;
+  --amber:   #D97706;
+  --rose:    #E11D48;
+  --sh-1: 0 1px 2px rgba(17,24,39,0.05), 0 1px 3px rgba(17,24,39,0.04);
+  --sh-2: 0 8px 24px rgba(17,24,39,0.08), 0 2px 6px rgba(17,24,39,0.05);
+  --font: "Plus Jakarta Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 14px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(37,99,235,0.15); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: #CBD3DF; border-radius: 4px; }
+
+/* ════════ SHELL: rail + main ════════ */
+.shell { display: flex; min-height: 100vh; }
+
+/* ── left icon rail ── */
+.rail {
+  width: 68px; flex-shrink: 0; background: var(--rail);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 14px 0; position: sticky; top: 0; height: 100vh; z-index: 50;
+}
+.rail-logo {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: linear-gradient(135deg, #2563EB, #7C3AED);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(124,58,237,0.40);
+  margin-bottom: 22px;
+}
+.rail-logo svg { width: 19px; height: 19px; color: #fff; }
+
+.rail-nav { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.rail-btn {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: #5E6A80; cursor: pointer; position: relative;
+  transition: all 0.16s;
+}
+.rail-btn svg { width: 20px; height: 20px; }
+.rail-btn:hover { background: rgba(255,255,255,0.07); color: #C8D2E0; }
+.rail-btn.on { background: var(--blue); color: #fff; box-shadow: 0 4px 14px rgba(37,99,235,0.45); }
+.rail-btn.on::before {
+  content: ""; position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 22px; border-radius: 3px; background: #fff; opacity: 0.9;
+}
+.rail-sep { width: 28px; height: 1px; background: rgba(255,255,255,0.10); margin: 8px 0; }
+.rail-ava {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #2563EB, #7C3AED);
+  color: #fff; font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border: 2px solid rgba(255,255,255,0.18);
+}
+
+/* ── main column ── */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+/* top bar */
+.topbar {
+  height: 58px; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 20px; padding: 0 28px;
+  position: sticky; top: 0; z-index: 40;
+}
+.topbar-title { font-size: 15px; font-weight: 800; letter-spacing: -0.2px; }
+.topbar-title small { display: block; font-size: 10.5px; font-weight: 500; color: var(--faint); font-family: var(--mono); letter-spacing: 1px; line-height: 1.3; }
+
+.cmdbar {
+  flex: 1; max-width: 520px; margin: 0 auto;
+  height: 38px; border-radius: 10px;
+  background: var(--bg); border: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px; padding: 0 14px;
+  color: var(--faint); font-size: 13.5px; cursor: text;
+  transition: all 0.18s;
+}
+.cmdbar:hover { border-color: #C4CEDC; background: #fff; box-shadow: var(--sh-1); }
+.cmdbar svg { width: 16px; height: 16px; }
+.cmdbar .kbd {
+  margin-left: auto; font-family: var(--mono); font-size: 10.5px;
+  border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px;
+  background: #fff; color: var(--faint);
+}
+.topbar-acts { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line);
+  background: #fff; display: flex; align-items: center; justify-content: center;
+  color: var(--muted); cursor: pointer; position: relative; transition: all 0.15s;
+}
+.icon-btn:hover { border-color: #C4CEDC; color: var(--ink); }
+.icon-btn svg { width: 17px; height: 17px; }
+.icon-btn .dot { position: absolute; top: 7px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--rose); border: 1.5px solid #fff; }
+
+/* content area */
+.content {
+  flex: 1; width: 100%; max-width: 1320px; margin: 0 auto;
+  padding: 28px 28px 60px;
+  display: grid; grid-template-columns: 1fr 300px; gap: 24px;
+  align-items: start;
+}
+
+/* ════════ GREETING ════════ */
+.greet { margin-bottom: 6px; }
+.greet h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.6px; }
+.greet p { color: var(--muted); font-size: 13.5px; margin-top: 3px; }
+.greet p b { color: var(--blue); font-weight: 700; }
+
+/* ════════ PINNED APPS ════════ */
+.sec-label {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 26px 0 14px;
+}
+.sec-label h2 { font-size: 15px; font-weight: 800; letter-spacing: -0.2px; display: flex; align-items: center; gap: 8px; }
+.sec-label h2 svg { width: 16px; height: 16px; color: var(--blue); }
+.sec-label a { font-size: 12.5px; color: var(--blue); font-weight: 600; }
+.sec-label a:hover { text-decoration: underline; }
+
+.pin-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.pin {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 16px; display: flex; align-items: center; gap: 12px;
+  cursor: pointer; transition: all 0.18s; box-shadow: var(--sh-1);
+}
+.pin:hover { transform: translateY(-2px); box-shadow: var(--sh-2); border-color: #C9D4E4; }
+.pin-ic {
+  width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.pin-ic svg { width: 20px; height: 20px; }
+.pin-t { min-width: 0; flex: 1; }
+.pin-t h3 { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
+.pin-t span { font-size: 11px; color: var(--faint); font-family: var(--mono); }
+.pin > svg { width: 15px; height: 15px; color: var(--faint); flex-shrink: 0; transition: all 0.15s; }
+.pin:hover > svg { color: var(--blue); transform: translate(2px,-2px); }
+
+.c-blue   { background: var(--blue-bg); color: var(--blue); }
+.c-violet { background: #F3EFFE; color: var(--violet); }
+.c-teal   { background: #E6F7F4; color: var(--teal); }
+.c-amber  { background: #FDF3E3; color: var(--amber); }
+
+/* ════════ ALL APPS ════════ */
+.tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.tab {
+  padding: 7px 16px; border-radius: 9px; font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer; border: 1px solid transparent;
+  transition: all 0.14s;
+}
+.tab:hover { color: var(--ink); background: #fff; border-color: var(--line); }
+.tab.on { background: var(--ink); color: #fff; }
+
+.app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.app {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 18px; display: flex; gap: 14px; cursor: pointer;
+  transition: all 0.18s; box-shadow: var(--sh-1);
+}
+.app:hover { transform: translateY(-2px); box-shadow: var(--sh-2); border-color: #C9D4E4; }
+.app-ic {
+  width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.app-ic svg { width: 22px; height: 22px; }
+.app-body { min-width: 0; flex: 1; }
+.app-body h3 { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.app-body p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin: 4px 0 10px; }
+.app-foot { display: flex; align-items: center; justify-content: space-between; }
+.cat {
+  font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 100px;
+}
+.cat-blue   { color: var(--blue); background: var(--blue-bg); }
+.cat-violet { color: var(--violet); background: #F3EFFE; }
+.cat-teal   { color: var(--teal); background: #E6F7F4; }
+.cat-amber  { color: var(--amber); background: #FDF3E3; }
+.open-link { font-size: 12px; font-weight: 700; color: var(--blue); display: inline-flex; align-items: center; gap: 4px; opacity: 0; transform: translateX(-4px); transition: all 0.16s; }
+.open-link svg { width: 13px; height: 13px; }
+.app:hover .open-link { opacity: 1; transform: none; }
+
+/* ════════ RIGHT ASIDE ════════ */
+.aside { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 86px; }
+.panel {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 18px; box-shadow: var(--sh-1);
+}
+.panel-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.panel-h h3 { font-size: 13.5px; font-weight: 800; display: flex; align-items: center; gap: 7px; }
+.panel-h h3 svg { width: 15px; height: 15px; color: var(--blue); }
+.panel-h a { font-size: 11.5px; color: var(--faint); }
+
+.notice { display: flex; flex-direction: column; gap: 12px; }
+.notice-item { display: flex; gap: 10px; cursor: pointer; }
+.notice-item:hover .nt { color: var(--blue); }
+.notice-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+.nt { font-size: 12.5px; font-weight: 600; line-height: 1.45; transition: color 0.14s; }
+.nd { font-size: 10.5px; color: var(--faint); font-family: var(--mono); margin-top: 2px; }
+
+.rank { display: flex; flex-direction: column; gap: 12px; }
+.rank-item { display: flex; align-items: center; gap: 10px; }
+.rank-n { font-family: var(--mono); font-size: 11px; color: var(--faint); width: 14px; }
+.rank-name { font-size: 12.5px; font-weight: 600; width: 64px; flex-shrink: 0; }
+.rank-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--bg); overflow: hidden; }
+.rank-bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2563EB, #7C3AED); }
+.rank-v { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 38px; text-align: right; }
+
+.sysrow { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px dashed var(--line); }
+.sysrow:last-child { border-bottom: none; padding-bottom: 0; }
+.sysrow span { font-size: 12.5px; color: var(--muted); }
+.sysrow b { font-family: var(--mono); font-size: 13px; font-weight: 700; }
+.ok { color: #059669; display: inline-flex; align-items: center; gap: 5px; }
+.ok::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #059669; box-shadow: 0 0 6px rgba(5,150,105,0.5); }
+
+/* ════════ ADMIN CONCEPT SECTION ════════ */
+.admin-note {
+  grid-column: 1 / -1; margin-top: 36px;
+}
+.admin-note .cap { text-align: center; margin-bottom: 18px; }
+.admin-note .cap h2 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; }
+.admin-note .cap p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.admin-note .cap p b { color: var(--blue); }
+
+.browser {
+  border-radius: 16px; overflow: hidden; border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(17,24,39,0.12); background: #fff;
+}
+.browser-bar {
+  height: 38px; display: flex; align-items: center; gap: 7px; padding: 0 14px;
+  background: #F0F2F7; border-bottom: 1px solid var(--line);
+}
+.bd { width: 10px; height: 10px; border-radius: 50%; }
+.burl {
+  flex: 1; max-width: 340px; margin: 0 auto; height: 23px; border-radius: 6px;
+  background: #fff; border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10.5px; color: var(--faint);
+}
+.mock { display: flex; height: 440px; }
+
+.mock .rail { height: auto; position: static; width: 60px; padding: 12px 0; }
+.mock .rail-logo { width: 32px; height: 32px; border-radius: 9px; margin-bottom: 16px; }
+.mock .rail-logo svg { width: 16px; height: 16px; }
+.mock .rail-btn { width: 38px; height: 38px; border-radius: 10px; }
+.mock .rail-btn svg { width: 17px; height: 17px; }
+.mock .rail-ava { width: 30px; height: 30px; font-size: 11px; }
+
+.subnav {
+  width: 190px; flex-shrink: 0; background: #FAFBFD;
+  border-right: 1px solid var(--line); padding: 16px 10px;
+}
+.subnav-t { font-size: 14px; font-weight: 800; padding: 0 10px 12px; }
+.sn-group { font-family: var(--mono); font-size: 9.5px; letter-spacing: 1.5px; color: var(--faint); padding: 12px 10px 6px; text-transform: uppercase; }
+.sn-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border-radius: 9px; font-size: 13px; color: var(--muted); cursor: pointer;
+  margin-bottom: 2px; transition: all 0.14s;
+}
+.sn-item svg { width: 15px; height: 15px; }
+.sn-item:hover { background: #EFF2F8; color: var(--ink); }
+.sn-item.on { background: var(--blue-bg); color: var(--blue); font-weight: 700; }
+
+.mock-main { flex: 1; padding: 20px 24px; background: var(--bg); overflow: hidden; }
+.mock-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.mock-h h4 { font-size: 16px; font-weight: 800; }
+.mock-h .crumb { font-size: 11px; color: var(--faint); font-family: var(--mono); margin-top: 2px; }
+.btn-blue {
+  background: var(--blue); color: #fff; border: none; border-radius: 9px;
+  padding: 8px 16px; font-family: var(--font); font-size: 12.5px; font-weight: 700;
+  cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.30); transition: all 0.15s;
+}
+.btn-blue:hover { background: #1D4ED8; transform: translateY(-1px); }
+
+.kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 14px; }
+.kpi { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; box-shadow: var(--sh-1); }
+.kpi-l { font-size: 11px; color: var(--faint); margin-bottom: 5px; }
+.kpi-v { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+.kpi-d { font-size: 10.5px; font-family: var(--mono); color: #059669; margin-top: 3px; }
+
+.tbl { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--sh-1); }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th { text-align: left; padding: 10px 16px; font-size: 11px; font-weight: 700; color: var(--faint); background: #FAFBFD; border-bottom: 1px solid var(--line); }
+td { padding: 10px 16px; border-bottom: 1px solid #F0F2F7; color: var(--muted); }
+td:first-child { font-family: var(--mono); font-size: 12px; color: var(--ink); }
+td:nth-child(2) { color: var(--ink); font-weight: 600; }
+tr:hover td { background: #F8FAFD; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+.tag-on   { color: #059669; background: #E7F6F0; }
+.tag-off  { color: #E11D48; background: #FDEBEF; }
+.tag-role { color: var(--violet); background: #F3EFFE; }
+
+/* ════════ SWITCHER ════════ */
+.scheme-switch {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 200;
+  display: flex; align-items: center; gap: 4px;
+  padding: 6px 8px; border-radius: 100px;
+  background: rgba(13,18,32,0.94); backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgba(13,18,32,0.4);
+  font-size: 12.5px;
+}
+.scheme-switch .lab { padding: 0 8px 0 10px; color: #5E6A80; font-family: var(--mono); font-size: 11px; }
+.scheme-switch a { padding: 6px 14px; border-radius: 100px; color: #9AA4B5; transition: all 0.15s; }
+.scheme-switch a:hover { color: #fff; }
+.scheme-switch a.cur { background: var(--blue); color: #fff; font-weight: 700; }
+
+/* entrance */
+.fade { opacity: 0; transform: translateY(14px); animation: fadeUp 0.55s ease forwards; }
+.d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; } .d3 { animation-delay: 0.2s; } .d4 { animation-delay: 0.28s; }
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+@media (max-width: 1100px) { .content { grid-template-columns: 1fr; } .aside { position: static; } }
+@media (max-width: 760px)  { .pin-row, .app-grid, .kpis { grid-template-columns: 1fr 1fr; } .cmdbar { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ═══ LEFT ICON RAIL ═══ -->
+  <aside class="rail">
+    <div class="rail-logo"><i data-lucide="sparkles"></i></div>
+    <nav class="rail-nav">
+      <div class="rail-btn on" title="工作台"><i data-lucide="home"></i></div>
+      <div class="rail-btn" title="应用中心"><i data-lucide="layout-grid"></i></div>
+      <div class="rail-btn" title="收藏"><i data-lucide="star"></i></div>
+      <div class="rail-btn" title="数据洞察"><i data-lucide="bar-chart-3"></i></div>
+      <div class="rail-sep"></div>
+      <div class="rail-btn" title="管理后台"><i data-lucide="settings"></i></div>
+    </nav>
+    <div class="rail-ava">张</div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="main">
+
+    <!-- top bar -->
+    <header class="topbar">
+      <div class="topbar-title">工作台<small>WORKSPACE</small></div>
+      <div class="cmdbar">
+        <i data-lucide="search"></i>
+        搜索应用、知识、文档…
+        <span class="kbd">Ctrl K</span>
+      </div>
+      <div class="topbar-acts">
+        <div class="icon-btn"><i data-lucide="bell"></i><span class="dot"></span></div>
+        <div class="icon-btn"><i data-lucide="circle-help"></i></div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ── left main column ── -->
+      <div>
+        <div class="greet fade">
+          <h1>下午好，张伟 👋</h1>
+          <p>2026年6月12日 星期五 · 今日已有 <b>8 个应用</b> 为你待命，本周你使用了 <b>23 次</b> AI 能力</p>
+        </div>
+
+        <!-- pinned -->
+        <div class="sec-label fade d1">
+          <h2><i data-lucide="pin"></i>常用应用</h2>
+          <a href="#">管理置顶 →</a>
+        </div>
+        <div class="pin-row fade d1">
+          <div class="pin">
+            <div class="pin-ic c-blue"><i data-lucide="book-open"></i></div>
+            <div class="pin-t"><h3>知识助手</h3><span>2小时前</span></div>
+            <i data-lucide="arrow-up-right"></i>
+          </div>
+          <div class="pin">
+            <div class="pin-ic c-violet"><i data-lucide="mic"></i></div>
+            <div class="pin-t"><h3>会议纪要</h3><span>昨天</span></div>
+            <i data-lucide="arrow-up-right"></i>
+          </div>
+          <div class="pin">
+            <div class="pin-ic c-teal"><i data-lucide="code"></i></div>
+            <div class="pin-t"><h3>代码生成</h3><span>3天前</span></div>
+            <i data-lucide="arrow-up-right"></i>
+          </div>
+          <div class="pin">
+            <div class="pin-ic c-amber"><i data-lucide="file-text"></i></div>
+            <div class="pin-t"><h3>文档生成</h3><span>上周</span></div>
+            <i data-lucide="arrow-up-right"></i>
+          </div>
+        </div>
+
+        <!-- all apps -->
+        <div class="sec-label fade d2">
+          <h2><i data-lucide="layout-grid"></i>全部应用</h2>
+          <a href="#">应用中心 →</a>
+        </div>
+        <div class="tabs fade d2">
+          <span class="tab on">全部</span>
+          <span class="tab">知识管理</span>
+          <span class="tab">研发提效</span>
+          <span class="tab">硬件设计</span>
+          <span class="tab">文档处理</span>
+        </div>
+        <div class="app-grid fade d3">
+          <div class="app">
+            <div class="app-ic c-blue"><i data-lucide="book-open"></i></div>
+            <div class="app-body">
+              <h3>知识助手</h3>
+              <p>智能知识库问答，覆盖航空标准、工艺规范与历史项目经验</p>
+              <div class="app-foot"><span class="cat cat-blue">知识管理</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-ic c-blue"><i data-lucide="mic"></i></div>
+            <div class="app-body">
+              <h3>会议纪要</h3>
+              <p>语音实时转写 + 智能摘要，自动提炼决议与行动项</p>
+              <div class="app-foot"><span class="cat cat-blue">知识管理</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-ic c-violet"><i data-lucide="code"></i></div>
+            <div class="app-body">
+              <h3>代码生成</h3>
+              <p>面向机载软件的代码生成，遵循 DO-178C 编码规范</p>
+              <div class="app-foot"><span class="cat cat-violet">研发提效</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-ic c-violet"><i data-lucide="shield-check"></i></div>
+            <div class="app-body">
+              <h3>代码审查</h3>
+              <p>静态分析 + AI 审查，自动识别缺陷、漏洞与规范偏离</p>
+              <div class="app-foot"><span class="cat cat-violet">研发提效</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-ic c-teal"><i data-lucide="cpu"></i></div>
+            <div class="app-body">
+              <h3>电路审查</h3>
+              <p>原理图智能审查，元器件选型与电气规则自动校验</p>
+              <div class="app-foot"><span class="cat cat-teal">硬件设计</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-ic c-teal"><i data-lucide="database"></i></div>
+            <div class="app-body">
+              <h3>元器件库</h3>
+              <p>航空级元器件数据库，参数检索与国产化替代推荐</p>
+              <div class="app-foot"><span class="cat cat-teal">硬件设计</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-ic c-amber"><i data-lucide="file-text"></i></div>
+            <div class="app-body">
+              <h3>文档生成</h3>
+              <p>设计文档、测试报告一键生成，模板化结构输出</p>
+              <div class="app-foot"><span class="cat cat-amber">文档处理</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+          <div class="app">
+            <div class="app-ic c-amber"><i data-lucide="file-search"></i></div>
+            <div class="app-body">
+              <h3>文档审查</h3>
+              <p>技术文档智能校对，术语一致性与适航合规检查</p>
+              <div class="app-foot"><span class="cat cat-amber">文档处理</span><span class="open-link">打开 <i data-lucide="arrow-right"></i></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── right aside ── -->
+      <aside class="aside fade d2">
+        <div class="panel">
+          <div class="panel-h"><h3><i data-lucide="megaphone"></i>平台公告</h3><a href="#">全部</a></div>
+          <div class="notice">
+            <div class="notice-item">
+              <span class="notice-dot" style="background:#2563EB"></span>
+              <div><div class="nt">知识助手 v2.4 上线：新增适航条款溯源引用</div><div class="nd">06-10</div></div>
+            </div>
+            <div class="notice-item">
+              <span class="notice-dot" style="background:#D97706"></span>
+              <div><div class="nt">6月15日 02:00–04:00 平台例行维护</div><div class="nd">06-09</div></div>
+            </div>
+            <div class="notice-item">
+              <span class="notice-dot" style="background:#0D9488"></span>
+              <div><div class="nt">电路审查接入新版元器件规则库</div><div class="nd">06-05</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-h"><h3><i data-lucide="trending-up"></i>本周使用排行</h3></div>
+          <div class="rank">
+            <div class="rank-item"><span class="rank-n">1</span><span class="rank-name">知识助手</span><span class="rank-bar"><i style="width:88%"></i></span><span class="rank-v">1.2k</span></div>
+            <div class="rank-item"><span class="rank-n">2</span><span class="rank-name">代码生成</span><span class="rank-bar"><i style="width:64%"></i></span><span class="rank-v">876</span></div>
+            <div class="rank-item"><span class="rank-n">3</span><span class="rank-name">会议纪要</span><span class="rank-bar"><i style="width:45%"></i></span><span class="rank-v">610</span></div>
+            <div class="rank-item"><span class="rank-n">4</span><span class="rank-name">文档生成</span><span class="rank-bar"><i style="width:32%"></i></span><span class="rank-v">433</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-h"><h3><i data-lucide="activity"></i>系统状态</h3></div>
+          <div class="sysrow"><span>服务状态</span><b class="ok">全部正常</b></div>
+          <div class="sysrow"><span>服务可用性</span><b>99.92%</b></div>
+          <div class="sysrow"><span>今日调用</span><b>23,847</b></div>
+          <div class="sysrow"><span>接入企业</span><b>3</b></div>
+        </div>
+      </aside>
+
+      <!-- ═══ ADMIN CONCEPT ═══ -->
+      <div class="admin-note">
+        <div class="cap">
+          <h2>管理后台 — 同一框架，无缝切换</h2>
+          <p>点击左侧栏 <b>⚙ 管理</b> 进入后台：图标栏保持不变，旁边滑出二级菜单。门户与后台不再是两套界面</p>
+        </div>
+        <div class="browser">
+          <div class="browser-bar">
+            <span class="bd" style="background:#FF5F57"></span>
+            <span class="bd" style="background:#FEBC2E"></span>
+            <span class="bd" style="background:#28C840"></span>
+            <div class="burl">platform.aviation-ai.cn/admin/roles</div>
+          </div>
+          <div class="mock">
+            <aside class="rail">
+              <div class="rail-logo"><i data-lucide="sparkles"></i></div>
+              <nav class="rail-nav">
+                <div class="rail-btn"><i data-lucide="home"></i></div>
+                <div class="rail-btn"><i data-lucide="layout-grid"></i></div>
+                <div class="rail-btn"><i data-lucide="star"></i></div>
+                <div class="rail-btn"><i data-lucide="bar-chart-3"></i></div>
+                <div class="rail-sep"></div>
+                <div class="rail-btn on"><i data-lucide="settings"></i></div>
+              </nav>
+              <div class="rail-ava">张</div>
+            </aside>
+            <div class="subnav">
+              <div class="subnav-t">管理后台</div>
+              <div class="sn-group">应用管理</div>
+              <div class="sn-item"><i data-lucide="layout-grid"></i>应用目录</div>
+              <div class="sn-group">权限管理</div>
+              <div class="sn-item on"><i data-lucide="shield-check"></i>角色管理</div>
+              <div class="sn-item"><i data-lucide="users"></i>用户管理</div>
+              <div class="sn-item"><i data-lucide="building-2"></i>组织管理</div>
+              <div class="sn-group">监控运维</div>
+              <div class="sn-item"><i data-lucide="activity"></i>监控总览</div>
+            </div>
+            <main class="mock-main">
+              <div class="mock-h">
+                <div>
+                  <h4>角色管理</h4>
+                  <div class="crumb">管理后台 / 权限管理 / 角色管理</div>
+                </div>
+                <button class="btn-blue">+ 新建角色</button>
+              </div>
+              <div class="kpis">
+                <div class="kpi"><div class="kpi-l">总用户数</div><div class="kpi-v">1,284</div><div class="kpi-d">▲ 12 本周</div></div>
+                <div class="kpi"><div class="kpi-l">启用应用</div><div class="kpi-v">8</div><div class="kpi-d">持平</div></div>
+                <div class="kpi"><div class="kpi-l">今日调用</div><div class="kpi-v">23,847</div><div class="kpi-d">▲ 8.4%</div></div>
+                <div class="kpi"><div class="kpi-l">服务可用性</div><div class="kpi-v">99.92%</div><div class="kpi-d">SLA 达标</div></div>
+              </div>
+              <div class="tbl">
+                <table>
+                  <thead><tr><th>账号</th><th>姓名</th><th>角色</th><th>组织</th><th>状态</th></tr></thead>
+                  <tbody>
+                    <tr><td>zhang.wei</td><td>张伟</td><td><span class="tag tag-role">企业管理员</span></td><td>航电研发部</td><td><span class="tag tag-on">启用</span></td></tr>
+                    <tr><td>li.na</td><td>李娜</td><td><span class="tag tag-role">普通用户</span></td><td>飞控软件部</td><td><span class="tag tag-on">启用</span></td></tr>
+                    <tr><td>wang.lei</td><td>王磊</td><td><span class="tag tag-role">部门管理员</span></td><td>综合航电部</td><td><span class="tag tag-off">停用</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SWITCHER -->
+<div class="scheme-switch">
+  <span class="lab">布局</span>
+  <a class="cur" href="./layout-preview-1-workspace.html">1 工作台</a>
+  <a href="./layout-preview-2-bento.html">2 Bento</a>
+  <a href="./layout-preview-3-command.html">3 指挥舱</a>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

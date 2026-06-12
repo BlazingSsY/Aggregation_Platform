@@ -533,13 +533,6 @@ export default function OrganizationsPage() {
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
             组织管理
           </Typography>
-          <Typography sx={{ color: 'text.secondary', fontSize: 13, mt: 0.5 }}>
-            统一维护企业、部门，超级管理员可通过「角色管理」将
-            <code style={{ margin: '0 4px' }}>org:enterprise:*</code>
-            和
-            <code style={{ margin: '0 4px' }}>org:department:*</code>
-            授权下放给普通管理员
-          </Typography>
         </Box>
         {isSuperAdmin && (
           <Chip
@@ -676,11 +669,11 @@ export default function OrganizationsPage() {
                 {filteredEnts.map((e) => (
                   <TableRow key={e.id} hover>
                     <TableCell sx={{ fontWeight: 600 }}>{e.name}</TableCell>
-                    <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>{e.code}</TableCell>
-                    <TableCell sx={{ fontSize: 12, color: 'text.secondary', maxWidth: 240 }}>
+                    <TableCell sx={{ fontSize: 13 }}>{e.code}</TableCell>
+                    <TableCell sx={{ fontSize: 13, color: 'text.secondary', maxWidth: 240 }}>
                       {e.description}
                     </TableCell>
-                    <TableCell sx={{ fontSize: 12 }}>{e.contact}</TableCell>
+                    <TableCell sx={{ fontSize: 13 }}>{e.contact}</TableCell>
                     <TableCell align="right">{deptCountByEnterprise.get(e.id) ?? 0}</TableCell>
                     <TableCell align="right">{userCountByEnterprise.get(e.id) ?? 0}</TableCell>
                     <TableCell>
@@ -691,7 +684,7 @@ export default function OrganizationsPage() {
                         variant="outlined"
                       />
                     </TableCell>
-                    <TableCell sx={{ fontSize: 12, color: 'text.secondary' }}>
+                    <TableCell sx={{ fontSize: 13, color: 'text.secondary' }}>
                       {e.createdAt}
                     </TableCell>
                     <TableCell align="right">
@@ -786,8 +779,8 @@ export default function OrganizationsPage() {
                         {d.parentId ? '└ ' : ''}
                         {d.name}
                       </TableCell>
-                      <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>{d.code}</TableCell>
-                      <TableCell sx={{ fontSize: 12, color: 'text.secondary' }}>
+                      <TableCell sx={{ fontSize: 13 }}>{d.code}</TableCell>
+                      <TableCell sx={{ fontSize: 13, color: 'text.secondary' }}>
                         {parent?.name ?? '—'}
                       </TableCell>
                       <TableCell>{d.head || '—'}</TableCell>

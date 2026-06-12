@@ -568,11 +568,13 @@ export default function AppsAdminPage() {
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
             应用管理
           </Typography>
-          <Typography sx={{ color: 'text.secondary', fontSize: 13, mt: 0.5 }}>
-            新增/删减 AI 应用，编辑描述与跳转网址，并控制可见用户范围
-          </Typography>
         </Box>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setCreating(true)}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          sx={{ ml: 'auto' }}
+          onClick={() => setCreating(true)}
+        >
           新增应用
         </Button>
       </Stack>
@@ -659,10 +661,10 @@ export default function AppsAdminPage() {
                     <TableCell>
                       <Chip size="small" label={a.category} color="info" variant="outlined" />
                     </TableCell>
-                    <TableCell sx={{ fontSize: 12, color: 'text.secondary', maxWidth: 360 }}>
+                    <TableCell sx={{ fontSize: 13, color: 'text.secondary', maxWidth: 360 }}>
                       <Typography
                         sx={{
-                          fontSize: 12,
+                          fontSize: 13,
                           display: '-webkit-box',
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: 'vertical',
@@ -672,13 +674,12 @@ export default function AppsAdminPage() {
                         {a.description}
                       </Typography>
                     </TableCell>
-                    <TableCell sx={{ fontFamily: 'monospace', fontSize: 11, maxWidth: 220 }}>
+                    <TableCell sx={{ fontSize: 13, maxWidth: 220 }}>
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <LaunchIcon sx={{ fontSize: 12, color: 'text.disabled' }} />
                         <Typography
                           sx={{
-                            fontFamily: 'monospace',
-                            fontSize: 11,
+                            fontSize: 13,
                             color: 'text.secondary',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',

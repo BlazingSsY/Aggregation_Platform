@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>方案A · 极光暗色科技风 — AI应用聚合平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ════════════════ TOKENS ════════════════ */
+:root {
+  --bg:        #070B14;
+  --bg-soft:   #0A101E;
+  --surface:   #0D1424;
+  --surface-2: #111A2E;
+  --border:    rgba(148,163,184,0.10);
+  --border-hi: rgba(148,163,184,0.20);
+  --text:      #E6EDF7;
+  --muted:     #93A0B4;
+  --faint:     #5A6779;
+  --cyan:      #22D3EE;
+  --blue:      #4D7FFF;
+  --violet:    #A78BFA;
+  --aurora:    linear-gradient(110deg, #22D3EE 0%, #4D7FFF 50%, #A78BFA 100%);
+  --aurora-soft: linear-gradient(135deg, rgba(34,211,238,0.30), rgba(77,127,255,0.12) 45%, rgba(167,139,250,0.30));
+  --glow-cyan: 0 0 24px rgba(34,211,238,0.25);
+  --font-d: "Sora", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-b: "Manrope", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-m: "JetBrains Mono", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: rgba(77,127,255,0.35); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
+
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+/* ════════════════ NAV ════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 64px;
+  background: rgba(7,11,20,0.75);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-mark {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: var(--aurora);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px rgba(77,127,255,0.40);
+  position: relative;
+}
+.brand-mark::after {
+  content: ""; position: absolute; inset: -1px; border-radius: 10px;
+  background: var(--aurora); filter: blur(10px); opacity: 0.4; z-index: -1;
+}
+.brand-mark svg { width: 17px; height: 17px; color: #fff; }
+
+.brand-name { font-family: var(--font-d); font-weight: 700; font-size: 15px; letter-spacing: -0.2px; }
+.brand-tag  { font-family: var(--font-m); font-size: 10px; color: var(--cyan); letter-spacing: 1.5px; display: block; line-height: 1.2; margin-top: 1px; }
+
+.nav-menu { display: flex; gap: 36px; }
+.nav-menu a {
+  font-size: 14px; font-weight: 500; color: var(--muted);
+  transition: color 0.18s; position: relative; padding: 4px 0;
+}
+.nav-menu a:hover, .nav-menu a.active { color: var(--text); }
+.nav-menu a.active::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -21px; height: 2px;
+  background: var(--aurora); border-radius: 2px;
+}
+
+.nav-actions { display: flex; align-items: center; gap: 14px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 9px 22px; border-radius: 10px;
+  font-family: var(--font-b); font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s ease;
+}
+.btn-aurora {
+  background: var(--aurora); color: #051120;
+  box-shadow: 0 4px 24px rgba(77,127,255,0.35);
+}
+.btn-aurora:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(77,127,255,0.50); }
+.btn-ghost {
+  background: rgba(148,163,184,0.06); color: var(--text);
+  border: 1px solid var(--border-hi);
+}
+.btn-ghost:hover { background: rgba(148,163,184,0.12); border-color: rgba(148,163,184,0.35); transform: translateY(-2px); }
+.btn-sm { padding: 7px 18px; font-size: 13px; }
+
+/* ════════════════ HERO ════════════════ */
+.hero {
+  position: relative; overflow: hidden;
+  padding: 170px 0 110px;
+  text-align: center;
+}
+
+/* aurora blobs */
+.hero::before {
+  content: ""; position: absolute; top: -240px; left: 50%; transform: translateX(-72%);
+  width: 760px; height: 600px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(34,211,238,0.16), transparent);
+  filter: blur(60px); animation: drift1 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.hero::after {
+  content: ""; position: absolute; top: -180px; left: 50%; transform: translateX(-10%);
+  width: 680px; height: 560px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(167,139,250,0.15), transparent);
+  filter: blur(60px); animation: drift2 22s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes drift1 { to { transform: translateX(-58%) translateY(50px); } }
+@keyframes drift2 { to { transform: translateX(-26%) translateY(-40px); } }
+
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(148,163,184,0.10) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 35%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 35%, black 20%, transparent 100%);
+}
+
+.hero-inner { position: relative; z-index: 1; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+  background: rgba(34,211,238,0.06);
+  border: 1px solid rgba(34,211,238,0.25);
+  font-family: var(--font-m); font-size: 12px; letter-spacing: 1px;
+  color: var(--cyan);
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan); animation: pulse 2.2s ease infinite;
+}
+@keyframes pulse { 50% { opacity: 0.4; transform: scale(0.8); } }
+
+.hero h1 {
+  font-family: var(--font-d);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800; line-height: 1.18; letter-spacing: -1.5px;
+  margin-bottom: 26px;
+}
+.g-text {
+  background: var(--aurora);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+
+.hero-sub {
+  max-width: 720px; margin: 0 auto 48px;
+  font-size: 16.5px; color: var(--muted); line-height: 2;
+}
+
+.hero-cta { display: flex; justify-content: center; gap: 16px; margin-bottom: 72px; }
+.hero-cta .btn { padding: 13px 32px; font-size: 15px; border-radius: 12px; }
+
+/* stats */
+.stats {
+  display: flex; max-width: 760px; margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(13,20,36,0.60);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+.stat { flex: 1; padding: 26px 8px; border-right: 1px solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat-n {
+  font-family: var(--font-m); font-size: 30px; font-weight: 700;
+  background: var(--aurora);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  line-height: 1.2;
+}
+.stat-l { font-size: 12.5px; color: var(--faint); margin-top: 4px; letter-spacing: 0.5px; }
+
+/* ════════════════ SECTION SHARED ════════════════ */
+.section { padding: 100px 0; position: relative; }
+
+.eyebrow {
+  font-family: var(--font-m); font-size: 12px; letter-spacing: 3px;
+  color: var(--cyan); text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px; justify-content: center;
+  margin-bottom: 16px;
+}
+.eyebrow::before, .eyebrow::after {
+  content: ""; width: 28px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34,211,238,0.5));
+}
+.eyebrow::after { background: linear-gradient(90deg, rgba(34,211,238,0.5), transparent); }
+
+.sec-title {
+  font-family: var(--font-d); font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 700; letter-spacing: -0.8px; text-align: center;
+  margin-bottom: 14px;
+}
+.sec-sub { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 56px; }
+
+/* ════════════════ APP MATRIX ════════════════ */
+.filter { display: flex; justify-content: center; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; }
+.chip {
+  padding: 8px 20px; border-radius: 100px; font-size: 13.5px; font-weight: 500;
+  color: var(--muted); background: transparent;
+  border: 1px solid var(--border-hi); cursor: pointer; transition: all 0.18s;
+}
+.chip:hover { color: var(--text); border-color: rgba(148,163,184,0.40); }
+.chip.on {
+  color: #051120; background: var(--aurora); border-color: transparent;
+  font-weight: 700; box-shadow: 0 2px 16px rgba(77,127,255,0.35);
+}
+
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+.card {
+  position: relative; border-radius: 16px; padding: 28px 24px;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+              linear-gradient(135deg, rgba(148,163,184,0.18), rgba(148,163,184,0.05) 40%, rgba(148,163,184,0.14)) border-box;
+  border: 1px solid transparent;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  cursor: pointer; overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
+              var(--aurora-soft) border-box;
+  box-shadow: 0 20px 48px rgba(4,8,18,0.60), 0 0 0 1px rgba(77,127,255,0.10), var(--glow-cyan);
+}
+/* sweep shine */
+.card::after {
+  content: ""; position: absolute; top: 0; left: -80%;
+  width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(148,163,184,0.06), transparent);
+  transform: skewX(-18deg); transition: left 0.5s ease; pointer-events: none;
+}
+.card:hover::after { left: 120%; }
+
+.tile {
+  width: 50px; height: 50px; border-radius: 13px; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(77,127,255,0.10);
+  border: 1px solid rgba(77,127,255,0.22);
+}
+.tile svg { width: 23px; height: 23px; color: var(--blue); }
+.tile.c-cyan   { background: rgba(34,211,238,0.09);  border-color: rgba(34,211,238,0.22); }
+.tile.c-cyan svg   { color: var(--cyan); }
+.tile.c-violet { background: rgba(167,139,250,0.09); border-color: rgba(167,139,250,0.22); }
+.tile.c-violet svg { color: var(--violet); }
+.tile.c-green  { background: rgba(52,211,153,0.09);  border-color: rgba(52,211,153,0.22); }
+.tile.c-green svg  { color: #34D399; }
+
+.card h3 { font-family: var(--font-d); font-size: 16.5px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+.card p  { font-size: 13px; color: var(--muted); line-height: 1.75; min-height: 66px; margin-bottom: 18px; }
+
+.card-go {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-m); font-size: 12px; letter-spacing: 1px;
+  color: var(--faint); transition: color 0.18s;
+}
+.card-go svg { width: 14px; height: 14px; transition: transform 0.18s; }
+.card:hover .card-go { color: var(--cyan); }
+.card:hover .card-go svg { transform: translateX(4px); }
+
+/* ════════════════ VALUES ════════════════ */
+.values { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.v-card {
+  border-radius: 16px; padding: 32px 26px; text-align: center;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+              linear-gradient(180deg, rgba(148,163,184,0.16), rgba(148,163,184,0.04)) border-box;
+  border: 1px solid transparent;
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+.v-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(4,8,18,0.5); }
+
+.v-icon {
+  width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 35% 30%, rgba(77,127,255,0.25), rgba(77,127,255,0.05));
+  border: 1px solid rgba(77,127,255,0.25);
+  box-shadow: 0 0 24px rgba(77,127,255,0.12) inset;
+}
+.v-icon svg { width: 24px; height: 24px; color: var(--blue); }
+.v-card:nth-child(2) .v-icon { background: radial-gradient(circle at 35% 30%, rgba(34,211,238,0.22), rgba(34,211,238,0.04)); border-color: rgba(34,211,238,0.25); }
+.v-card:nth-child(2) .v-icon svg { color: var(--cyan); }
+.v-card:nth-child(3) .v-icon { background: radial-gradient(circle at 35% 30%, rgba(52,211,153,0.22), rgba(52,211,153,0.04)); border-color: rgba(52,211,153,0.25); }
+.v-card:nth-child(3) .v-icon svg { color: #34D399; }
+.v-card:nth-child(4) .v-icon { background: radial-gradient(circle at 35% 30%, rgba(167,139,250,0.22), rgba(167,139,250,0.04)); border-color: rgba(167,139,250,0.25); }
+.v-card:nth-child(4) .v-icon svg { color: var(--violet); }
+
+.v-card h4 { font-family: var(--font-d); font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.v-card p  { font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+/* ════════════════ ADMIN PREVIEW ════════════════ */
+.browser {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 40px 90px rgba(2,6,14,0.7), 0 0 0 1px rgba(77,127,255,0.06);
+  background: var(--bg-soft);
+}
+.browser-bar {
+  height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 16px;
+  background: #0B1120; border-bottom: 1px solid var(--border);
+}
+.b-dot { width: 11px; height: 11px; border-radius: 50%; }
+.browser-url {
+  flex: 1; max-width: 380px; margin: 0 auto; height: 26px;
+  background: rgba(148,163,184,0.07); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-m); font-size: 11px; color: var(--faint); letter-spacing: 0.5px;
+}
+
+.admin { display: flex; height: 520px; }
+
+.a-side {
+  width: 224px; flex-shrink: 0; background: #060A12;
+  border-right: 1px solid var(--border);
+  padding: 16px 10px; display: flex; flex-direction: column;
+}
+.a-brand { display: flex; align-items: center; gap: 9px; padding: 4px 8px 16px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+.a-brand .brand-mark { width: 28px; height: 28px; border-radius: 8px; }
+.a-brand .brand-mark svg { width: 14px; height: 14px; }
+.a-brand-t { font-size: 12.5px; font-weight: 700; font-family: var(--font-d); }
+.a-brand-s { font-family: var(--font-m); font-size: 9px; color: var(--faint); letter-spacing: 1px; }
+
+.a-group {
+  font-family: var(--font-m); font-size: 9.5px; letter-spacing: 2px;
+  color: var(--faint); text-transform: uppercase;
+  padding: 12px 10px 7px;
+}
+.a-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 9px; margin-bottom: 3px;
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.16s;
+}
+.a-item:hover { background: rgba(148,163,184,0.05); color: var(--text); }
+.a-item.on {
+  background: linear-gradient(rgba(13,22,40,1), rgba(13,22,40,1)) padding-box,
+              var(--aurora-soft) border-box;
+  border: 1px solid transparent;
+  color: var(--text); font-weight: 600;
+  box-shadow: 0 0 18px rgba(77,127,255,0.12);
+}
+.a-tile {
+  width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.a-tile svg { width: 14px; height: 14px; }
+.t-blue   { background: rgba(77,127,255,0.13); }  .t-blue svg   { color: var(--blue); }
+.t-cyan   { background: rgba(34,211,238,0.11); }  .t-cyan svg   { color: var(--cyan); }
+.t-violet { background: rgba(167,139,250,0.12);}  .t-violet svg { color: var(--violet); }
+.t-green  { background: rgba(52,211,153,0.11); }  .t-green svg  { color: #34D399; }
+.t-amber  { background: rgba(251,191,36,0.11); }  .t-amber svg  { color: #FBBF24; }
+
+.a-item .led { margin-left: auto; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); opacity: 0; }
+.a-item.on .led { opacity: 1; }
+
+.a-user {
+  margin-top: auto; display: flex; align-items: center; gap: 9px;
+  padding: 10px; border-top: 1px solid var(--border);
+}
+.a-ava {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: var(--aurora);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: #051120;
+}
+.a-user-n { font-size: 12px; font-weight: 600; line-height: 1.3; }
+.a-user-r { font-family: var(--font-m); font-size: 9.5px; color: var(--faint); }
+
+.a-main { flex: 1; padding: 22px 26px; overflow: hidden; background: var(--bg-soft); }
+.a-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.a-title { font-family: var(--font-d); font-size: 17px; font-weight: 700; }
+.a-crumb { font-family: var(--font-m); font-size: 10.5px; color: var(--faint); letter-spacing: 1px; margin-top: 2px; }
+
+.kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 18px; }
+.kpi {
+  padding: 16px; border-radius: 13px;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+              linear-gradient(135deg, rgba(148,163,184,0.16), rgba(148,163,184,0.04)) border-box;
+  border: 1px solid transparent;
+}
+.kpi-l { font-size: 11.5px; color: var(--faint); margin-bottom: 6px; }
+.kpi-v { font-family: var(--font-m); font-size: 22px; font-weight: 700; line-height: 1.1; }
+.kpi-d { font-family: var(--font-m); font-size: 10.5px; margin-top: 5px; color: #34D399; }
+.kpi-d.down { color: #F87171; }
+
+.a-table {
+  border-radius: 13px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th {
+  text-align: left; padding: 11px 16px;
+  font-family: var(--font-m); font-size: 10px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--faint);
+  background: rgba(148,163,184,0.04);
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 11px 16px; border-bottom: 1px solid rgba(148,163,184,0.06); color: var(--muted); }
+td:first-child { font-family: var(--font-m); font-size: 12px; color: var(--text); }
+tr:hover td { background: rgba(77,127,255,0.04); }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 10px; border-radius: 100px; font-size: 11px; font-weight: 600;
+}
+.tag .d { width: 5px; height: 5px; border-radius: 50%; }
+.tag-on  { color: #34D399; background: rgba(52,211,153,0.09); border: 1px solid rgba(52,211,153,0.25); }
+.tag-on .d { background: #34D399; box-shadow: 0 0 6px #34D399; }
+.tag-off { color: #F87171; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.22); }
+.tag-off .d { background: #F87171; }
+.tag-role { color: var(--violet); background: rgba(167,139,250,0.09); border: 1px solid rgba(167,139,250,0.25); }
+
+/* ════════════════ LOGIN PREVIEW ════════════════ */
+.login-box {
+  display: flex; max-width: 880px; margin: 0 auto;
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 40px 90px rgba(2,6,14,0.7);
+}
+.lg-left {
+  width: 46%; padding: 48px 40px; position: relative; overflow: hidden;
+  background: radial-gradient(ellipse 120% 80% at 0% 0%, rgba(34,211,238,0.13), transparent 55%),
+              radial-gradient(ellipse 110% 90% at 100% 100%, rgba(167,139,250,0.13), transparent 55%),
+              #0A1120;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.lg-left::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(148,163,184,0.10) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at 30% 40%, black, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 30% 40%, black, transparent 75%);
+}
+.lg-left h3 { font-family: var(--font-d); font-size: 24px; font-weight: 800; line-height: 1.4; letter-spacing: -0.5px; position: relative; }
+.lg-left p { color: var(--muted); font-size: 13px; margin-top: 12px; position: relative; }
+.lg-feats { position: relative; display: flex; flex-direction: column; gap: 10px; }
+.lg-feat { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.lg-feat svg { width: 15px; height: 15px; color: var(--cyan); }
+
+.lg-right { flex: 1; padding: 48px 44px; background: var(--surface); }
+.lg-right h4 { font-family: var(--font-d); font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.lg-right .hint { font-size: 13px; color: var(--faint); margin-bottom: 28px; }
+
+.f-label { font-family: var(--font-m); font-size: 10.5px; letter-spacing: 1.5px; color: var(--faint); text-transform: uppercase; margin-bottom: 8px; display: block; }
+.f-input {
+  width: 100%; padding: 12px 14px; margin-bottom: 18px;
+  background: rgba(148,163,184,0.05);
+  border: 1px solid var(--border-hi); border-radius: 10px;
+  color: var(--text); font-family: var(--font-b); font-size: 14px;
+  outline: none; transition: all 0.18s;
+}
+.f-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(77,127,255,0.15); }
+.f-input::placeholder { color: var(--faint); }
+
+/* ════════════════ FOOTER ════════════════ */
+footer {
+  padding: 44px 0; border-top: 1px solid var(--border);
+  text-align: center;
+}
+footer .fm { font-family: var(--font-m); font-size: 11px; color: var(--faint); letter-spacing: 1px; }
+
+/* ════════════════ SWITCHER ════════════════ */
+.scheme-switch {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 200;
+  display: flex; align-items: center; gap: 4px;
+  padding: 6px 8px; border-radius: 100px;
+  background: rgba(13,20,36,0.92); backdrop-filter: blur(16px);
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 12px 40px rgba(2,6,14,0.7);
+  font-size: 12.5px;
+}
+.scheme-switch .lab { padding: 0 8px 0 10px; color: var(--faint); font-family: var(--font-m); font-size: 11px; }
+.scheme-switch a { padding: 6px 14px; border-radius: 100px; color: var(--muted); transition: all 0.15s; }
+.scheme-switch a:hover { color: var(--text); }
+.scheme-switch a.cur { background: var(--aurora); color: #051120; font-weight: 700; }
+
+/* entrance */
+.fade { opacity: 0; transform: translateY(20px); animation: fadeUp 0.7s ease forwards; }
+.d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.16s; } .d3 { animation-delay: 0.26s; } .d4 { animation-delay: 0.36s; }
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2,1fr); } .kpis { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 680px)  { .grid-4 { grid-template-columns: 1fr; } .nav-menu { display: none; } .login-box { flex-direction: column; } .lg-left { width: 100%; } .stats { flex-wrap: wrap; } .stat { min-width: 50%; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark"><i data-lucide="sparkles"></i></div>
+      <div>
+        <span class="brand-name">AI应用聚合平台</span>
+        <span class="brand-tag">AVIATION · AI MATRIX</span>
+      </div>
+    </div>
+    <nav class="nav-menu">
+      <a class="active" href="#top">首页</a>
+      <a href="#apps">应用中心</a>
+      <a href="#values">平台优势</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn btn-ghost btn-sm">控制台</button>
+      <button class="btn btn-aurora btn-sm">登录</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-grid"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-badge fade"><span class="dot"></span>AVIATION AI · 全场景赋能平台</div>
+    <h1 class="fade d1">航空企业级<br /><span class="g-text">AI 全场景应用矩阵</span></h1>
+    <p class="hero-sub fade d2">面向航空产业研发、制造、运维全链路场景，覆盖知识管理、研发提效、硬件设计、文档处理，一站式赋能航空智造与数字化升级</p>
+    <div class="hero-cta fade d3">
+      <button class="btn btn-aurora">浏览全部应用 →</button>
+      <button class="btn btn-ghost">了解平台价值</button>
+    </div>
+    <div class="stats fade d4">
+      <div class="stat"><div class="stat-n">08</div><div class="stat-l">AI 应用</div></div>
+      <div class="stat"><div class="stat-n">4+</div><div class="stat-l">覆盖场景</div></div>
+      <div class="stat"><div class="stat-n">3+</div><div class="stat-l">接入企业</div></div>
+      <div class="stat"><div class="stat-n">99.9%</div><div class="stat-l">服务可用性</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- APP MATRIX -->
+<section class="section" id="apps">
+  <div class="wrap">
+    <div class="eyebrow">App Matrix</div>
+    <h2 class="sec-title">航空企业核心 AI 应用矩阵</h2>
+    <p class="sec-sub">按航空业务场景筛选，一键体验对应应用</p>
+    <div class="filter">
+      <button class="chip on">全部</button>
+      <button class="chip">知识管理</button>
+      <button class="chip">研发提效</button>
+      <button class="chip">硬件设计</button>
+      <button class="chip">文档处理</button>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tile c-blue"><i data-lucide="book-open"></i></div>
+        <h3>知识助手</h3>
+        <p>智能知识库问答，覆盖航空标准、工艺规范与历史项目经验，秒级精准检索</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="card">
+        <div class="tile c-violet"><i data-lucide="mic"></i></div>
+        <h3>会议纪要</h3>
+        <p>语音实时转写 + 智能摘要，自动提炼会议决议与行动项，一键分发归档</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="card">
+        <div class="tile c-cyan"><i data-lucide="code"></i></div>
+        <h3>代码生成</h3>
+        <p>面向机载软件的智能代码生成，遵循 DO-178C 编码规范，提升研发效率</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="card">
+        <div class="tile c-cyan"><i data-lucide="shield-check"></i></div>
+        <h3>代码审查</h3>
+        <p>静态分析 + AI 深度审查，自动识别潜在缺陷、安全漏洞与规范偏离</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="card">
+        <div class="tile c-green"><i data-lucide="cpu"></i></div>
+        <h3>电路审查</h3>
+        <p>原理图智能审查，元器件选型核验与电气规则自动校验，降低设计风险</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="card">
+        <div class="tile c-green"><i data-lucide="database"></i></div>
+        <h3>元器件库</h3>
+        <p>航空级元器件数据库，参数化检索、供应链状态与国产化替代推荐</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="card">
+        <div class="tile c-blue"><i data-lucide="file-text"></i></div>
+        <h3>文档生成</h3>
+        <p>设计文档、测试报告一键生成，模板化结构输出，与型号流程深度集成</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+      <div class="card">
+        <div class="tile c-violet"><i data-lucide="file-search"></i></div>
+        <h3>文档审查</h3>
+        <p>技术文档智能校对，术语一致性、引用规范与适航合规性自动检查</p>
+        <span class="card-go">LAUNCH <i data-lucide="arrow-right"></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section values" id="values">
+  <div class="wrap">
+    <div class="eyebrow">Platform Edge</div>
+    <h2 class="sec-title">平台优势</h2>
+    <p class="sec-sub">面向航空企业级生产力场景的一站式 AI 能力底座</p>
+    <div class="grid-4">
+      <div class="v-card">
+        <div class="v-icon"><i data-lucide="layout-grid"></i></div>
+        <h4>航空全链路覆盖</h4>
+        <p>面向研发、制造、运维、保障全链路场景，统一入口、连贯体验，深度贴合航空业务流程</p>
+      </div>
+      <div class="v-card">
+        <div class="v-icon"><i data-lucide="shield"></i></div>
+        <h4>航空级安全合规</h4>
+        <p>通过航空行业安全合规审核，权限分级管理，数据可审计、可追溯，满足等保与适航要求</p>
+      </div>
+      <div class="v-card">
+        <div class="v-icon"><i data-lucide="activity"></i></div>
+        <h4>高可用稳定保障</h4>
+        <p>多活部署 + 灰度发布，服务可用性 99.9%，关键航空业务系统 7×24 稳定运行</p>
+      </div>
+      <div class="v-card">
+        <div class="v-icon"><i data-lucide="refresh-cw"></i></div>
+        <h4>持续迭代升级</h4>
+        <p>模型与功能持续演进，紧跟航空数字化趋势，定期上线新能力，赋能业务长期增长</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN PREVIEW -->
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow">Admin Console</div>
+    <h2 class="sec-title">管理后台</h2>
+    <p class="sec-sub">权限分级管理 · 组织架构 · 实时监控运维</p>
+    <div class="browser">
+      <div class="browser-bar">
+        <span class="b-dot" style="background:#FF5F57"></span>
+        <span class="b-dot" style="background:#FEBC2E"></span>
+        <span class="b-dot" style="background:#28C840"></span>
+        <div class="browser-url">platform.aviation-ai.cn/admin</div>
+      </div>
+      <div class="admin">
+        <aside class="a-side">
+          <div class="a-brand">
+            <div class="brand-mark"><i data-lucide="sparkles"></i></div>
+            <div>
+              <div class="a-brand-t">AI应用聚合平台</div>
+              <div class="a-brand-s">ADMIN CONSOLE</div>
+            </div>
+          </div>
+          <div class="a-group">应用管理</div>
+          <div class="a-item"><span class="a-tile t-blue"><i data-lucide="layout-grid"></i></span>应用目录<span class="led"></span></div>
+          <div class="a-group">权限管理</div>
+          <div class="a-item on"><span class="a-tile t-violet"><i data-lucide="shield-check"></i></span>角色管理<span class="led"></span></div>
+          <div class="a-item"><span class="a-tile t-cyan"><i data-lucide="users"></i></span>用户管理<span class="led"></span></div>
+          <div class="a-item"><span class="a-tile t-green"><i data-lucide="building-2"></i></span>组织管理<span class="led"></span></div>
+          <div class="a-group">监控运维</div>
+          <div class="a-item"><span class="a-tile t-amber"><i data-lucide="activity"></i></span>监控总览<span class="led"></span></div>
+          <div class="a-user">
+            <div class="a-ava">超</div>
+            <div>
+              <div class="a-user-n">超级管理员</div>
+              <div class="a-user-r">SUPER_ADMIN</div>
+            </div>
+          </div>
+        </aside>
+        <main class="a-main">
+          <div class="a-head">
+            <div>
+              <div class="a-title">角色管理</div>
+              <div class="a-crumb">ADMIN / PERMISSION / ROLES</div>
+            </div>
+            <button class="btn btn-aurora btn-sm">+ 新建角色</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="kpi-l">总用户数</div><div class="kpi-v">1,284</div><div class="kpi-d">▲ 12 本周</div></div>
+            <div class="kpi"><div class="kpi-l">启用应用</div><div class="kpi-v">8</div><div class="kpi-d">— 持平</div></div>
+            <div class="kpi"><div class="kpi-l">今日调用</div><div class="kpi-v">23,847</div><div class="kpi-d">▲ 8.4%</div></div>
+            <div class="kpi"><div class="kpi-l">服务可用性</div><div class="kpi-v">99.92%</div><div class="kpi-d">SLA 达标</div></div>
+          </div>
+          <div class="a-table">
+            <table>
+              <thead><tr><th>账号</th><th>姓名</th><th>角色</th><th>组织</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr><td>zhang.wei</td><td>张伟</td><td><span class="tag tag-role">企业管理员</span></td><td>航电研发部</td><td><span class="tag tag-on"><span class="d"></span>启用</span></td></tr>
+                <tr><td>li.na</td><td>李娜</td><td><span class="tag tag-role">普通用户</span></td><td>飞控软件部</td><td><span class="tag tag-on"><span class="d"></span>启用</span></td></tr>
+                <tr><td>wang.lei</td><td>王磊</td><td><span class="tag tag-role">部门管理员</span></td><td>综合航电部</td><td><span class="tag tag-on"><span class="d"></span>启用</span></td></tr>
+                <tr><td>chen.jing</td><td>陈静</td><td><span class="tag tag-role">普通用户</span></td><td>测试验证部</td><td><span class="tag tag-off"><span class="d"></span>停用</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGIN PREVIEW -->
+<section class="section" style="padding-top:40px">
+  <div class="wrap">
+    <div class="eyebrow">Access</div>
+    <h2 class="sec-title">登录页</h2>
+    <p class="sec-sub">企业级身份认证 · 多因子安全登录</p>
+    <div class="login-box">
+      <div class="lg-left">
+        <div>
+          <h3>航空企业级<br /><span class="g-text">AI 应用聚合平台</span></h3>
+          <p>统一身份认证，一次登录，全场景通行</p>
+        </div>
+        <div class="lg-feats">
+          <div class="lg-feat"><i data-lucide="shield-check"></i>等保三级 · 适航安全合规</div>
+          <div class="lg-feat"><i data-lucide="key-round"></i>多因子认证 · 验证码动态校验</div>
+          <div class="lg-feat"><i data-lucide="activity"></i>7×24 高可用 · 99.9% SLA</div>
+        </div>
+      </div>
+      <div class="lg-right">
+        <h4>欢迎回来</h4>
+        <p class="hint">使用企业账号登录管理控制台</p>
+        <label class="f-label">Account · 账号</label>
+        <input class="f-input" placeholder="请输入企业账号" />
+        <label class="f-label">Password · 密码</label>
+        <input class="f-input" type="password" placeholder="请输入密码" />
+        <button class="btn btn-aurora" style="width:100%; padding:13px; border-radius:10px">登 录</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fm">AI APPLICATION AGGREGATION PLATFORM · AVIATION ENTERPRISE © 2026</div>
+</footer>
+
+<!-- SWITCHER -->
+<div class="scheme-switch">
+  <span class="lab">方案</span>
+  <a class="cur" href="./design-preview-A-aurora.html">A 极光暗色</a>
+  <a href="./design-preview-B-swiss.html">B 瑞士极简</a>
+  <a href="./design-preview-C-avionics.html">C 航电座舱</a>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

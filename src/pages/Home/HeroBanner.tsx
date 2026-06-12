@@ -1,128 +1,121 @@
 import { Box, Button, Typography } from '@mui/material';
+import ActivityIcon from '@mui/icons-material/MonitorHeart';
+import AppsIcon from '@mui/icons-material/Apps';
+import BusinessIcon from '@mui/icons-material/Business';
+import RadarIcon from '@mui/icons-material/Radar';
 
 export default function HeroBanner() {
   return (
     <Box component="section" className="hero-banner" id="top" aria-label="平台品牌宣传">
-      <Box className="hero-decor" aria-hidden>
-        <svg className="decor-cloud-1" viewBox="0 0 200 80" fill="none">
-          <path
-            d="M30 60 Q10 60 10 45 Q10 30 28 30 Q32 14 50 14 Q70 14 76 30 Q92 26 100 40 Q120 36 124 56 Q120 66 104 64 L40 64 Q30 66 30 60 Z"
-            fill="rgba(255,255,255,0.6)"
-          />
-        </svg>
-        <svg className="decor-cloud-2" viewBox="0 0 200 80" fill="none">
-          <path
-            d="M30 60 Q10 60 10 45 Q10 30 28 30 Q32 14 50 14 Q70 14 76 30 Q92 26 100 40 Q120 36 124 56 Q120 66 104 64 L40 64 Q30 66 30 60 Z"
-            fill="rgba(255,255,255,0.55)"
-          />
-        </svg>
-        <svg className="decor-cloud-3" viewBox="0 0 200 80" fill="none">
-          <path
-            d="M30 60 Q10 60 10 45 Q10 30 28 30 Q32 14 50 14 Q70 14 76 30 Q92 26 100 40 Q120 36 124 56 Q120 66 104 64 L40 64 Q30 66 30 60 Z"
-            fill="rgba(255,255,255,0.5)"
-          />
-        </svg>
-        <svg className="decor-cloud-4" viewBox="0 0 200 80" fill="none">
-          <path
-            d="M30 60 Q10 60 10 45 Q10 30 28 30 Q32 14 50 14 Q70 14 76 30 Q92 26 100 40 Q120 36 124 56 Q120 66 104 64 L40 64 Q30 66 30 60 Z"
-            fill="rgba(255,255,255,0.7)"
-          />
-        </svg>
-      </Box>
-      <Box className="hero-inner" sx={{ textAlign: 'center' }}>
-        <Typography
-          component="h1"
-          className="hero-title"
-          sx={{
-            textAlign: 'center',
-            width: '100%',
-            fontSize: { xs: '40px', sm: '52px', md: '72px' },
-            fontWeight: 700,
-            lineHeight: 1.4,
-            letterSpacing: '1.5px',
-            mb: '36px',
-            background:
-              'linear-gradient(135deg, #ffffff 0%, #ffffff 35%, #d9f2ff 68%, #7dc0ff 100%)',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            color: 'transparent',
-            textShadow: '0 2px 18px rgba(0,114,255,0.26)',
-          }}
-        >
-          航空企业级 AI 全场景应用矩阵
-        </Typography>
-        <Typography
-          className="hero-subtitle"
-          sx={{
-            textAlign: 'center',
-            mx: 'auto',
-            fontSize: { xs: '16px', md: '18px' },
-            fontWeight: 400,
-            lineHeight: 2.1,
-            color: 'rgba(255,255,255,0.88)',
-            maxWidth: 820,
-            mb: '64px',
-          }}
-        >
-          面向航空产业研发、制造、运维全链路场景，覆盖知识管理、研发提效、硬件设计、文档处理，一站式赋能航空智造与数字化升级
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 2,
-            flexWrap: 'wrap',
-            width: '100%',
-          }}
-        >
-          <Button
-            variant="contained"
-            color="inherit"
-            href="#app-matrix"
+      <Box className="hero-grid">
+        {/* ── 左侧：标题 + CTA ── */}
+        <Box className="hero-left">
+          <div className="hero-badge fade-up">
+            <span className="hero-badge-dot" />
+            航空产业 AI 全场景赋能平台
+          </div>
+
+          <Typography
+            component="h1"
+            className="hero-title fade-up fd-1"
             sx={{
-              background:
-                'linear-gradient(to right, #fafafa 0%, #f1f2f4 51%, #f8fafa 100%)',
-              backgroundSize: '200% auto',
-              color: '#ffffff',
-              px: 4,
-              py: 1.3,
-              fontWeight: 700,
-              boxShadow: '0 10px 24px rgba(0,114,255,0.34)',
-              '&:hover': {
-                background:
-                  'linear-gradient(to right, #00d2ff 0%, #3a7bd5 51%, #00d2ff 100%)',
-                backgroundPosition: 'right center',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 14px 30px rgba(58,123,213,0.42)',
-              },
+              fontSize: { xs: '36px', sm: '44px', md: '54px' },
+              fontWeight: 800,
+              lineHeight: 1.18,
+              letterSpacing: '-1.8px',
             }}
           >
-            浏览全部应用
-          </Button>
-          <Button
-            variant="outlined"
-            href="#value-section"
-            sx={{
-              color: '#fff',
-              borderColor: 'rgba(255,255,255,0.6)',
-              borderWidth: 1.5,
-              px: 4,
-              py: 1.3,
-              fontWeight: 600,
-              backdropFilter: 'blur(4px)',
-              '&:hover': {
-                borderColor: '#fff',
-                borderWidth: 1.5,
-                background:
-                  'linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(0,210,255,0.18) 100%)',
-                transform: 'translateY(-2px)',
-              },
-            }}
+            一个入口，
+            <br />
+            全部<span className="u">航空 AI 能力</span>
+          </Typography>
+
+          <Typography
+            className="hero-subtitle fade-up fd-2"
+            sx={{ fontSize: { xs: '14px', md: '15.5px' }, lineHeight: 1.8 }}
           >
-            了解平台价值
-          </Button>
+            覆盖研发、制造、运维全链路 8 大 AI
+            应用——知识管理、研发提效、硬件设计、文档处理，一站式赋能航空智造。
+          </Typography>
+
+          <Box className="hero-cta fade-up fd-3">
+            <Button
+              variant="contained"
+              href="#app-matrix"
+              sx={{
+                px: 3.5, py: 1.4,
+                borderRadius: '100px',
+                fontSize: 15, fontWeight: 700,
+                bgcolor: '#2D5BFF',
+                boxShadow: '0 6px 20px rgba(45,91,255,0.35)',
+                '&:hover': {
+                  bgcolor: '#1D47E8',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 10px 28px rgba(45,91,255,0.45)',
+                },
+                transition: 'all 0.18s ease',
+              }}
+            >
+              浏览全部应用 →
+            </Button>
+            <Button
+              variant="outlined"
+              href="#value-section"
+              sx={{
+                px: 3.5, py: 1.4,
+                borderRadius: '100px',
+                fontSize: 15, fontWeight: 700,
+                color: '#16161A',
+                borderColor: '#16161A',
+                borderWidth: '1.5px',
+                '&:hover': {
+                  bgcolor: '#16161A',
+                  color: '#fff',
+                  borderColor: '#16161A',
+                  borderWidth: '1.5px',
+                },
+                transition: 'all 0.18s ease',
+              }}
+            >
+              了解平台价值
+            </Button>
+          </Box>
+        </Box>
+
+        {/* ── 右侧：2×2 数据便当格 ── */}
+        <Box className="hero-bento fade-up fd-2">
+          <div className="hb hb-dark">
+            <span className="hb-l">Availability</span>
+            <div>
+              <div className="hb-v">99.9<small>%</small></div>
+              <div className="hb-d">服务可用性 · 多活部署</div>
+            </div>
+            <ActivityIcon className="bgicon" />
+          </div>
+          <div className="hb hb-blue">
+            <span className="hb-l">Applications</span>
+            <div>
+              <div className="hb-v">8</div>
+              <div className="hb-d">AI 应用 · 持续上新</div>
+            </div>
+            <AppsIcon className="bgicon" />
+          </div>
+          <div className="hb hb-amber">
+            <span className="hb-l">Enterprises</span>
+            <div>
+              <div className="hb-v">3<small>+</small></div>
+              <div className="hb-d">接入企业 · 协同共建</div>
+            </div>
+            <BusinessIcon className="bgicon" />
+          </div>
+          <div className="hb hb-plain">
+            <span className="hb-l">Status</span>
+            <div>
+              <span className="hb-live">系统运行中</span>
+              <div className="hb-d" style={{ marginTop: 4 }}>今日调用 23,847 次</div>
+            </div>
+            <RadarIcon className="bgicon" />
+          </div>
         </Box>
       </Box>
     </Box>

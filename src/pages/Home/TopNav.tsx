@@ -136,7 +136,15 @@ export default function TopNav() {
               variant="contained"
               size="small"
               onClick={() => navigate('/login')}
-              sx={{ px: 2 }}
+              sx={{
+                px: 2.5,
+                py: 0.9,
+                borderRadius: '100px',
+                bgcolor: '#16161A',
+                fontWeight: 700,
+                boxShadow: 'none',
+                '&:hover': { bgcolor: '#2D5BFF', boxShadow: 'none' },
+              }}
             >
               登录
             </Button>

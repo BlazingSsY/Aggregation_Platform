@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>方案C · 航电驾驶舱风 — AI应用聚合平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ════════════════ TOKENS ════════════════ */
+:root {
+  --bg:      #04090E;
+  --panel:   #081119;
+  --panel-2: #0B1722;
+  --line:    rgba(46,230,168,0.16);
+  --line-dim:rgba(46,230,168,0.08);
+  --grid:    rgba(46,230,168,0.045);
+  --green:   #2EE6A8;
+  --green-dim: rgba(46,230,168,0.55);
+  --cyan:    #53D8F0;
+  --amber:   #FFB454;
+  --red:     #FF6B6B;
+  --text:    #D7E6E0;
+  --muted:   #7E948C;
+  --faint:   #4A5C56;
+  --font-d:  "Chakra Petch", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-m:  "IBM Plex Mono", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-d);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* full-page coordinate grid */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(46,230,168,0.25); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #15302A; border-radius: 0; }
+
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.mono { font-family: var(--font-m); }
+
+/* ════════════════ NAV ════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  background: rgba(4,9,14,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border: 1px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  box-shadow: 0 0 14px rgba(46,230,168,0.20), inset 0 0 10px rgba(46,230,168,0.08);
+}
+.brand-mark::before, .brand-mark::after {
+  content: ""; position: absolute; width: 5px; height: 5px;
+}
+.brand-mark::before { top: -1px; left: -1px; border-top: 1px solid var(--green); border-left: 1px solid var(--green); }
+.brand-mark::after  { bottom: -1px; right: -1px; border-bottom: 1px solid var(--green); border-right: 1px solid var(--green); }
+.brand-mark svg { width: 16px; height: 16px; color: var(--green); }
+
+.brand-name { font-weight: 700; font-size: 14.5px; letter-spacing: 0.5px; }
+.brand-tag { font-family: var(--font-m); font-size: 9px; color: var(--green-dim); letter-spacing: 2px; display: block; line-height: 1.3; }
+
+.nav-menu { display: flex; gap: 8px; }
+.nav-menu a {
+  font-family: var(--font-m); font-size: 12.5px; letter-spacing: 1px;
+  color: var(--muted); padding: 6px 16px;
+  border: 1px solid transparent; transition: all 0.15s;
+}
+.nav-menu a:hover { color: var(--text); border-color: var(--line); }
+.nav-menu a.active {
+  color: var(--green); border-color: var(--line);
+  background: rgba(46,230,168,0.06);
+  box-shadow: inset 0 0 12px rgba(46,230,168,0.06);
+}
+
+.nav-status {
+  display: flex; align-items: center; gap: 16px;
+}
+.sys-led {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--font-m); font-size: 10.5px; letter-spacing: 1.5px; color: var(--green);
+}
+.sys-led .led {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: blink 2s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0.35; } }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 9px 24px; font-family: var(--font-d); font-size: 14px; font-weight: 600;
+  letter-spacing: 1px; cursor: pointer; transition: all 0.18s ease;
+  border-radius: 0;
+}
+.btn-hud {
+  background: var(--green); color: #04241A; border: 1px solid var(--green);
+  box-shadow: 0 0 20px rgba(46,230,168,0.30);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.btn-hud:hover { background: #56F0BE; box-shadow: 0 0 32px rgba(46,230,168,0.5); }
+.btn-line {
+  background: rgba(46,230,168,0.04); color: var(--green);
+  border: 1px solid var(--line);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.btn-line:hover { background: rgba(46,230,168,0.10); border-color: var(--green-dim); }
+.btn-sm { padding: 6px 16px; font-size: 12.5px; }
+
+/* ════════════════ HERO ════════════════ */
+.hero { position: relative; padding: 160px 0 100px; text-align: center; overflow: hidden; }
+
+/* radar sweep — right side */
+.radar {
+  position: absolute; top: 90px; right: -160px;
+  width: 480px; height: 480px; border-radius: 50%;
+  border: 1px solid var(--line-dim);
+  pointer-events: none; opacity: 0.8;
+}
+.radar::before {
+  content: ""; position: absolute; inset: 22%;
+  border-radius: 50%; border: 1px solid var(--line-dim);
+}
+.radar::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(46,230,168,0.18), transparent 70deg);
+  animation: sweep 7s linear infinite;
+}
+@keyframes sweep { to { transform: rotate(360deg); } }
+.radar i {
+  position: absolute; inset: 44%; border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+/* crosshair marks */
+.cross { position: absolute; font-family: var(--font-m); color: var(--faint); font-size: 14px; pointer-events: none; }
+
+.hero-inner { position: relative; z-index: 1; }
+
+/* HUD frame around content */
+.hud-frame {
+  position: relative; display: inline-block;
+  padding: 54px 70px 60px;
+}
+.hud-frame::before, .hud-frame::after,
+.hud-frame .c3, .hud-frame .c4 {
+  content: ""; position: absolute; width: 26px; height: 26px;
+  border-color: var(--green); border-style: solid;
+}
+.hud-frame::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.hud-frame::after  { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.hud-frame .c3 { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.hud-frame .c4 { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+.hero-status {
+  font-family: var(--font-m); font-size: 11px; letter-spacing: 3px;
+  color: var(--green); margin-bottom: 26px;
+  display: inline-flex; align-items: center; gap: 12px;
+}
+.hero-status::before, .hero-status::after { content: "////"; color: var(--faint); letter-spacing: 0; }
+
+.hero h1 {
+  font-size: clamp(38px, 5.6vw, 64px);
+  font-weight: 700; line-height: 1.25; letter-spacing: 1px;
+  margin-bottom: 22px;
+}
+.hero h1 .hl {
+  color: var(--green);
+  text-shadow: 0 0 24px rgba(46,230,168,0.45);
+}
+
+.hero-sub {
+  max-width: 700px; margin: 0 auto 44px;
+  font-size: 15.5px; color: var(--muted); line-height: 2;
+}
+
+.hero-cta { display: flex; justify-content: center; gap: 16px; margin-bottom: 64px; }
+.hero-cta .btn { padding: 13px 34px; font-size: 15px; }
+
+/* readout bar */
+.readout {
+  display: inline-flex; border: 1px solid var(--line);
+  background: rgba(8,17,25,0.80); backdrop-filter: blur(8px);
+}
+.ro {
+  padding: 16px 30px; border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 3px; min-width: 150px;
+}
+.ro:last-child { border-right: none; }
+.ro-l { font-family: var(--font-m); font-size: 9.5px; letter-spacing: 2.5px; color: var(--faint); }
+.ro-v {
+  font-family: var(--font-m); font-size: 24px; font-weight: 600;
+  color: var(--green); text-shadow: 0 0 16px rgba(46,230,168,0.35);
+  line-height: 1.2;
+}
+.ro-v small { font-size: 13px; color: var(--green-dim); }
+
+/* ════════════════ SECTION SHARED ════════════════ */
+.section { padding: 96px 0; position: relative; }
+
+.sec-mark {
+  display: flex; align-items: center; gap: 16px; justify-content: center;
+  font-family: var(--font-m); font-size: 11px; letter-spacing: 3px;
+  color: var(--green); margin-bottom: 18px;
+}
+.sec-mark::before, .sec-mark::after {
+  content: ""; width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green-dim));
+}
+.sec-mark::after { background: linear-gradient(90deg, var(--green-dim), transparent); }
+
+.sec-title {
+  font-size: clamp(26px, 3.2vw, 36px); font-weight: 700;
+  letter-spacing: 1px; text-align: center; margin-bottom: 12px;
+}
+.sec-sub { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 52px; }
+
+/* ════════════════ APP MATRIX ════════════════ */
+.filter { display: flex; justify-content: center; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; }
+.chip {
+  padding: 7px 20px; font-family: var(--font-m); font-size: 12px; letter-spacing: 1px;
+  color: var(--muted); background: transparent;
+  border: 1px solid rgba(126,148,140,0.25); cursor: pointer; transition: all 0.15s;
+}
+.chip:hover { color: var(--text); border-color: var(--muted); }
+.chip.on {
+  color: var(--green); border-color: var(--green);
+  background: rgba(46,230,168,0.07);
+  box-shadow: 0 0 16px rgba(46,230,168,0.15), inset 0 0 10px rgba(46,230,168,0.05);
+}
+
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+
+.card {
+  position: relative; background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 26px 22px 22px;
+  cursor: pointer; transition: all 0.2s ease;
+  overflow: hidden;
+}
+/* corner brackets */
+.card::before, .card::after {
+  content: ""; position: absolute; width: 12px; height: 12px;
+  border-color: var(--green); border-style: solid;
+  opacity: 0.5; transition: opacity 0.2s;
+}
+.card::before { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+.card::after  { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+
+.card:hover {
+  border-color: var(--green-dim);
+  background: var(--panel-2);
+  box-shadow: 0 0 28px rgba(46,230,168,0.12), inset 0 0 24px rgba(46,230,168,0.03);
+  transform: translateY(-3px);
+}
+.card:hover::before, .card:hover::after { opacity: 1; }
+
+/* scanline on hover */
+.card .scan {
+  position: absolute; left: 0; right: 0; top: -2px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0; pointer-events: none;
+}
+.card:hover .scan { animation: scanDown 0.9s ease; }
+@keyframes scanDown { 0% { top: 0; opacity: 0.9; } 100% { top: 100%; opacity: 0; } }
+
+.card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.tile {
+  width: 44px; height: 44px;
+  border: 1px solid var(--line);
+  background: rgba(46,230,168,0.05);
+  display: flex; align-items: center; justify-content: center;
+}
+.tile svg { width: 21px; height: 21px; color: var(--green); stroke-width: 1.6; }
+
+.card-st {
+  font-family: var(--font-m); font-size: 9.5px; letter-spacing: 1.5px;
+  color: var(--green-dim); display: flex; align-items: center; gap: 6px;
+}
+.card-st .led { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: blink 2.6s steps(2) infinite; }
+
+.card h3 { font-size: 16.5px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+.card p { font-size: 12.5px; color: var(--muted); line-height: 1.75; min-height: 66px; margin-bottom: 16px; }
+
+.card-go {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-m); font-size: 11px; letter-spacing: 2px;
+  color: var(--faint); border-top: 1px solid var(--line-dim); padding-top: 12px;
+  transition: color 0.18s;
+}
+.card:hover .card-go { color: var(--green); }
+
+/* ════════════════ VALUES ════════════════ */
+.values {
+  background: linear-gradient(180deg, rgba(8,17,25,0.0), rgba(8,17,25,0.85) 18%, rgba(8,17,25,0.85) 82%, rgba(8,17,25,0));
+}
+
+.v-card {
+  position: relative; padding: 30px 24px;
+  background: var(--panel); border: 1px solid var(--line);
+  text-align: center; transition: all 0.2s;
+}
+.v-card::before {
+  content: ""; position: absolute; top: -1px; left: 20%; right: 20%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.55;
+}
+.v-card:hover { background: var(--panel-2); box-shadow: 0 0 24px rgba(46,230,168,0.10); transform: translateY(-3px); }
+
+.v-gauge {
+  width: 58px; height: 58px; margin: 0 auto 16px; border-radius: 50%;
+  border: 1px solid var(--line);
+  background:
+    conic-gradient(var(--green) var(--p, 75%), rgba(46,230,168,0.10) 0);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.v-gauge::before {
+  content: ""; position: absolute; inset: 4px; border-radius: 50%;
+  background: var(--panel);
+}
+.v-gauge svg { width: 22px; height: 22px; color: var(--green); position: relative; stroke-width: 1.6; }
+
+.v-card h4 { font-size: 15.5px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 9px; }
+.v-card p  { font-size: 12.5px; color: var(--muted); line-height: 1.8; }
+.v-tag {
+  font-family: var(--font-m); font-size: 9px; letter-spacing: 2px;
+  color: var(--green-dim); display: block; margin-bottom: 12px;
+}
+
+/* ════════════════ ADMIN PREVIEW ════════════════ */
+.console {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 0 60px rgba(46,230,168,0.07), 0 30px 80px rgba(0,0,0,0.6);
+  position: relative;
+}
+.console::before, .console::after {
+  content: ""; position: absolute; width: 18px; height: 18px;
+  border-color: var(--green); border-style: solid; z-index: 2;
+}
+.console::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.console::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+.console-bar {
+  height: 40px; display: flex; align-items: center; padding: 0 18px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-m); font-size: 10.5px; letter-spacing: 2px; color: var(--green-dim);
+  justify-content: space-between; background: rgba(46,230,168,0.03);
+}
+.console-bar .t { display: flex; align-items: center; gap: 10px; }
+.console-bar .led { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); animation: blink 2s steps(2) infinite; }
+
+.admin { display: flex; height: 510px; }
+
+.a-side {
+  width: 222px; flex-shrink: 0; background: rgba(4,9,14,0.65);
+  border-right: 1px solid var(--line);
+  padding: 14px 10px 0; display: flex; flex-direction: column;
+}
+.a-group {
+  font-family: var(--font-m); font-size: 9px; letter-spacing: 2.5px;
+  color: var(--faint); padding: 14px 10px 7px;
+  display: flex; align-items: center; gap: 8px;
+}
+.a-group::after { content: ""; flex: 1; height: 1px; background: var(--line-dim); }
+
+.a-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; margin-bottom: 2px;
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  border: 1px solid transparent; border-left: 2px solid transparent;
+  transition: all 0.14s; position: relative;
+}
+.a-item .code { font-family: var(--font-m); font-size: 9px; color: var(--faint); margin-left: auto; letter-spacing: 1px; }
+.a-item svg { width: 15px; height: 15px; stroke-width: 1.6; color: var(--faint); transition: color 0.14s; }
+.a-item:hover { color: var(--text); background: rgba(46,230,168,0.04); }
+.a-item:hover svg { color: var(--muted); }
+.a-item.on {
+  color: var(--green); border-color: var(--line); border-left: 2px solid var(--green);
+  background: rgba(46,230,168,0.07);
+  box-shadow: inset 0 0 18px rgba(46,230,168,0.05);
+  font-weight: 600;
+}
+.a-item.on svg { color: var(--green); }
+.a-item.on .code { color: var(--green-dim); }
+
+.a-user {
+  margin-top: auto; border-top: 1px solid var(--line);
+  padding: 12px 10px; display: flex; align-items: center; gap: 10px;
+}
+.a-ava {
+  width: 28px; height: 28px; border: 1px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--green);
+  background: rgba(46,230,168,0.07);
+}
+.a-user-n { font-size: 12px; font-weight: 600; line-height: 1.3; }
+.a-user-r { font-family: var(--font-m); font-size: 8.5px; color: var(--faint); letter-spacing: 1px; }
+
+.a-main { flex: 1; padding: 20px 24px; overflow: hidden; }
+.a-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.a-title { font-size: 17px; font-weight: 700; letter-spacing: 0.5px; }
+.a-crumb { font-family: var(--font-m); font-size: 9.5px; color: var(--faint); letter-spacing: 2px; margin-top: 2px; }
+
+.kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 16px; }
+.kpi {
+  padding: 14px 16px; background: rgba(4,9,14,0.5);
+  border: 1px solid var(--line); position: relative;
+}
+.kpi::before {
+  content: ""; position: absolute; top: -1px; left: 12px; width: 22px; height: 2px;
+  background: var(--green); opacity: 0.6;
+}
+.kpi-l { font-family: var(--font-m); font-size: 9px; letter-spacing: 2px; color: var(--faint); text-transform: uppercase; margin-bottom: 7px; }
+.kpi-v { font-family: var(--font-m); font-size: 21px; font-weight: 600; color: var(--green); text-shadow: 0 0 14px rgba(46,230,168,0.3); line-height: 1.1; }
+.kpi-d { font-family: var(--font-m); font-size: 9.5px; margin-top: 5px; color: var(--green-dim); }
+.kpi.warn .kpi-v { color: var(--amber); text-shadow: 0 0 14px rgba(255,180,84,0.3); }
+
+.a-table { border: 1px solid var(--line); background: rgba(4,9,14,0.5); }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th {
+  text-align: left; padding: 10px 16px;
+  font-family: var(--font-m); font-size: 9px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--green-dim);
+  border-bottom: 1px solid var(--line); background: rgba(46,230,168,0.04);
+}
+td { padding: 10px 16px; border-bottom: 1px solid var(--line-dim); color: var(--muted); }
+tr:last-child td { border-bottom: none; }
+td:first-child { font-family: var(--font-m); font-size: 11.5px; color: var(--text); }
+tr:hover td { background: rgba(46,230,168,0.04); }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 9px; font-family: var(--font-m); font-size: 10px; letter-spacing: 1px;
+  border: 1px solid currentColor;
+}
+.tag .d { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.tag-on  { color: var(--green); }
+.tag-off { color: var(--red); }
+.tag-role{ color: var(--cyan); }
+
+/* ════════════════ LOGIN PREVIEW ════════════════ */
+.login-box {
+  display: flex; max-width: 860px; margin: 0 auto;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 0 50px rgba(46,230,168,0.07), 0 30px 70px rgba(0,0,0,0.55);
+  position: relative;
+}
+.login-box::before, .login-box::after {
+  content: ""; position: absolute; width: 18px; height: 18px;
+  border-color: var(--green); border-style: solid; z-index: 2;
+}
+.login-box::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.login-box::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+.lg-left {
+  width: 46%; padding: 44px 38px; position: relative; overflow: hidden;
+  background: rgba(4,9,14,0.6);
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.lg-left .radar2 {
+  position: absolute; bottom: -110px; right: -110px;
+  width: 280px; height: 280px; border-radius: 50%;
+  border: 1px solid var(--line-dim); opacity: 0.9; pointer-events: none;
+}
+.lg-left .radar2::before { content: ""; position: absolute; inset: 26%; border-radius: 50%; border: 1px solid var(--line-dim); }
+.lg-left .radar2::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(46,230,168,0.16), transparent 75deg);
+  animation: sweep 6s linear infinite;
+}
+.lg-st { font-family: var(--font-m); font-size: 10px; letter-spacing: 3px; color: var(--green); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.lg-st .led { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); animation: blink 2s steps(2) infinite; }
+.lg-left h3 { font-size: 23px; font-weight: 700; line-height: 1.45; letter-spacing: 0.5px; position: relative; }
+.lg-left h3 .hl { color: var(--green); text-shadow: 0 0 18px rgba(46,230,168,0.4); }
+.lg-feats { display: flex; flex-direction: column; gap: 11px; position: relative; }
+.lg-feat { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--muted); font-family: var(--font-m); }
+.lg-feat svg { width: 14px; height: 14px; color: var(--green); stroke-width: 1.8; }
+
+.lg-right { flex: 1; padding: 44px 42px; }
+.lg-tag { font-family: var(--font-m); font-size: 10px; letter-spacing: 3px; color: var(--green-dim); margin-bottom: 8px; }
+.lg-right h4 { font-size: 19px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 28px; }
+
+.f-label { font-family: var(--font-m); font-size: 9.5px; letter-spacing: 2px; color: var(--faint); text-transform: uppercase; margin-bottom: 7px; display: block; }
+.f-input {
+  width: 100%; padding: 11px 14px; margin-bottom: 18px;
+  background: rgba(4,9,14,0.6);
+  border: 1px solid var(--line); border-radius: 0;
+  color: var(--text); font-family: var(--font-m); font-size: 13.5px;
+  outline: none; transition: all 0.16s;
+}
+.f-input:focus { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 0 18px rgba(46,230,168,0.15); }
+.f-input::placeholder { color: var(--faint); }
+
+/* ════════════════ FOOTER ════════════════ */
+footer {
+  padding: 38px 0; border-top: 1px solid var(--line);
+  text-align: center; background: rgba(4,9,14,0.7);
+}
+.fm { font-family: var(--font-m); font-size: 10px; color: var(--faint); letter-spacing: 2.5px; }
+.fm .g { color: var(--green-dim); }
+
+/* ════════════════ SWITCHER ════════════════ */
+.scheme-switch {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 200;
+  display: flex; align-items: center;
+  background: rgba(8,17,25,0.94); backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  box-shadow: 0 0 24px rgba(46,230,168,0.12), 0 14px 40px rgba(0,0,0,0.6);
+  font-size: 12.5px;
+}
+.scheme-switch .lab { padding: 8px 12px; color: var(--faint); font-family: var(--font-m); font-size: 10px; letter-spacing: 1px; border-right: 1px solid var(--line-dim); }
+.scheme-switch a { padding: 8px 16px; color: var(--muted); transition: all 0.14s; border-right: 1px solid var(--line-dim); }
+.scheme-switch a:last-child { border-right: none; }
+.scheme-switch a:hover { color: var(--text); }
+.scheme-switch a.cur { background: rgba(46,230,168,0.10); color: var(--green); font-weight: 600; box-shadow: inset 0 0 14px rgba(46,230,168,0.08); }
+
+/* entrance */
+.fade { opacity: 0; transform: translateY(18px); animation: fadeUp 0.7s ease forwards; }
+.d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; } .d4 { animation-delay: 0.42s; }
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+@media (max-width: 1024px) { .grid-4, .kpis { grid-template-columns: repeat(2,1fr); } .radar { display: none; } }
+@media (max-width: 680px) {
+  .grid-4 { grid-template-columns: 1fr; }
+  .nav-menu, .sys-led { display: none; }
+  .login-box { flex-direction: column; } .lg-left { width: 100%; border-right: none; border-bottom: 1px solid var(--line); }
+  .readout { flex-direction: column; } .ro { border-right: none; border-bottom: 1px solid var(--line); }
+  .hud-frame { padding: 34px 20px 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark"><i data-lucide="plane"></i></div>
+      <div>
+        <span class="brand-name">AI应用聚合平台</span>
+        <span class="brand-tag">AVIONICS · AI MATRIX</span>
+      </div>
+    </div>
+    <nav class="nav-menu">
+      <a class="active" href="#top">首页</a>
+      <a href="#apps">应用中心</a>
+      <a href="#values">平台优势</a>
+    </nav>
+    <div class="nav-status">
+      <span class="sys-led"><span class="led"></span>SYS·ONLINE</span>
+      <button class="btn btn-hud btn-sm">登录</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="radar"><i></i></div>
+  <span class="cross" style="top:120px; left:8%">+</span>
+  <span class="cross" style="top:300px; left:16%">+</span>
+  <span class="cross" style="bottom:140px; right:12%">+</span>
+  <span class="cross" style="top:180px; right:24%">+</span>
+
+  <div class="wrap hero-inner">
+    <div class="hud-frame fade">
+      <span class="c3"></span><span class="c4"></span>
+      <div class="hero-status">AVIATION AI · ALL-SCENARIO</div>
+      <h1 class="fade d1">航空企业级 <span class="hl">AI</span> 全场景应用矩阵</h1>
+      <p class="hero-sub fade d2">面向航空产业研发、制造、运维全链路场景，覆盖知识管理、研发提效、硬件设计、文档处理，一站式赋能航空智造与数字化升级</p>
+      <div class="hero-cta fade d3">
+        <button class="btn btn-hud">浏览全部应用 →</button>
+        <button class="btn btn-line">了解平台价值</button>
+      </div>
+      <div class="readout fade d4">
+        <div class="ro"><span class="ro-l">APPLICATIONS</span><span class="ro-v">08</span></div>
+        <div class="ro"><span class="ro-l">SCENARIOS</span><span class="ro-v">04<small>+</small></span></div>
+        <div class="ro"><span class="ro-l">ENTERPRISES</span><span class="ro-v">03<small>+</small></span></div>
+        <div class="ro"><span class="ro-l">AVAILABILITY</span><span class="ro-v">99.9<small>%</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP MATRIX -->
+<section class="section" id="apps">
+  <div class="wrap">
+    <div class="sec-mark">MODULE 01 / APP MATRIX</div>
+    <h2 class="sec-title">航空企业核心 AI 应用矩阵</h2>
+    <p class="sec-sub">按航空业务场景筛选，一键体验对应应用</p>
+    <div class="filter">
+      <button class="chip on">全部</button>
+      <button class="chip">知识管理</button>
+      <button class="chip">研发提效</button>
+      <button class="chip">硬件设计</button>
+      <button class="chip">文档处理</button>
+    </div>
+    <div class="grid-4">
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="book-open"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>知识助手</h3>
+        <p>智能知识库问答，覆盖航空标准、工艺规范与历史项目经验，秒级精准检索</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="mic"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>会议纪要</h3>
+        <p>语音实时转写 + 智能摘要，自动提炼会议决议与行动项，一键分发归档</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="code"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>代码生成</h3>
+        <p>面向机载软件的智能代码生成，遵循 DO-178C 编码规范，提升研发效率</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="shield-check"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>代码审查</h3>
+        <p>静态分析 + AI 深度审查，自动识别潜在缺陷、安全漏洞与规范偏离</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="cpu"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>电路审查</h3>
+        <p>原理图智能审查，元器件选型核验与电气规则自动校验，降低设计风险</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="database"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>元器件库</h3>
+        <p>航空级元器件数据库，参数化检索、供应链状态与国产化替代推荐</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="file-text"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>文档生成</h3>
+        <p>设计文档、测试报告一键生成，模板化结构输出，与型号流程深度集成</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+      <div class="card"><span class="scan"></span>
+        <div class="card-top">
+          <div class="tile"><i data-lucide="file-search"></i></div>
+          <span class="card-st"><span class="led"></span>READY</span>
+        </div>
+        <h3>文档审查</h3>
+        <p>技术文档智能校对，术语一致性、引用规范与适航合规性自动检查</p>
+        <div class="card-go"><span>EXECUTE</span><span>→</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section values" id="values">
+  <div class="wrap">
+    <div class="sec-mark">MODULE 02 / PLATFORM EDGE</div>
+    <h2 class="sec-title">平台优势</h2>
+    <p class="sec-sub">面向航空企业级生产力场景的一站式 AI 能力底座</p>
+    <div class="grid-4">
+      <div class="v-card">
+        <span class="v-tag">FULL-CHAIN</span>
+        <div class="v-gauge" style="--p:100%"><i data-lucide="layout-grid"></i></div>
+        <h4>航空全链路覆盖</h4>
+        <p>面向研发、制造、运维、保障全链路场景，统一入口、连贯体验，深度贴合航空业务流程</p>
+      </div>
+      <div class="v-card">
+        <span class="v-tag">SECURITY</span>
+        <div class="v-gauge" style="--p:88%"><i data-lucide="shield"></i></div>
+        <h4>航空级安全合规</h4>
+        <p>通过航空行业安全合规审核，权限分级管理，数据可审计、可追溯，满足等保与适航要求</p>
+      </div>
+      <div class="v-card">
+        <span class="v-tag">UPTIME 99.9%</span>
+        <div class="v-gauge" style="--p:99%"><i data-lucide="activity"></i></div>
+        <h4>高可用稳定保障</h4>
+        <p>多活部署 + 灰度发布，服务可用性 99.9%，关键航空业务系统 7×24 稳定运行</p>
+      </div>
+      <div class="v-card">
+        <span class="v-tag">EVOLVING</span>
+        <div class="v-gauge" style="--p:76%"><i data-lucide="refresh-cw"></i></div>
+        <h4>持续迭代升级</h4>
+        <p>模型与功能持续演进，紧跟航空数字化趋势，定期上线新能力，赋能业务长期增长</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN PREVIEW -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-mark">MODULE 03 / ADMIN CONSOLE</div>
+    <h2 class="sec-title">管理后台</h2>
+    <p class="sec-sub">权限分级管理 · 组织架构 · 实时监控运维</p>
+    <div class="console">
+      <div class="console-bar">
+        <span class="t"><span class="led"></span>ADMIN CONSOLE — platform.aviation-ai.cn</span>
+        <span>UTC+8 · SECURE CHANNEL</span>
+      </div>
+      <div class="admin">
+        <aside class="a-side">
+          <div class="a-group">应用管理 / APPS</div>
+          <div class="a-item"><i data-lucide="layout-grid"></i>应用目录<span class="code">A-01</span></div>
+          <div class="a-group">权限管理 / PERM</div>
+          <div class="a-item on"><i data-lucide="shield-check"></i>角色管理<span class="code">P-01</span></div>
+          <div class="a-item"><i data-lucide="users"></i>用户管理<span class="code">P-02</span></div>
+          <div class="a-item"><i data-lucide="building-2"></i>组织管理<span class="code">P-03</span></div>
+          <div class="a-group">监控运维 / OPS</div>
+          <div class="a-item"><i data-lucide="activity"></i>监控总览<span class="code">O-01</span></div>
+          <div class="a-user">
+            <div class="a-ava">超</div>
+            <div>
+              <div class="a-user-n">超级管理员</div>
+              <div class="a-user-r">SUPER_ADMIN</div>
+            </div>
+          </div>
+        </aside>
+        <main class="a-main">
+          <div class="a-head">
+            <div>
+              <div class="a-title">角色管理</div>
+              <div class="a-crumb">ADMIN / PERM / P-01 ROLES</div>
+            </div>
+            <button class="btn btn-hud btn-sm">+ 新建角色</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="kpi-l">Total Users</div><div class="kpi-v">1,284</div><div class="kpi-d">▲ +12 WEEK</div></div>
+            <div class="kpi"><div class="kpi-l">Active Apps</div><div class="kpi-v">08</div><div class="kpi-d">— STABLE</div></div>
+            <div class="kpi"><div class="kpi-l">Calls Today</div><div class="kpi-v">23,847</div><div class="kpi-d">▲ +8.4%</div></div>
+            <div class="kpi"><div class="kpi-l">Availability</div><div class="kpi-v">99.92%</div><div class="kpi-d">SLA · OK</div></div>
+          </div>
+          <div class="a-table">
+            <table>
+              <thead><tr><th>账号 ID</th><th>姓名</th><th>角色</th><th>组织</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr><td>zhang.wei</td><td>张伟</td><td><span class="tag tag-role">企业管理员</span></td><td>航电研发部</td><td><span class="tag tag-on"><span class="d"></span>启用</span></td></tr>
+                <tr><td>li.na</td><td>李娜</td><td><span class="tag tag-role">普通用户</span></td><td>飞控软件部</td><td><span class="tag tag-on"><span class="d"></span>启用</span></td></tr>
+                <tr><td>wang.lei</td><td>王磊</td><td><span class="tag tag-role">部门管理员</span></td><td>综合航电部</td><td><span class="tag tag-on"><span class="d"></span>启用</span></td></tr>
+                <tr><td>chen.jing</td><td>陈静</td><td><span class="tag tag-role">普通用户</span></td><td>测试验证部</td><td><span class="tag tag-off"><span class="d"></span>停用</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGIN PREVIEW -->
+<section class="section" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sec-mark">MODULE 04 / ACCESS CONTROL</div>
+    <h2 class="sec-title">登录页</h2>
+    <p class="sec-sub">企业级身份认证 · 多因子安全登录</p>
+    <div class="login-box">
+      <div class="lg-left">
+        <div class="radar2"></div>
+        <div>
+          <div class="lg-st"><span class="led"></span>ACCESS CONTROL</div>
+          <h3>航空企业级<br /><span class="hl">AI 应用聚合平台</span></h3>
+        </div>
+        <div class="lg-feats">
+          <div class="lg-feat"><i data-lucide="shield-check"></i>等保三级 · 适航安全合规</div>
+          <div class="lg-feat"><i data-lucide="key-round"></i>多因子认证 · 动态校验</div>
+          <div class="lg-feat"><i data-lucide="activity"></i>7×24 高可用 · 99.9% SLA</div>
+        </div>
+      </div>
+      <div class="lg-right">
+        <div class="lg-tag">IDENTITY VERIFICATION</div>
+        <h4>欢迎回来</h4>
+        <label class="f-label">Account · 账号</label>
+        <input class="f-input" placeholder="请输入企业账号" />
+        <label class="f-label">Password · 密码</label>
+        <input class="f-input" type="password" placeholder="请输入密码" />
+        <button class="btn btn-hud" style="width:100%; padding:12px; margin-top:8px">授权登录 →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fm">AI APPLICATION AGGREGATION PLATFORM <span class="g">//</span> AVIATION ENTERPRISE <span class="g">//</span> © 2026</div>
+</footer>
+
+<!-- SWITCHER -->
+<div class="scheme-switch">
+  <span class="lab">方案</span>
+  <a href="./design-preview-A-aurora.html">A 极光暗色</a>
+  <a href="./design-preview-B-swiss.html">B 瑞士极简</a>
+  <a class="cur" href="./design-preview-C-avionics.html">C 航电座舱</a>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

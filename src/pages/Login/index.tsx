@@ -323,36 +323,38 @@ export default function LoginPage() {
 
   return (
     <Box
+      className="login-page"
       sx={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background:
-          'radial-gradient(circle 520px at 50% 40%, rgba(22,217,227,0.55) 0%, rgba(48,199,236,0.28) 40%, transparent 72%), radial-gradient(900px 600px at 80% -10%, rgba(70,174,247,0.40) 0%, transparent 60%), radial-gradient(700px 500px at 10% 110%, rgba(217,119,6,0.20) 0%, transparent 60%), linear-gradient(135deg, #082742 0%, #0C3458 30%, #1565A0 55%, #1E7FC7 80%, #30C7EC 100%)',
+        background: '#F6F5F2',
         px: 2,
         py: 6,
       }}
     >
       <Box
+        className="login-card"
         sx={{
           width: '100%',
-          maxWidth: 980,
+          maxWidth: 940,
           minHeight: 520,
           background: '#fff',
-          borderRadius: 3,
-          boxShadow: '0 30px 60px rgba(8,39,66,0.25)',
+          borderRadius: '20px',
+          border: '1px solid #E7E5E0',
+          boxShadow: '0 30px 70px rgba(22,22,26,0.12)',
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+          gridTemplateColumns: { xs: '1fr', md: '0.9fr 1.1fr' },
           overflow: 'hidden',
         }}
       >
         <Box
+          className="login-brand-panel"
           sx={{
-            background:
-              'linear-gradient(160deg, #082742 0%, #0C3458 45%, #1E7FC7 100%)',
+            background: '#2D5BFF',
             color: '#fff',
-            p: { xs: 4, md: 6 },
+            p: { xs: 4, md: 5.5 },
             display: { xs: 'none', md: 'flex' },
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -360,54 +362,47 @@ export default function LoginPage() {
             overflow: 'hidden',
           }}
         >
-          <Stack direction="row" spacing={1.5} alignItems="center">
+          <Stack direction="row" spacing={1.5} alignItems="center" sx={{ position: 'relative', zIndex: 1 }}>
             <Box
               sx={{
                 width: 36,
                 height: 36,
-                borderRadius: 1.2,
-                background:
-                  'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(214,239,253,0.18) 100%)',
-                border: '1px solid rgba(255,255,255,0.3)',
+                borderRadius: '11px',
+                background: 'rgba(255,255,255,0.16)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: 800,
-                letterSpacing: '-1px',
-                fontFamily:
-                  '"PingFang SC", "Microsoft YaHei", "Source Han Sans CN", sans-serif',
                 color: '#fff',
-                textShadow: '0 1px 2px rgba(8,39,66,0.3)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
               }}
             >
               机载
             </Box>
-            <Typography sx={{ fontSize: 18, fontWeight: 700 }}>AI 应用聚合平台</Typography>
+            <Typography sx={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.3px' }}>
+              AI 应用聚合平台
+            </Typography>
           </Stack>
-          <Box>
+          <Box sx={{ position: 'relative', zIndex: 1 }}>
             <Typography
               sx={{
-                fontSize: 28,
-                fontWeight: 700,
-                mb: 1,
-                background:
-                  'linear-gradient(135deg, #ffffff 0%, #D6EFFD 60%, #46AEF7 100%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: 'transparent',
-                letterSpacing: 0.5,
+                fontSize: 27,
+                fontWeight: 800,
+                mb: 1.5,
+                lineHeight: 1.4,
+                letterSpacing: '-0.6px',
+                color: '#fff',
               }}
             >
-              企业级 AI 能力统一入口
+              企业级 AI 能力
+              <br />
+              统一入口
             </Typography>
-            <Typography sx={{ fontSize: 14, opacity: 0.85, lineHeight: 1.8 }}>
+            <Typography sx={{ fontSize: 13.5, color: 'rgba(255,255,255,0.85)', lineHeight: 1.9 }}>
               整合知识、研发、硬件、办公全场景 AI 应用，提供统一身份、统一权限、统一配额、统一监控。
             </Typography>
           </Box>
-          <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
+          <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.60)', position: 'relative', zIndex: 1 }}>
             © {new Date().getFullYear()} 智研航空 · 内部使用，受访问控制保护
           </Typography>
         </Box>
@@ -420,24 +415,19 @@ export default function LoginPage() {
             justifyContent: 'center',
           }}
         >
-          <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Box sx={{ textAlign: 'left', mb: 3 }}>
             <Typography
               sx={{
                 fontSize: 24,
-                fontWeight: 700,
-                background:
-                  'linear-gradient(135deg, #104A78 0%, #1E7FC7 55%, #30C7EC 100%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: 'transparent',
-                letterSpacing: 0.5,
+                fontWeight: 800,
+                color: '#16161A',
+                letterSpacing: '-0.5px',
               }}
             >
-              账号登录
+              欢迎回来 👋
             </Typography>
             <Typography sx={{ fontSize: 13, color: 'text.secondary', mt: 0.5 }}>
-              欢迎使用 AI 应用聚合平台
+              使用企业账号登录 AI 应用聚合平台
             </Typography>
           </Box>
 
@@ -471,9 +461,9 @@ export default function LoginPage() {
                   sx={{
                     width: 120,
                     height: 40,
-                    borderRadius: 1,
-                    background: 'linear-gradient(135deg, #EBF7FE 0%, #D6EFFD 100%)',
-                    color: '#1E7FC7',
+                    borderRadius: '10px',
+                    background: '#E9EEFF',
+                    color: '#2D5BFF',
                     fontWeight: 700,
                     letterSpacing: 4,
                     display: 'flex',
@@ -532,7 +522,15 @@ export default function LoginPage() {
             size="large"
             onClick={submit}
             startIcon={<LoginIcon />}
-            sx={{ mt: 3, py: 1.2 }}
+            sx={{
+              mt: 3,
+              py: 1.3,
+              borderRadius: '13px',
+              fontWeight: 700,
+              bgcolor: '#2D5BFF',
+              boxShadow: '0 6px 20px rgba(45,91,255,0.35)',
+              '&:hover': { bgcolor: '#1D47E8', boxShadow: '0 10px 28px rgba(45,91,255,0.45)' },
+            }}
           >
             登录
           </Button>

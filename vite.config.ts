@@ -6,9 +6,10 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, './src') },
+      { find: /^@mui\/material$/, replacement: path.resolve(__dirname, './src/antd-shim/material.tsx') },
+    ],
   },
   server: {
     host: '0.0.0.0',

@@ -1,6 +1,6 @@
 # AI 应用聚合平台
 
-企业级 AI 应用统一入口与治理后台。项目提供门户首页、应用中心、应用授权、用户/角色/组织管理和监控总览，当前数据使用前端 mock 与 `localStorage` 持久化，适合原型演示和离线部署验证。
+企业级 AI 应用统一入口与治理后台。平台提供门户首页、应用中心、登录认证、应用授权、用户 / 角色 / 组织管理和监控总览，当前数据使用前端 mock 与 `localStorage` 持久化，适合原型演示和离线部署验证。
 
 ## 技术栈
 
@@ -8,7 +8,8 @@
 | --- | --- |
 | 构建 | Vite 5 |
 | 前端 | React 18 + TypeScript 5 |
-| UI | Material UI 6 + Emotion |
+| 主 UI 组件 | **Material UI 6** + Emotion（所有页面组件均用 MUI） |
+| 主题层 | Ant Design 6 ConfigProvider（仅用于注入全局主题 token，不渲染 antd 组件） |
 | 路由 | React Router 6 |
 | 状态 | React Context + `localStorage` 持久化 |
 | 部署 | Docker + nginx SPA fallback |
@@ -28,7 +29,7 @@ npm run preview
 
 ## 演示账号
 
-登录页默认填入 `admin / admin`，其中 `admin` 会映射到超级管理员 `admin1`。以下账号均可使用统一快捷密码 `admin` 登录；用户管理中重置后的实际密码为 `Avic@12345678`，登录页也会接受该实际密码。
+登录页默认填入 `admin / admin`，其中 `admin` 会映射到超级管理员 `admin1`。以下账号均可使用统一快捷密码 `admin` 登录；在用户管理中点击「重置密码」后的实际密码为 `Avic@12345678`，登录页也接受该密码。
 
 | 账号 | 角色 | 企业 / 部门 |
 | --- | --- | --- |
@@ -39,36 +40,58 @@ npm run preview
 | `user2` | 普通用户 | 智研航空 / 硬件设计部 |
 | `user3` | 普通用户 | 智研航空 / 产品中心 |
 
+演示企业：**平台**、**智研航空**、**云翔工业**、**航星智造**。
+
 ## 当前功能
 
-- 门户首页 `/`：品牌首页、顶部导航、全局搜索、授权应用矩阵、平台价值区。
-- 应用中心 `/apps`：按授权用户过滤应用，支持搜索、分类筛选和排序。
-- 登录 `/login`：账号密码登录、错误次数提示、图形验证码触发、忘记密码和找回账号弹窗。
-- 应用管理 `/admin/apps`：应用新增、编辑、删除、启停、跳转地址校验、企业/部门/用户三级授权。
-- 用户管理 `/admin/users`：用户 CRUD、角色层级约束、账号启停、密码查看/复制/重置。
-- 角色管理 `/admin/roles`：角色 CRUD、权限树配置、冲突检测、保存确认、权限变更审计。
-- 组织管理 `/admin/organizations`：企业和部门维护，支持超级管理员进行权限下放。
-- 监控总览 `/ops/monitor`：指标卡、应用使用次数表、用户活跃度表；当前等待真实埋点数据接入。
+### 门户前台
+
+- **门户首页** `/`：品牌 Hero（深蓝渐变）、顶部导航（全局搜索）、授权应用矩阵（登录后按权限过滤）、平台价值区。
+- **应用中心** `/apps`：展示当前用户被授权的应用，支持关键词搜索、分类筛选（全部 / 研发提效 / 硬件设计 / 办公协同）、排序（最近使用 / 推荐 / 热门）；未登录点击卡片跳转到登录页。
+- **登录页** `/login`：左右分栏卡片（品牌面板 + 登录表单），账号密码登录，失败 ≥2 次触发图形验证码，失败 ≥5 次提示账号锁定；忘记密码弹窗（4 步 Stepper：输入邮箱 → 验证码 → 设置新密码 → 完成）；找回账号弹窗（输入邮箱后区分单账号/多账号/未找到三种反馈）。
+
+### 管理后台（需登录，共用 AdminLayout）
+
+AdminLayout：左侧常驻侧边栏（248px）+ 顶部面包屑工具栏 + 内容区。侧边栏菜单项按当前用户角色动态过滤。
+
+- **应用管理** `/admin/apps`（仅 super_admin）：应用 CRUD、启停开关、跳转网址校验；**三级授权弹窗**（企业 → 部门 → 用户，支持批量勾选和全选/清空，授权人数 Chip 实时展示）。
+- **用户管理** `/admin/users`：用户 CRUD；**角色层级约束**（操作者只能管理低于自身角色级别的用户）；账号启停；**密码管理**（super_admin 可查看/复制/直接编辑/重置密码，重置后密码 `Avic@12345678`）；分页（5/10/20/50 条/页）。
+- **角色管理** `/admin/roles`：角色列表 + 权限树（三级：模块 → 功能 → 操作）；**权限冲突检测**（阻止保存并高亮冲突项）；保存确认 Dialog（展示变更摘要和影响用户数）；**权限变更审计时间轴**弹窗。
+- **组织管理** `/admin/organizations`：三 Tab——企业管理（CRUD）、部门管理（CRUD）、**权限下放**（super_admin 将权限集合下放给 enterprise_admin / department_admin / ops，保存后实时生效）。
+- **监控总览** `/ops/monitor`：4 张指标卡片（应用总数、注册用户数、总调用次数、活跃用户数）+ 应用使用次数表 + 用户活跃度表；时间维度切换（今日 / 近 7 天 / 近 30 天）；当前等待真实埋点数据接入。
+
+### 用户下拉菜单（TopNav 右上角，登录后可见）
+
+- 展示头像、姓名、企业 · 部门、角色 Chip。
+- **权限管理**（→ `/admin/roles`）：enterprise_admin / super_admin 可见。
+- **监控运维**（→ `/ops/monitor`）：ops / super_admin 可见。
+- **退出登录**：清除 session 并返回门户首页。
+
+> 「个人中心」「我的 Token 用量」「配额中心」「操作日志」入口尚未实现。
 
 ## 权限模型
 
 `src/auth/AuthContext.tsx` 维护登录态、角色判断和权限判断：
 
-- `super_admin` 拥有 `*` 通配权限。
-- `enterprise_admin` 默认拥有应用中心、用户管理、角色管理相关权限。
-- `department_admin` 默认拥有应用中心访问权限，可通过组织管理进行权限下放。
+- `super_admin` 拥有 `*` 通配权限，可跨企业操作。
+- `enterprise_admin` 默认拥有应用中心访问、用户管理（部门管理员及以下）、角色管理相关权限；只能看到本企业数据。
+- `department_admin` 默认仅拥有应用中心访问权限，只能看到本部门用户；可通过「权限下放」获得额外权限。
 - `ops` 拥有监控总览相关权限。
-- 角色管理和权限下放写入 `aap.rolePermissions`，刷新后仍保留。
+- `user` 拥有应用中心查看和访问权限。
+
+角色管理和权限下放调用 `setRolePermissions` 写入 `aap.rolePermissions`，与基础矩阵取并集，刷新后仍保留。
 
 业务数据通过 `src/data/store.ts` 的 `usePersistedState` 写入 `localStorage`，主要 key 包括：
 
-- `aap.session`
-- `aap.rolePermissions`
-- `aap.store.apps`
-- `aap.store.users`
-- `aap.store.roles`
-- `aap.store.enterprises`
-- `aap.store.departments`
+| Key | 内容 |
+| --- | --- |
+| `aap.session` | 当前登录用户信息 |
+| `aap.rolePermissions` | 角色动态权限覆盖层 |
+| `aap.store.apps` | 应用列表（含 `permittedUserIds`） |
+| `aap.store.users` | 用户列表 |
+| `aap.store.roles` | 角色列表 |
+| `aap.store.enterprises` | 企业列表 |
+| `aap.store.departments` | 部门列表 |
 
 重置演示数据可在浏览器控制台执行：
 
@@ -86,19 +109,24 @@ location.reload();
 ├── public/                  # 静态资源
 ├── scripts/                 # 离线打包脚本
 ├── src/
-│   ├── auth/                # 鉴权上下文与私有路由守卫
-│   ├── components/          # 后台布局、用户菜单、空状态
-│   ├── data/                # 应用、权限、mock 数据和持久化工具
+│   ├── antd-shim/           # Ant Design shim 组件（供 ConfigProvider 主题层使用）
+│   ├── auth/                # 鉴权上下文（AuthContext）与私有路由守卫（RequireAuth）
+│   ├── components/          # AdminLayout（后台骨架）、UserMenu（头像下拉）、EmptyState
+│   ├── data/                # 应用数据(apps)、权限树(permissions)、mock 数据、持久化工具(store)
 │   ├── pages/
-│   │   ├── Home/            # 门户首页
+│   │   ├── Home/            # 门户首页（TopNav / HeroBanner / AppMatrix / ValueSection）
 │   │   ├── Apps/            # 应用中心
-│   │   ├── Login/           # 登录页
-│   │   ├── admin/           # 应用、用户、角色、组织管理
-│   │   └── ops/             # 监控总览
-│   ├── styles/global.css    # 全局样式与 MUI 覆盖
-│   ├── theme/index.ts       # MUI 主题
+│   │   ├── Login/           # 登录页（含忘记密码 / 找回账号 Dialog）
+│   │   ├── admin/
+│   │   │   ├── Apps/        # 应用管理（三级授权弹窗）
+│   │   │   ├── Users/       # 用户管理（密码管理、角色层级约束）
+│   │   │   ├── Roles/       # 角色管理（权限树、冲突检测、审计时间轴）
+│   │   │   └── Organizations/ # 组织管理（企业 / 部门 / 权限下放）
+│   │   └── ops/
+│   │       └── Overview.tsx # 监控总览
+│   ├── styles/global.css    # 全局样式
 │   ├── App.tsx              # 路由表
-│   └── main.tsx             # 应用入口
+│   └── main.tsx             # 应用入口（antd ConfigProvider 主题注入）
 ├── Dockerfile
 ├── docker-compose.yml
 ├── nginx.conf
@@ -131,9 +159,22 @@ cd offline-package
 bash install.sh
 ```
 
+## 待建设功能
+
+| 功能 | 路径 |
+| --- | --- |
+| Token 配额配置 | `/admin/quotas` |
+| Token 配额监控 | `/admin/quotas/monitor` |
+| Token 配额日志 | `/admin/quotas/logs` |
+| 资源看板 | `/ops/resources` |
+| 系统日志 | `/ops/logs` |
+| 个人中心 | `/profile` |
+| 我的 Token 用量 | `/profile/quota` |
+
 ## 说明
 
 - 当前所有业务数据均为 mock，生产环境需要接入后端 API。
-- Demo 密码以明文形式保存在前端数据中，仅用于演示；生产环境必须改为服务端哈希存储与鉴权。
-- 监控总览中的使用次数和活跃度表当前为空数据结构，等待真实埋点回填。
-- `dist/`、`*.tsbuildinfo`、`vite.config.js`、`vite.config.d.ts` 等构建产物已在 `.gitignore` 中排除，不应提交。
+- 演示密码以明文形式保存在前端代码中，仅用于演示；生产环境必须改为服务端哈希存储与鉴权。
+- 监控总览中的指标和表格当前为空数据结构，等待真实埋点回填。
+- 双 UI 框架（MUI 6 + antd 6）并存；所有业务组件使用 MUI，antd 仅通过 ConfigProvider 注入主题 token，新增页面请统一使用 MUI。
+- `dist/`、`*.tsbuildinfo` 等构建产物已在 `.gitignore` 中排除，不应提交。

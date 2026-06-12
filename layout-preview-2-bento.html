@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>布局2 · Bento 便当格式 — AI应用聚合平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+/* ════════ TOKENS ════════ */
+:root {
+  --bg:     #F6F5F2;
+  --card:   #FFFFFF;
+  --ink:    #16161A;
+  --muted:  #5F6470;
+  --faint:  #9B9FA8;
+  --line:   #E7E5E0;
+  --blue:    #2D5BFF;  --blue-bg:   #E9EEFF;
+  --violet:  #7C3AED;  --violet-bg: #F1EAFE;
+  --teal:    #0E9F8A;  --teal-bg:   #E2F6F2;
+  --amber:   #E08700;  --amber-bg:  #FCF1DD;
+  --dark:    #16161A;
+  --r: 20px;
+  --font: "Bricolage Grotesque", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "IBM Plex Mono", monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 15px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(45,91,255,0.16); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: #D4D2CC; border-radius: 4px; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+/* ════════ NAV ════════ */
+.nav {
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
+  width: calc(100% - 48px); max-width: 1180px;
+  height: 58px; border-radius: 18px;
+  background: rgba(255,255,255,0.82); backdrop-filter: blur(16px);
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 32px rgba(22,22,26,0.07);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px;
+}
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand-mark {
+  width: 34px; height: 34px; border-radius: 11px;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.brand-mark svg { width: 17px; height: 17px; color: #fff; }
+.brand-name { font-weight: 800; font-size: 15px; letter-spacing: -0.3px; }
+
+.nav-menu { display: flex; gap: 4px; }
+.nav-menu a {
+  font-size: 13.5px; font-weight: 600; color: var(--muted);
+  padding: 7px 16px; border-radius: 100px; transition: all 0.15s;
+}
+.nav-menu a:hover { color: var(--ink); background: rgba(22,22,26,0.05); }
+.nav-menu a.active { color: #fff; background: var(--ink); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 9px 22px; border-radius: 100px;
+  font-family: var(--font); font-size: 14px; font-weight: 700;
+  cursor: pointer; border: none; transition: all 0.18s;
+}
+.btn-ink { background: var(--ink); color: #fff; }
+.btn-ink:hover { background: var(--blue); transform: translateY(-1px); }
+.btn-blue { background: var(--blue); color: #fff; box-shadow: 0 6px 20px rgba(45,91,255,0.35); }
+.btn-blue:hover { background: #1D47E8; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(45,91,255,0.45); }
+.btn-line { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+.btn-line:hover { background: var(--ink); color: #fff; }
+.btn-sm { padding: 7px 16px; font-size: 13px; }
+
+/* ════════ HERO — asymmetric split ════════ */
+.hero { padding: 130px 0 56px; }
+.hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; align-items: stretch; }
+
+.hero-left { display: flex; flex-direction: column; justify-content: center; padding-right: 24px; }
+.hero-badge {
+  width: fit-content; display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 14px; border-radius: 100px; margin-bottom: 24px;
+  background: var(--card); border: 1px solid var(--line);
+  font-size: 12.5px; font-weight: 600; color: var(--muted);
+  box-shadow: 0 2px 8px rgba(22,22,26,0.05);
+}
+.hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: pulse 2.2s ease infinite; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+
+.hero h1 {
+  font-size: clamp(38px, 4.8vw, 58px);
+  font-weight: 800; line-height: 1.18; letter-spacing: -1.8px;
+  margin-bottom: 22px;
+}
+.hero h1 .u {
+  position: relative; white-space: nowrap;
+}
+.hero h1 .u::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 12px;
+  background: rgba(45,91,255,0.18); z-index: -1; border-radius: 3px;
+}
+.hero-sub { font-size: 15.5px; color: var(--muted); max-width: 480px; margin-bottom: 32px; }
+.hero-cta { display: flex; gap: 12px; }
+.hero-cta .btn { padding: 12px 28px; font-size: 15px; }
+
+/* hero right: mini bento 2x2 */
+.hero-bento { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; }
+.hb {
+  border-radius: var(--r); padding: 20px; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border: 1px solid var(--line); transition: transform 0.2s;
+}
+.hb:hover { transform: translateY(-3px); }
+.hb-l { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.65; }
+.hb-v { font-size: 34px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; }
+.hb-v small { font-size: 17px; }
+.hb-d { font-size: 11.5px; opacity: 0.75; }
+.hb-dark  { background: var(--dark); color: #fff; border-color: var(--dark); }
+.hb-blue  { background: var(--blue); color: #fff; border-color: var(--blue); }
+.hb-amber { background: var(--amber-bg); color: var(--ink); }
+.hb-plain { background: var(--card); }
+.hb svg.bgicon {
+  position: absolute; right: -14px; bottom: -14px; width: 84px; height: 84px;
+  opacity: 0.14; stroke-width: 1.4;
+}
+.hb .livedot { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; }
+.hb .livedot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3DDC97; box-shadow: 0 0 8px #3DDC97; animation: pulse 2s ease infinite; }
+
+/* ════════ SECTION HEAD ════════ */
+.section { padding: 64px 0; }
+.sec-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; }
+.sec-eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: 2px; color: var(--blue); text-transform: uppercase; margin-bottom: 10px; }
+.sec-title { font-size: clamp(26px, 3.2vw, 36px); font-weight: 800; letter-spacing: -1.2px; line-height: 1.2; }
+.sec-side { font-size: 13.5px; color: var(--muted); max-width: 300px; text-align: right; }
+
+/* ════════ APP BENTO GRID ════════ */
+.bento {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 150px;
+}
+.cell {
+  border-radius: var(--r); border: 1px solid var(--line);
+  background: var(--card); padding: 24px;
+  position: relative; overflow: hidden; cursor: pointer;
+  display: flex; flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cell:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(22,22,26,0.10); }
+
+.cell-big   { grid-column: span 2; grid-row: span 2; }
+.cell-wide  { grid-column: span 2; }
+
+.cell-ic {
+  width: 44px; height: 44px; border-radius: 13px; margin-bottom: auto;
+  display: flex; align-items: center; justify-content: center;
+}
+.cell-ic svg { width: 21px; height: 21px; }
+.i-blue   { background: var(--blue-bg);   color: var(--blue); }
+.i-violet { background: var(--violet-bg); color: var(--violet); }
+.i-teal   { background: var(--teal-bg);   color: var(--teal); }
+.i-amber  { background: var(--amber-bg);  color: var(--amber); }
+
+.cell h3 { font-size: 16.5px; font-weight: 800; letter-spacing: -0.3px; margin-top: 12px; }
+.cell p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-top: 4px; }
+.cell .go {
+  position: absolute; top: 18px; right: 18px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg); display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(0.7) rotate(-30deg); transition: all 0.2s;
+}
+.cell .go svg { width: 15px; height: 15px; }
+.cell:hover .go { opacity: 1; transform: none; }
+
+/* featured cell — 知识助手, with mini chat mock */
+.cell-big { background: var(--blue); border-color: var(--blue); color: #fff; }
+.cell-big p { color: rgba(255,255,255,0.75); }
+.cell-big .cell-ic { background: rgba(255,255,255,0.16); color: #fff; }
+.cell-big .go { background: rgba(255,255,255,0.18); color: #fff; }
+.cell-big .feat-tag {
+  position: absolute; top: 22px; right: 64px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px;
+  background: rgba(255,255,255,0.16); padding: 3px 10px; border-radius: 100px;
+}
+.chatmock {
+  margin-top: 18px; display: flex; flex-direction: column; gap: 8px;
+}
+.bubble {
+  max-width: 86%; padding: 9px 13px; border-radius: 13px;
+  font-size: 12px; line-height: 1.55;
+}
+.bub-q { background: rgba(255,255,255,0.14); align-self: flex-end; border-bottom-right-radius: 4px; }
+.bub-a { background: #fff; color: var(--ink); align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
+.bub-a b { color: var(--blue); }
+
+/* wide cell — 会议纪要 with waveform */
+.wave { display: flex; align-items: flex-end; gap: 3px; height: 30px; margin-top: 12px; }
+.wave i {
+  flex: 1; background: var(--violet); opacity: 0.32; border-radius: 2px;
+  animation: wavey 1.4s ease-in-out infinite;
+}
+.wave i:nth-child(odd) { animation-delay: 0.25s; }
+.wave i:nth-child(3n)  { animation-delay: 0.5s; }
+@keyframes wavey { 0%,100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+
+/* view-all cell */
+.cell-more {
+  background: var(--dark); border-color: var(--dark); color: #fff;
+  align-items: center; justify-content: center; text-align: center; gap: 8px;
+}
+.cell-more h3 { margin: 0; }
+.cell-more svg { width: 22px; height: 22px; transition: transform 0.2s; }
+.cell-more:hover svg { transform: translateX(5px); }
+
+/* ════════ STATS BAND ════════ */
+.band {
+  border-radius: var(--r); background: var(--dark); color: #fff;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  padding: 36px 20px; margin: 8px 0;
+}
+.band .b { text-align: center; border-right: 1px solid rgba(255,255,255,0.12); padding: 4px 12px; }
+.band .b:last-child { border-right: none; }
+.band .bv { font-size: 38px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.15; }
+.band .bv span { color: #6E8BFF; }
+.band .bl { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+/* ════════ VALUES — sticky left title ════════ */
+.values-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: start; }
+.values-stick { position: sticky; top: 100px; }
+.values-stick .sec-side { text-align: left; margin-top: 14px; max-width: 320px; }
+.v-list { display: flex; flex-direction: column; gap: 14px; }
+.v-item {
+  display: flex; gap: 18px; padding: 22px;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+  transition: all 0.18s;
+}
+.v-item:hover { transform: translateX(6px); box-shadow: 0 12px 32px rgba(22,22,26,0.08); }
+.v-num {
+  font-family: var(--mono); font-size: 12px; color: var(--faint);
+  width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%;
+  border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
+}
+.v-item h4 { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+.v-item p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* ════════ ADMIN PREVIEW ════════ */
+.browser {
+  border-radius: var(--r); overflow: hidden; border: 1px solid var(--line);
+  box-shadow: 0 30px 70px rgba(22,22,26,0.12); background: #fff;
+}
+.browser-bar { height: 40px; display: flex; align-items: center; gap: 7px; padding: 0 16px; background: #F0EFEB; border-bottom: 1px solid var(--line); }
+.bd { width: 10px; height: 10px; border-radius: 50%; }
+.burl {
+  flex: 1; max-width: 340px; margin: 0 auto; height: 24px; border-radius: 100px;
+  background: #fff; border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10.5px; color: var(--faint);
+}
+.admin { display: flex; height: 470px; }
+.a-side {
+  width: 212px; flex-shrink: 0; background: #FBFAF8;
+  border-right: 1px solid var(--line); padding: 18px 12px; display: flex; flex-direction: column;
+}
+.a-brand { display: flex; align-items: center; gap: 9px; padding: 0 8px 16px; }
+.a-brand .brand-mark { width: 28px; height: 28px; border-radius: 9px; }
+.a-brand .brand-mark svg { width: 14px; height: 14px; }
+.a-brand-t { font-size: 13px; font-weight: 800; }
+.a-group { font-family: var(--mono); font-size: 9.5px; letter-spacing: 2px; color: var(--faint); padding: 12px 8px 7px; text-transform: uppercase; }
+.a-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: 11px; margin-bottom: 2px; font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer; transition: all 0.14s;
+}
+.a-item:hover { background: #F1F0EC; color: var(--ink); }
+.a-item.on { background: var(--ink); color: #fff; box-shadow: 0 6px 16px rgba(22,22,26,0.22); }
+.a-tile { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.a-tile svg { width: 14px; height: 14px; }
+.a-item.on .a-tile { background: rgba(255,255,255,0.16) !important; }
+.a-item.on .a-tile svg { color: #fff !important; }
+.a-user { margin-top: auto; display: flex; align-items: center; gap: 9px; padding: 12px 8px 0; border-top: 1px solid var(--line); }
+.a-ava { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.a-user-n { font-size: 12.5px; font-weight: 700; line-height: 1.3; }
+.a-user-r { font-size: 10.5px; color: var(--faint); }
+
+.a-main { flex: 1; padding: 22px 26px; background: var(--bg); overflow: hidden; }
+.a-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.a-title { font-size: 18px; font-weight: 800; letter-spacing: -0.4px; }
+.a-crumb { font-size: 11.5px; color: var(--faint); margin-top: 2px; }
+
+.kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 14px; }
+.kpi { background: #fff; border: 1px solid var(--line); border-radius: 15px; padding: 15px 17px; }
+.kpi-l { font-size: 11px; color: var(--faint); margin-bottom: 5px; }
+.kpi-v { font-size: 22px; font-weight: 800; letter-spacing: -0.6px; }
+.kpi-d { font-family: var(--mono); font-size: 10px; color: var(--teal); margin-top: 3px; }
+
+.tbl { background: #fff; border: 1px solid var(--line); border-radius: 15px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th { text-align: left; padding: 10px 16px; font-size: 11px; font-weight: 700; color: var(--faint); border-bottom: 1px solid var(--line); background: #FBFAF8; }
+td { padding: 10px 16px; border-bottom: 1px solid #F2F1ED; color: var(--muted); }
+td:nth-child(2) { color: var(--ink); font-weight: 700; }
+td:first-child { font-family: var(--mono); font-size: 11.5px; }
+tr:hover td { background: #FAF9F6; }
+.tag { display: inline-block; padding: 2px 11px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+.tag-on   { color: var(--teal); background: var(--teal-bg); }
+.tag-off  { color: #D43352; background: #FCE8EC; }
+.tag-role { color: var(--violet); background: var(--violet-bg); }
+
+/* ════════ LOGIN PREVIEW ════════ */
+.login-box {
+  display: flex; max-width: 840px; margin: 0 auto;
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--line); background: #fff;
+  box-shadow: 0 30px 70px rgba(22,22,26,0.12);
+}
+.lg-left {
+  width: 45%; padding: 44px 38px;
+  background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+}
+.lg-left::before {
+  content: ""; position: absolute; width: 240px; height: 240px; border-radius: 60px;
+  background: rgba(255,255,255,0.09); transform: rotate(24deg);
+  right: -90px; bottom: -70px;
+}
+.lg-left::after {
+  content: ""; position: absolute; width: 150px; height: 150px; border-radius: 44px;
+  background: rgba(255,255,255,0.07); transform: rotate(-12deg);
+  right: 40px; bottom: -90px;
+}
+.lg-left h3 { font-size: 25px; font-weight: 800; line-height: 1.4; letter-spacing: -0.6px; }
+.lg-feats { display: flex; flex-direction: column; gap: 11px; position: relative; z-index: 1; }
+.lg-feat { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.88); }
+.lg-feat svg { width: 15px; height: 15px; }
+.lg-right { flex: 1; padding: 44px 42px; }
+.lg-right h4 { font-size: 21px; font-weight: 800; letter-spacing: -0.5px; }
+.lg-right .hint { font-size: 13px; color: var(--faint); margin: 4px 0 28px; }
+.f-label { font-size: 12.5px; font-weight: 700; margin-bottom: 7px; display: block; }
+.f-input {
+  width: 100%; padding: 12px 15px; margin-bottom: 18px;
+  background: var(--bg); border: 1.5px solid transparent; border-radius: 13px;
+  font-family: var(--font); font-size: 14px; color: var(--ink);
+  outline: none; transition: all 0.18s;
+}
+.f-input:focus { background: #fff; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(45,91,255,0.12); }
+.f-input::placeholder { color: var(--faint); }
+
+/* ════════ FOOTER ════════ */
+footer { padding: 44px 0 90px; text-align: center; }
+.fm { font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: 1.5px; }
+
+/* ════════ SWITCHER ════════ */
+.scheme-switch {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 200;
+  display: flex; align-items: center; gap: 4px;
+  padding: 6px 8px; border-radius: 100px;
+  background: rgba(22,22,26,0.94); backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgba(22,22,26,0.35);
+  font-size: 12.5px;
+}
+.scheme-switch .lab { padding: 0 8px 0 10px; color: #7A7F89; font-family: var(--mono); font-size: 11px; }
+.scheme-switch a { padding: 6px 14px; border-radius: 100px; color: #B9BDC6; transition: all 0.15s; }
+.scheme-switch a:hover { color: #fff; }
+.scheme-switch a.cur { background: var(--blue); color: #fff; font-weight: 700; }
+
+/* entrance */
+.fade { opacity: 0; transform: translateY(16px); animation: fadeUp 0.6s ease forwards; }
+.d1 { animation-delay: 0.07s; } .d2 { animation-delay: 0.14s; } .d3 { animation-delay: 0.22s; } .d4 { animation-delay: 0.3s; }
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+@media (max-width: 1024px) {
+  .hero-grid, .values-grid { grid-template-columns: 1fr; }
+  .bento { grid-template-columns: repeat(2,1fr); }
+  .values-stick { position: static; }
+}
+@media (max-width: 680px) {
+  .bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .cell-big, .cell-wide { grid-column: span 1; grid-row: span 1; }
+  .band, .kpis { grid-template-columns: 1fr 1fr; row-gap: 22px; }
+  .nav-menu { display: none; }
+  .login-box { flex-direction: column; } .lg-left { width: 100%; }
+  .hero-bento { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV — floating pill -->
+<header class="nav">
+  <div class="brand">
+    <div class="brand-mark"><i data-lucide="sparkles"></i></div>
+    <span class="brand-name">AI应用聚合平台</span>
+  </div>
+  <nav class="nav-menu">
+    <a class="active" href="#top">首页</a>
+    <a href="#apps">应用中心</a>
+    <a href="#values">平台优势</a>
+  </nav>
+  <button class="btn btn-ink btn-sm">登录</button>
+</header>
+
+<!-- HERO — asymmetric split -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-left">
+      <div class="hero-badge fade"><span class="dot"></span>航空产业 AI 全场景赋能平台</div>
+      <h1 class="fade d1">一个入口，<br />全部<span class="u">航空 AI 能力</span></h1>
+      <p class="hero-sub fade d2">覆盖研发、制造、运维全链路 8 大 AI 应用——知识管理、研发提效、硬件设计、文档处理，一站式赋能航空智造。</p>
+      <div class="hero-cta fade d3">
+        <button class="btn btn-blue">浏览全部应用 →</button>
+        <button class="btn btn-line">了解平台价值</button>
+      </div>
+    </div>
+
+    <!-- right mini-bento -->
+    <div class="hero-bento fade d2">
+      <div class="hb hb-dark">
+        <span class="hb-l">Availability</span>
+        <div>
+          <div class="hb-v">99.9<small>%</small></div>
+          <div class="hb-d">服务可用性 · 多活部署</div>
+        </div>
+        <i data-lucide="activity" class="bgicon"></i>
+      </div>
+      <div class="hb hb-blue">
+        <span class="hb-l">Applications</span>
+        <div>
+          <div class="hb-v">8</div>
+          <div class="hb-d">AI 应用 · 持续上新</div>
+        </div>
+        <i data-lucide="layout-grid" class="bgicon"></i>
+      </div>
+      <div class="hb hb-amber">
+        <span class="hb-l">Enterprises</span>
+        <div>
+          <div class="hb-v">3<small>+</small></div>
+          <div class="hb-d">接入企业 · 协同共建</div>
+        </div>
+        <i data-lucide="building-2" class="bgicon"></i>
+      </div>
+      <div class="hb hb-plain">
+        <span class="hb-l">Status</span>
+        <div>
+          <span class="livedot">系统运行中</span>
+          <div class="hb-d" style="margin-top:4px">今日调用 23,847 次</div>
+        </div>
+        <i data-lucide="radar" class="bgicon"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP BENTO -->
+<section class="section" id="apps">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow">App Matrix</div>
+        <h2 class="sec-title">航空企业核心 AI 应用</h2>
+      </div>
+      <p class="sec-side">重点应用占据大格，一眼锁定高频能力；全部应用统一权限管控。</p>
+    </div>
+
+    <div class="bento">
+      <!-- featured 2x2 -->
+      <div class="cell cell-big">
+        <span class="feat-tag">MOST USED</span>
+        <span class="go"><i data-lucide="arrow-up-right"></i></span>
+        <div class="cell-ic"><i data-lucide="book-open"></i></div>
+        <h3>知识助手</h3>
+        <p>智能知识库问答，覆盖航空标准、工艺规范与历史项目经验，秒级精准检索</p>
+        <div class="chatmock">
+          <div class="bubble bub-q">DO-178C 中 A 级软件的目标项有多少条？</div>
+          <div class="bubble bub-a"><b>71 条目标项</b>，其中 30 条需独立性验证。依据 DO-178C 表 A-1 至 A-10…</div>
+        </div>
+      </div>
+
+      <!-- wide 2x1 -->
+      <div class="cell cell-wide">
+        <span class="go"><i data-lucide="arrow-up-right"></i></span>
+        <div class="cell-ic i-violet"><i data-lucide="mic"></i></div>
+        <h3>会议纪要</h3>
+        <p>语音转写 + 智能摘要，自动提炼决议与行动项</p>
+        <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="cell">
+        <span class="go"><i data-lucide="arrow-up-right"></i></span>
+        <div class="cell-ic i-violet"><i data-lucide="code"></i></div>
+        <h3>代码生成</h3>
+        <p>机载软件代码生成，符合 DO-178C 规范</p>
+      </div>
+      <div class="cell">
+        <span class="go"><i data-lucide="arrow-up-right"></i></span>
+        <div class="cell-ic i-violet"><i data-lucide="shield-check"></i></div>
+        <h3>代码审查</h3>
+        <p>AI 审查缺陷、漏洞与规范偏离</p>
+      </div>
+      <div class="cell">
+        <span class="go"><i data-lucide="arrow-up-right"></i></span>
+        <div class="cell-ic i-teal"><i data-lucide="cpu"></i></div>
+        <h3>电路审查</h3>
+        <p>原理图审查与电气规则校验</p>
+      </div>
+      <div class="cell">
+        <span class="go"><i data-lucide="arrow-up-right"></i></span>
+        <div class="cell-ic i-teal"><i data-lucide="database"></i></div>
+        <h3>元器件库</h3>
+        <p>航空级元器件检索与国产替代</p>
+      </div>
+      <div class="cell">
+        <span class="go"><i data-lucide="arrow-up-right"></i></span>
+        <div class="cell-ic i-amber"><i data-lucide="file-text"></i></div>
+        <h3>文档生成</h3>
+        <p>设计文档、测试报告一键生成</p>
+      </div>
+      <div class="cell cell-more">
+        <h3>全部 8 个应用</h3>
+        <i data-lucide="arrow-right"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<section class="wrap">
+  <div class="band">
+    <div class="b"><div class="bv">8</div><div class="bl">AI 应用</div></div>
+    <div class="b"><div class="bv">4<span>+</span></div><div class="bl">覆盖场景</div></div>
+    <div class="b"><div class="bv">3<span>+</span></div><div class="bl">接入企业</div></div>
+    <div class="b"><div class="bv">99.9<span>%</span></div><div class="bl">服务可用性</div></div>
+  </div>
+</section>
+
+<!-- VALUES — sticky title + list -->
+<section class="section" id="values">
+  <div class="wrap values-grid">
+    <div class="values-stick">
+      <div class="sec-eyebrow">Platform Edge</div>
+      <h2 class="sec-title">为什么选择<br />聚合平台</h2>
+      <p class="sec-side">不是又一个工具集合，而是面向航空企业级生产力场景的一站式 AI 能力底座。</p>
+    </div>
+    <div class="v-list">
+      <div class="v-item">
+        <span class="v-num">01</span>
+        <div>
+          <h4>航空全链路覆盖</h4>
+          <p>面向研发、制造、运维、保障全链路场景，统一入口、连贯体验，深度贴合航空业务流程。</p>
+        </div>
+      </div>
+      <div class="v-item">
+        <span class="v-num">02</span>
+        <div>
+          <h4>航空级安全合规</h4>
+          <p>通过航空行业安全合规审核，权限分级管理，数据可审计、可追溯，满足等保与适航要求。</p>
+        </div>
+      </div>
+      <div class="v-item">
+        <span class="v-num">03</span>
+        <div>
+          <h4>高可用稳定保障</h4>
+          <p>多活部署 + 灰度发布，服务可用性 99.9%，关键航空业务系统 7×24 稳定运行。</p>
+        </div>
+      </div>
+      <div class="v-item">
+        <span class="v-num">04</span>
+        <div>
+          <h4>持续迭代升级</h4>
+          <p>模型与功能持续演进，紧跟航空数字化趋势，定期上线新能力，赋能业务长期增长。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN PREVIEW -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow">Admin Console</div>
+        <h2 class="sec-title">管理后台</h2>
+      </div>
+      <p class="sec-side">权限分级管理 · 组织架构 · 实时监控运维。</p>
+    </div>
+    <div class="browser">
+      <div class="browser-bar">
+        <span class="bd" style="background:#FF5F57"></span>
+        <span class="bd" style="background:#FEBC2E"></span>
+        <span class="bd" style="background:#28C840"></span>
+        <div class="burl">platform.aviation-ai.cn/admin</div>
+      </div>
+      <div class="admin">
+        <aside class="a-side">
+          <div class="a-brand">
+            <div class="brand-mark"><i data-lucide="sparkles"></i></div>
+            <div class="a-brand-t">管理后台</div>
+          </div>
+          <div class="a-group">应用管理</div>
+          <div class="a-item"><span class="a-tile i-blue"><i data-lucide="layout-grid"></i></span>应用目录</div>
+          <div class="a-group">权限管理</div>
+          <div class="a-item on"><span class="a-tile i-violet"><i data-lucide="shield-check"></i></span>角色管理</div>
+          <div class="a-item"><span class="a-tile i-blue"><i data-lucide="users"></i></span>用户管理</div>
+          <div class="a-item"><span class="a-tile i-teal"><i data-lucide="building-2"></i></span>组织管理</div>
+          <div class="a-group">监控运维</div>
+          <div class="a-item"><span class="a-tile i-amber"><i data-lucide="activity"></i></span>监控总览</div>
+          <div class="a-user">
+            <div class="a-ava">超</div>
+            <div>
+              <div class="a-user-n">超级管理员</div>
+              <div class="a-user-r">中航某所</div>
+            </div>
+          </div>
+        </aside>
+        <main class="a-main">
+          <div class="a-head">
+            <div>
+              <div class="a-title">角色管理</div>
+              <div class="a-crumb">管理后台 / 权限管理 / 角色管理</div>
+            </div>
+            <button class="btn btn-blue btn-sm">+ 新建角色</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="kpi-l">总用户数</div><div class="kpi-v">1,284</div><div class="kpi-d">+12 本周</div></div>
+            <div class="kpi"><div class="kpi-l">启用应用</div><div class="kpi-v">8</div><div class="kpi-d">持平</div></div>
+            <div class="kpi"><div class="kpi-l">今日调用</div><div class="kpi-v">23,847</div><div class="kpi-d">+8.4%</div></div>
+            <div class="kpi"><div class="kpi-l">服务可用性</div><div class="kpi-v">99.92%</div><div class="kpi-d">SLA 达标</div></div>
+          </div>
+          <div class="tbl">
+            <table>
+              <thead><tr><th>账号</th><th>姓名</th><th>角色</th><th>组织</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr><td>zhang.wei</td><td>张伟</td><td><span class="tag tag-role">企业管理员</span></td><td>航电研发部</td><td><span class="tag tag-on">启用</span></td></tr>
+                <tr><td>li.na</td><td>李娜</td><td><span class="tag tag-role">普通用户</span></td><td>飞控软件部</td><td><span class="tag tag-on">启用</span></td></tr>
+                <tr><td>wang.lei</td><td>王磊</td><td><span class="tag tag-role">部门管理员</span></td><td>综合航电部</td><td><span class="tag tag-off">停用</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGIN PREVIEW -->
+<section class="section" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow">Access</div>
+        <h2 class="sec-title">登录页</h2>
+      </div>
+      <p class="sec-side">企业级身份认证 · 多因子安全登录。</p>
+    </div>
+    <div class="login-box">
+      <div class="lg-left">
+        <h3>航空企业级<br />AI 应用聚合平台</h3>
+        <div class="lg-feats">
+          <div class="lg-feat"><i data-lucide="shield-check"></i>等保三级 · 适航安全合规</div>
+          <div class="lg-feat"><i data-lucide="key-round"></i>多因子认证 · 动态校验</div>
+          <div class="lg-feat"><i data-lucide="activity"></i>7×24 高可用 · 99.9% SLA</div>
+        </div>
+      </div>
+      <div class="lg-right">
+        <h4>欢迎回来 👋</h4>
+        <p class="hint">使用企业账号登录</p>
+        <label class="f-label">账号</label>
+        <input class="f-input" placeholder="请输入企业账号" />
+        <label class="f-label">密码</label>
+        <input class="f-input" type="password" placeholder="请输入密码" />
+        <button class="btn btn-blue" style="width:100%; padding:13px; border-radius:13px">登 录</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fm">AI APPLICATION AGGREGATION PLATFORM · AVIATION ENTERPRISE © 2026</div>
+</footer>
+
+<!-- SWITCHER -->
+<div class="scheme-switch">
+  <span class="lab">布局</span>
+  <a href="./layout-preview-1-workspace.html">1 工作台</a>
+  <a class="cur" href="./layout-preview-2-bento.html">2 Bento</a>
+  <a href="./layout-preview-3-command.html">3 指挥舱</a>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

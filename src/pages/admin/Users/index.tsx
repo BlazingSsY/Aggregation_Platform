@@ -505,29 +505,21 @@ export default function UsersPage() {
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
             用户管理
           </Typography>
-          <Typography sx={{ color: 'text.secondary', fontSize: 13, mt: 0.5 }}>
-            管理企业用户、部门归属、角色绑定与账号状态
-            {isSuperAdmin && ' · 超级管理员可跨企业调整用户所属'}
-            {isEnterpriseAdmin &&
-              currentUser &&
-              ` · 仅可管理「${currentUser.enterprise}」企业内的用户`}
-            {isDepartmentAdmin &&
-              currentUser &&
-              ` · 仅可管理「${currentUser.enterprise} · ${currentUser.department}」的用户`}
-          </Typography>
         </Box>
-        <Tooltip title={allowedRoles.length === 0 ? '当前角色无新增用户的权限' : ''}>
-          <span>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              disabled={allowedRoles.length === 0}
-              onClick={() => setCreating(true)}
-            >
-              新增用户
-            </Button>
-          </span>
-        </Tooltip>
+        <Box sx={{ ml: 'auto' }}>
+          <Tooltip title={allowedRoles.length === 0 ? '当前角色无新增用户的权限' : ''}>
+            <span>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                disabled={allowedRoles.length === 0}
+                onClick={() => setCreating(true)}
+              >
+                新增用户
+              </Button>
+            </span>
+          </Tooltip>
+        </Box>
       </Stack>
 
       <Card>
@@ -638,10 +630,10 @@ export default function UsersPage() {
                       </Typography>
                     </Stack>
                   </TableCell>
-                  <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>
+                  <TableCell sx={{ fontSize: 13 }}>
                     {r.username}
                   </TableCell>
-                  <TableCell sx={{ fontSize: 12 }}>{r.email}</TableCell>
+                  <TableCell sx={{ fontSize: 13 }}>{r.email}</TableCell>
                   <TableCell>
                     <Chip
                       size="small"
@@ -659,8 +651,7 @@ export default function UsersPage() {
                       <Stack direction="row" alignItems="center" spacing={0.5}>
                         <Typography
                           sx={{
-                            fontFamily: 'monospace',
-                            fontSize: 12,
+                            fontSize: 13,
                             color: revealedPwds.has(r.id) ? 'text.primary' : 'text.secondary',
                             letterSpacing: revealedPwds.has(r.id) ? 'normal' : 2,
                             minWidth: 100,
@@ -853,8 +844,7 @@ export default function UsersPage() {
               bgcolor: '#ffffff',
               border: '1px solid #e5ebf2',
               borderRadius: 1,
-              fontFamily: 'monospace',
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: 700,
               color: 'primary.main',
               letterSpacing: 1,
